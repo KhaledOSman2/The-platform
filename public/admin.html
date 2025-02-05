@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>لوحة الأدمن</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #f59e0b;
+            --sidebar-bg: #1e3a8a;
+            --sidebar-hover: #2563eb;
+            --sidebar-width: 280px;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #sidebar-wrapper {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(195deg, var(--sidebar-bg), var(--sidebar-hover));
+            color: white;
+            position: fixed;
+            transition: transform var(--transition-speed);
+            z-index: 1000;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+            right: 0;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            transform: translateY(-100%);
+        }
+
+        .sidebar-heading {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 700;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .list-group-item {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.9);
+            padding: 1rem 1.5rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .list-group-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        #page-content-wrapper {
+            margin-right: var(--sidebar-width);
+            padding: 2rem;
+            transition: margin-right var(--transition-speed);
+        }
+
+        #wrapper.toggled #page-content-wrapper {
+            margin-right: 0;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 0.8rem 1.5rem;
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .data-table thead {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .grade-title {
+            background: linear-gradient(100deg, var(--sidebar-bg), var(--sidebar-hover));
+            color: white;
+            padding: 10px 10px;
+            padding-bottom: 50px;
+            padding-top: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+
+            height: 55px;
+
+
+        }
+
+        .data-table th,
+        .data-table td {
+            border-right: 1px solid #dee2e6;
+        }
+
+        .data-table th:last-child,
+        .data-table td:last-child {
+            border-right: none;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: #e2e8f0;
+            margin: 2rem 0;
+        }
+
+        #page-content-wrapper.toggled {
+            margin-right: 0 !important;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar-wrapper {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                transform: translateY(-100%);
+                position: absolute;
+            }
+
+            #page-content-wrapper {
+                margin-right: 0;
+                transition: margin-top var(--transition-speed);
+            }
+
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+
+            .list-group-item {
+                padding: 0.5rem 1rem;
+            }
+
+            .data-table {
+                font-size: 0.8rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            #page-content-wrapper.toggled {
+                margin-top: 0 !important;
+            }
+
+            .section-divider {
+                height: 2px;
+                background: #e2e8f0;
+                margin: 2rem 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">لوحة الأدمن</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action" href="#usersSection">إدارة الطلاب</a>
+                <a class="list-group-item list-group-item-action" href="#coursesSection">إدارة الكورسات</a>
+                <a class="list-group-item list-group-item-action" href="#examsSection">إدارة الامتحانات</a>
+                <a class="list-group-item list-group-item-action" href="#gradesSection">إدارة الصفوف الدراسية</a>
+                <a class="list-group-item list-group-item-action" href="/dashboard.html">لوحة التحكم</a>
+                <a class="list-group-item list-group-item-action" href="index.html">الرئيسية</a>
+                <a class="list-group-item list-group-item-action" href="#" id="logoutLink">تسجيل الخروج</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- شريط التنقل العلوي -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white">
+                <button class="btn btn-primary" id="sidebarToggle">☰</button>
+                <div class="ms-auto">مرحبا، أدمن</div>
+            </nav>
+            <div class="section-divider"></div>
+            <!-- محتوى الصفحة الرئيسية -->
+            <div class="container-fluid">
+
+                <!-- قسم الإحصائيات -->
+                <section id="analyticsSection">
+                    <h2 class="mb-4"><i class="fas fa-chart-bar"></i> إحصائيات النظام</h2>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">عدد الطلاب: <span id="totalUsers">0</span></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">عدد الكورسات: <span id="totalCourses">0</span></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">المستندات: <span id="totalActivities">0</span></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="stat-card">عدد الامتحانات: <span id="totalExams">0</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="section-divider"></div>
+
+                <!-- قسم إدارة الطلاب -->
+                <section id="usersSection">
+                    <div class="grade-title">
+                        <h2 class="mb-4"><i class="fas fa-user-graduate"></i> إدارة الطلاب</h2>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                            <i class="fas fa-plus"></i> إضافة طالب جديد
+                        </button>
+                        <input type="text" id="userSearch" class="form-control" placeholder="ابحث عن طالب..."
+                            style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover data-table" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم المستخدم</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم تعبئتها ديناميكيًا -->
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-outline-primary me-2" id="prevUsersPage">Previous</button>
+                            <span>Page <input type="number" id="usersPageNumber" value="1" min="1" style="width: 50px;">
+                                of <span id="usersTotalPages">1</span></span>
+                            <button class="btn btn-outline-primary ms-2" id="nextUsersPage">Next</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="section-divider"></div>
+
+                <!-- قسم إدارة الكورسات -->
+                <section id="coursesSection">
+                    <div class="grade-title">
+                        <h2 class="mb-4"><i class="fab fa-youtube"></i> إدارة الكورسات</h2>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#courseModal">
+                            <i class="fas fa-plus"></i> إضافة دورة جديدة
+                        </button>
+                        <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن دورة..."
+                            style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover data-table" id="coursesTable">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم تعبئتها ديناميكيًا -->
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-outline-primary me-2" id="prevCoursesPage">Previous</button>
+                            <span>Page <input type="number" id="coursesPageNumber" value="1" min="1"
+                                    style="width: 50px;"> of
+                                <span id="coursesTotalPages">1</span></span>
+                            <button class="btn btn-outline-primary ms-2" id="nextCoursesPage">Next</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="section-divider"></div>
+
+
+                <!-- قسم إدارة الامتحانات -->
+                <section id="examsSection">
+                    <div class="grade-title">
+                        <h2 class="mb-4"><i class="fas fa-file-alt"></i> إدارة الامتحانات</h2>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#examModal">
+                            <i class="fas fa-plus"></i> إضافة امتحان جديد
+                        </button>
+                        <input type="text" id="examSearch" class="form-control" placeholder="ابحث عن امتحان... "
+                            style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
+
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table class="table table-hover data-table" id="examsTable">
+                            <thead>
+                                <tr>
+                                    <th>عنوان الامتحان</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>الدورة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم تعبئتها ديناميكيًا -->
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-outline-primary me-2" id="prevExamsPage">Previous</button>
+                            <span>Page <input type="number" id="examsPageNumber" value="1" min="1" style="width: 50px;">
+                                of <span id="examsTotalPages">1</span></span>
+                            <button class="btn btn-outline-primary ms-2" id="nextExamsPage">Next</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="section-divider"></div>
+
+                <!-- قسم إدارة الصفوف الدراسية -->
+                <section id="gradesSection">
+                    <div class="grade-title">
+                        <h2 class="mb-4"><i class="fas fa-chalkboard-teacher"></i> إدارة الصفوف الدراسية</h2>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#gradeModal">
+                            <i class="fas fa-plus"></i> إضافة صف دراسي جديد
+                        </button>
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table class="table table-hover data-table" id="gradesTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم الصف الدراسي</th>
+                                    <th>عدد الطلاب</th>
+                                    <th>عدد الكورسات</th>
+                                    <th>عدد الامتحانات</th>
+                                    <th>المستندات</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم تعبئتها ديناميكيًا -->
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-outline-primary me-2" id="prevGradesPage">Previous</button>
+                            <span>Page <input type="number" id="gradesPageNumber" value="1" min="1"
+                                    style="width: 50px;"> of
+                                <span id="gradesTotalPages">1</span></span>
+                            <button class="btn btn-outline-primary ms-2" id="nextGradesPage">Next</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="section-divider"></div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Modal لإضافة/تعديل دورة -->
+    <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form id="courseForm" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="courseModalLabel">إضافة/ تعديل دورة</h5>
+                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="courseId" value="">
+                        <input type="hidden" id="courseImageURL" name="courseImageURL">
+
+                        <div class="mb-3">
+                            <label for="courseTitle" class="form-label">عنوان الدورة</label>
+                            <input type="text" class="form-control" id="courseTitle" name="title" required>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label for="courseGrade" class="form-label">الصف الدراسي</label>
+                            <select class="form-control" id="courseGrade" name="grade" required></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="courseImage" class="form-label">صورة الدورة</label>
+                            <input type="file" class="form-control" id="courseImage" name="courseImage"
+                                accept="image/*">
+                        </div>
+
+                        <hr>
+
+                        <div class="accordion" id="courseAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingVideos">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseVideos" aria-expanded="false"
+                                        aria-controls="collapseVideos">
+                                        <i class="fas fa-video"></i>
+                                        <span style="margin-right: 12px;">فيديوهات الدورة</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseVideos" class="accordion-collapse collapse"
+                                    aria-labelledby="headingVideos" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        <div id="videosContainer"></div>
+                                        <button type="button" class="btn btn-secondary mt-2" id="addVideoButton">
+                                            <i class="fas fa-plus"></i> إضافة فيديو آخر
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingDocuments">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseDocuments" aria-expanded="false"
+                                        aria-controls="collapseDocuments">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span style="margin-right: 12px;">المستندات</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseDocuments" class="accordion-collapse collapse"
+                                    aria-labelledby="headingDocuments" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        <div id="activitiesContainer"></div>
+                                        <button type="button" class="btn btn-secondary mt-2" id="addActivityButton">
+                                            <i class="fas fa-plus"></i> إضافة مستند PDF اخر
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ الدورة</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لتعديل بيانات المستخدم -->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="userForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userModalLabel">تعديل بيانات المستخدم</h5>
+                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="userId" value="">
+                        <div class="mb-3">
+                            <label for="editUsername" class="form-label">اسم المستخدم</label>
+                            <input type="text" class="form-control" id="editUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPassword" class="form-label">كلمة المرور</label>
+                            <input type="text" class="form-control" id="editPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editGrade" class="form-label">الصف الدراسي</label>
+                            <select class="form-control" id="editGrade" required></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لإضافة صف دراسي -->
+    <div class="modal fade" id="gradeModal" tabindex="-1" aria-labelledby="gradeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="gradeForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="gradeModalLabel">إضافة صف دراسي جديد</h5>
+                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="gradeName" class="form-label">اسم الصف الدراسي</label>
+                            <input type="text" class="form-control" id="gradeName" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">إضافة الصف الدراسي</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لإضافة طالب جديد -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="addStudentForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addStudentModalLabel">إضافة طالب جديد</h5>
+                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="newUsername" class="form-label">اسم المستخدم</label>
+                            <input type="text" class="form-control" id="newUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newEmail" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="newEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">كلمة المرور</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newGrade" class="form-label">الصف الدراسي</label>
+                            <select class="form-control" id="newGrade" required></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">إضافة الطالب</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لإضافة/تعديل امتحان -->
+    <div class="modal fade" id="examModal" tabindex="-1" aria-labelledby="examModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="examForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="examModalLabel">إضافة/تعديل امتحان</h5>
+                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="examId" value="">
+                        <div class="mb-3">
+                            <label for="examTitle" class="form-label">عنوان الامتحان</label>
+                            <input type="text" class="form-control" id="examTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="examGrade" class="form-label">الصف الدراسي</label>
+                            <select class="form-control" id="examGrade" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="examCourse" class="form-label">الدورة</label>
+                            <select class="form-control" id="examCourse" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="googleFormUrl" class="form-label">رابط استبيان جوجل</label>
+                            <input type="url" class="form-control" id="googleFormUrl" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS وجافاسكريبت -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // كود لتبديل الشريط الجانبي
+        const sidebarToggle = document.getElementById("sidebarToggle");
+        sidebarToggle.addEventListener("click", function () {
+            document.getElementById("wrapper").classList.toggle("toggled");
+            document.getElementById("page-content-wrapper").classList.toggle("toggled");
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLoggedIn = !!localStorage.getItem('token');
+            const navLinks = document.querySelector('#sidebar-wrapper .list-group');
+
+            if (isLoggedIn) {
+                navLinks.innerHTML = `
+            <a class="list-group-item list-group-item-action" href="#usersSection">إدارة الطلاب</a>
+            <a class="list-group-item list-group-item-action" href="#coursesSection">إدارة الكورسات</a>
+            <a class="list-group-item list-group-item-action" href="#examsSection">إدارة الامتحانات</a>
+            <a class="list-group-item list-group-item-action" href="#gradesSection">إدارة الصفوف الدراسية</a>
+            <a class="list-group-item list-group-item-action" href="/dashboard.html">لوحة التحكم</a>
+            <a class="list-group-item list-group-item-action" href="index.html">الرئيسية</a>
+            <a class="list-group-item list-group-item-action" href="#" id="logoutLink">تسجيل الخروج</a>
+            `;
+
+                document.getElementById('logoutLink').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                });
+            }
+
+            // إضافة وظيفة البحث
+            const userSearch = document.getElementById('userSearch');
+            userSearch.addEventListener('input', function () {
+                const searchTerm = userSearch.value.toLowerCase();
+                const rows = document.querySelectorAll('#usersTable tbody tr');
+                rows.forEach(row => {
+                    const username = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                    const email = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (username.includes(searchTerm) || email.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // إضافة وظيفة البحث للكورسات
+            const courseSearch = document.getElementById('courseSearch');
+            courseSearch.addEventListener('input', function () {
+                const searchTerm = courseSearch.value.toLowerCase();
+                const rows = document.querySelectorAll('#coursesTable tbody tr');
+                rows.forEach(row => {
+                    const title = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                    if (title.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // تحميل الصفوف الدراسية في نموذج إضافة طالب جديد
+            fetch('/api/grades')
+                .then(response => response.json())
+                .then(grades => {
+                    const gradeSelect = document.getElementById('newGrade');
+                    gradeSelect.innerHTML = '';
+                    grades.forEach(grade => {
+                        const option = document.createElement('option');
+                        option.value = grade.name;
+                        option.textContent = grade.name;
+                        gradeSelect.appendChild(option);
+                    });
+                })
+                .catch(err => console.error('Error loading grades:', err));
+
+            // معالجة نموذج إضافة طالب جديد
+            const addStudentForm = document.getElementById('addStudentForm');
+            addStudentForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const username = sanitizeInput(document.getElementById('newUsername').value);
+                const email = sanitizeInput(document.getElementById('newEmail').value);
+                const password = sanitizeInput(document.getElementById('newPassword').value);
+                const grade = document.getElementById('newGrade').value;
+
+                fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, grade })
+                })
+                    .then(response => response.json())
+                    .then(res => {
+                        alert(res.message);
+                        if (response.ok) {
+                            loadUsers();
+                            addStudentForm.reset();
+                            const addStudentModal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
+                            if (addStudentModal) addStudentModal.hide();
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+            // Pagination variables
+            let usersPage = 1;
+            let coursesPage = 1;
+            let gradesPage = 1;
+            const itemsPerPage = 10;
+
+            // Load users with pagination
+            function loadUsers(page = 1) {
+                fetch('/api/users', {
+                    method: 'GET',
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                    .then(response => response.json())
+                    .then(users => {
+                        const totalPages = Math.ceil(users.length / itemsPerPage);
+                        document.getElementById('usersTotalPages').textContent = totalPages;
+                        const start = (page - 1) * itemsPerPage;
+                        const end = start + itemsPerPage;
+                        const paginatedUsers = users.slice(start, end);
+
+                        const tbody = document.querySelector('#usersTable tbody');
+                        tbody.innerHTML = '';
+                        paginatedUsers.forEach(user => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                    <td>${user.username} ${user.isAdmin ? '⭐' : ''}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.grade || 'N/A'}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button>
+                                        ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية المسؤول</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى مسؤول</button>`}
+                                    </td>
+                                `;
+                            tbody.appendChild(tr);
+                        });
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            // Load courses with pagination
+            function loadCourses(page = 1) {
+                fetch('/api/courses', {
+                    method: 'GET',
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                    .then(response => response.json())
+                    .then(courses => {
+                        const totalPages = Math.ceil(courses.length / itemsPerPage);
+                        document.getElementById('coursesTotalPages').textContent = totalPages;
+                        const start = (page - 1) * itemsPerPage;
+                        const end = start + itemsPerPage;
+                        const paginatedCourses = courses.slice(start, end);
+
+                        const tbody = document.querySelector('#coursesTable tbody');
+                        tbody.innerHTML = '';
+                        paginatedCourses.forEach(course => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                    <td>
+                                        <img src="${course.imageURL}" alt="${course.title}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                        ${course.title}
+                                    </td>
+                                    <td>${course.grade}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>تعديل</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">حذف</button>
+                                    </td>
+                                `;
+                            tbody.appendChild(tr);
+                        });
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            // Load grades with pagination
+            function loadGrades(page = 1) {
+                fetch('/api/grades', {
+                    method: 'GET',
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                    .then(response => response.json())
+                    .then(grades => {
+                        const totalPages = Math.ceil(grades.length / itemsPerPage);
+                        document.getElementById('gradesTotalPages').textContent = totalPages;
+                        const start = (page - 1) * itemsPerPage;
+                        const end = start + itemsPerPage;
+                        const paginatedGrades = grades.slice(start, end);
+
+                        const gradesTableBody = document.querySelector('#gradesTable tbody');
+                        gradesTableBody.innerHTML = '';
+                        paginatedGrades.forEach(grade => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                    <td>${grade.name}</td>
+                                    <td>${grade.studentCount}</td>
+                                    <td>${grade.courseCount}</td>
+                                    <td>${grade.examCount}</td>
+                                    <td>${grade.activityCount}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">حذف</button>
+                                    </td>
+                                `;
+                            gradesTableBody.appendChild(tr);
+                        });
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            // Event listeners for pagination buttons
+            document.getElementById('prevUsersPage').addEventListener('click', () => {
+                if (usersPage > 1) {
+                    usersPage--;
+                    document.getElementById('usersPageNumber').value = usersPage;
+                    loadUsers(usersPage);
+                }
+            });
+
+            document.getElementById('nextUsersPage').addEventListener('click', () => {
+                const totalPages = parseInt(document.getElementById('usersTotalPages').textContent);
+                if (usersPage < totalPages) {
+                    usersPage++;
+                    document.getElementById('usersPageNumber').value = usersPage;
+                    loadUsers(usersPage);
+                }
+            });
+
+            document.getElementById('usersPageNumber').addEventListener('change', (e) => {
+                const page = parseInt(e.target.value);
+                const totalPages = parseInt(document.getElementById('usersTotalPages').textContent);
+                if (page >= 1 && page <= totalPages) {
+                    usersPage = page;
+                    loadUsers(usersPage);
+                } else {
+                    e.target.value = usersPage;
+                }
+            });
+
+            document.getElementById('prevCoursesPage').addEventListener('click', () => {
+                if (coursesPage > 1) {
+                    coursesPage--;
+                    document.getElementById('coursesPageNumber').value = coursesPage;
+                    loadCourses(coursesPage);
+                }
+            });
+
+            document.getElementById('nextCoursesPage').addEventListener('click', () => {
+                const totalPages = parseInt(document.getElementById('coursesTotalPages').textContent);
+                if (coursesPage < totalPages) {
+                    coursesPage++;
+                    document.getElementById('coursesPageNumber').value = coursesPage;
+                    loadCourses(coursesPage);
+                }
+            });
+
+            document.getElementById('coursesPageNumber').addEventListener('change', (e) => {
+                const page = parseInt(e.target.value);
+                const totalPages = parseInt(document.getElementById('coursesTotalPages').textContent);
+                if (page >= 1 && page <= totalPages) {
+                    coursesPage = page;
+                    loadCourses(coursesPage);
+                } else {
+                    e.target.value = coursesPage;
+                }
+            });
+
+            document.getElementById('prevGradesPage').addEventListener('click', () => {
+                if (gradesPage > 1) {
+                    gradesPage--;
+                    document.getElementById('gradesPageNumber').value = gradesPage;
+                    loadGrades(gradesPage);
+                }
+            });
+
+            document.getElementById('nextGradesPage').addEventListener('click', () => {
+                const totalPages = parseInt(document.getElementById('gradesTotalPages').textContent);
+                if (gradesPage < totalPages) {
+                    gradesPage++;
+                    document.getElementById('gradesPageNumber').value = gradesPage;
+                    loadGrades(gradesPage);
+                }
+            });
+
+            document.getElementById('gradesPageNumber').addEventListener('change', (e) => {
+                const page = parseInt(e.target.value);
+                const totalPages = parseInt(document.getElementById('gradesTotalPages').textContent);
+                if (page >= 1 && page <= totalPages) {
+                    gradesPage = page;
+                    loadGrades(gradesPage);
+                } else {
+                    e.target.value = gradesPage;
+                }
+            });
+
+            // Initial load
+            loadUsers();
+            loadCourses();
+            loadGrades();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ...existing code...
+            const sidebarToggle = document.getElementById("sidebarToggle");
+            sidebarToggle.addEventListener("click", function () {
+                const wrapper = document.getElementById("wrapper");
+                wrapper.classList.toggle("toggled");
+                const pageContentWrapper = document.getElementById("page-content-wrapper");
+                pageContentWrapper.classList.toggle("toggled");
+
+                if (window.innerWidth <= 768) {
+                    if (wrapper.classList.contains("toggled")) {
+                        wrapper.style.transform = "translateY(0)";
+                        pageContentWrapper.style.display = "block";
+                    } else {
+                        wrapper.style.transform = "translateY(0)";
+                        pageContentWrapper.style.display = "block";
+                    }
+                }
+            });
+            // ...existing code...
+        });
+    </script>
+</body>
+
+</html>

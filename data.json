@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": 1738562296250,
+      "username": "ADMIN",
+      "email": "admin@gmail.com",
+      "password": "1",
+      "isAdmin": true,
+      "grade": "الصف الاول الاعدادي"
+    },
+    {
+      "id": 1738667145002,
+      "username": "Khaled Osman",
+      "email": "Khaled@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false
+    }
+  ],
+  "courses": [
+    {
+      "id": 1738811738877,
+      "title": "سكان قاره افريقيا",
+      "videoURL": "https://www.youtube.com/embed/SZyR1qzuTWU?si=L-DLZtxxAdHQJ2uJ",
+      "videos": [
+        {
+          "title": "لدرس الاول نمو وتوزيع سكان قاره افريقيا",
+          "url": "https://www.youtube.com/embed/SZyR1qzuTWU?si=L-DLZtxxAdHQJ2uJ",
+          "addedDate": "2025-02-06T03:15:38.877Z"
+        }
+      ],
+      "activities": [],
+      "grade": "الصف الاول الاعدادي",
+      "imageURL": "/uploads/1738789527397.jpeg",
+      "exams": [
+        {
+          "id": 1738812027969,
+          "title": "امتحان شامل علي النبات",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": 1738811738877,
+          "addedDate": "2025-02-06T03:20:27.969Z"
+        }
+      ]
+    }
+  ],
+  "grades": [
+    {
+      "id": 1738789210737,
+      "name": "الصف الاول الاعدادي"
+    },
+    {
+      "id": 1738789224871,
+      "name": "الصف الثاني الاعدادي"
+    },
+    {
+      "id": 1738789236778,
+      "name": "الصف الثالث الاعدادي"
+    }
+  ]
+}

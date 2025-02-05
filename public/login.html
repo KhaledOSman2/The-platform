@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تسجيل الدخول</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #f59e0b;
+            --accent-color: #10b981;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-top: 80px;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            padding: 0.5rem 1rem !important;
+            border-radius: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            background: rgba(37, 99, 235, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--gradient-primary);
+            color: white !important;
+        }
+
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer a {
+            color: var(--secondary-color);
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+
+<body class="bg-light" style="margin-top: 120px;">
+    <!-- شريط تنقل محسّن -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-graduation-cap"></i>
+                N U M B E R 1
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="navLinks">
+                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="login.html">تسجيل الدخول</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">إنشاء حساب</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3>تسجيل الدخول</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">البريد الإلكتروني</label>
+                                <input type="email" class="form-control" id="email" placeholder="example@example.com"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">كلمة المرور</label>
+                                <input type="password" class="form-control" id="password" placeholder="********"
+                                    required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">دخول</button>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <small>ليس لديك حساب؟ <a href="register.html">إنشاء حساب جديد</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="mb-1">&copy; N U M B E R 1</p>
+            <p>
+                <a href="#">سياسة الخصوصية</a> |
+                <a href="#">الشروط والأحكام</a>
+            </p>
+        </div>
+        <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both"><span
+                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
+                    class="text-redMelon-300">Developed By</span><span
+                    class="text-redMelon-600">&gt;</span></span><span><a href="https://wa.me/201552190276"
+                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Khaled Osman</a><span>,</span><a
+                    href="https://www.facebook.com/share/19xa9j7611/"
+                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Education Plus</a></span><span
+                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
+                    class="text-redMelon-300">All Copy Rights Reserved @2025</span><span
+                    class="text-redMelon-600">&gt;</span></span></div>
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLoggedIn = !!localStorage.getItem('token');
+            const navLinks = document.getElementById('navLinks');
+
+            if (isLoggedIn) {
+                navLinks.innerHTML = `
+                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+                `;
+
+                document.getElementById('logoutLink').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                });
+            }
+
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value.trim();
+
+                    try {
+                        const response = await fetch('/api/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+
+                        const data = await response.json();
+                        if (response.ok) {
+                            localStorage.setItem('token', data.token);
+                            if (data.user.isAdmin) {
+                                window.location.href = 'admin.html';
+                            } else {
+                                window.location.href = 'dashboard.html';
+                            }
+                        } else {
+                            alert(data.message);
+                        }
+                    } catch (err) {
+                        console.error('Error during login:', err);
+                        alert('حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

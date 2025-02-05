@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تفاصيل الدورة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #f59e0b;
+            --accent-color: #10b981;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-top: 80px;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            padding: 0.5rem 1rem !important;
+            border-radius: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            background: rgba(37, 99, 235, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--gradient-primary);
+            color: white !important;
+        }
+
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer a {
+            color: var(--secondary-color);
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--accent-color);
+        }
+
+        .course-header {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-thumbnail {
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .course-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .course-thumbnail:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 1rem;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .course-content h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .course-content p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .course-video {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            background: white;
+            padding: 1rem;
+        }
+
+        .course-video .video-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .course-video iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 12px;
+        }
+
+        .list-group-item {
+            padding: 1.2rem 1.5rem;
+            border-color: rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .list-group-item:hover {
+            background: rgba(42, 92, 151, 0.03);
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 992px) {
+            .sticky-container {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 10rem;
+            }
+
+            .sticky-container .card {
+                margin-top: 1.5rem;
+            }
+
+            .sticky-container .card:first-child {
+                margin-top: 0;
+            }
+
+            .sticky-container .card:last-child {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .card-header.collapsed i {
+            transform: rotate(180deg);
+        }
+
+        .card-body {
+            display: none;
+            padding: 1rem 1.5rem;
+            background-color: #f9f9f9;
+        }
+
+        .card-body.show {
+            display: block;
+        }
+
+        .activities-header {
+            background-color: var(--accent-color) !important;
+        }
+
+        .video-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            .course-video iframe {
+                height: 300px;
+            }
+
+            .modal-dialog {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .modal-content {
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-body {
+                height: calc(100vh - 56px);
+                overflow-y: auto;
+                padding: 0;
+            }
+
+            .modal-body iframe {
+                height: 100%;
+                width: 100%;
+            }
+
+            .video-title {
+                font-size: 0.5rem;
+                /* Reduce font size for mobile */
+            }
+        }
+    </style>
+</head>
+
+<body style="margin-top: 80px;">
+
+    <!-- شريط تنقل محسّن -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-graduation-cap"></i>
+                N U M B E R 1
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="navLinks">
+                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">تسجيل الدخول</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">إنشاء حساب</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- محتوى الصفحة الرئيسية -->
+    <div class="container">
+        <div class="row">
+            <!-- الجانب الأيسر: تفاصيل الدورة والفيديو الرئيسي -->
+            <div class="col-lg-8 mb-4">
+                <div class="course-header">
+                    <div class="course-thumbnail">
+                        <img id="courseImage" src="" alt="صورة الدورة">
+                    </div>
+                    <div class="course-content">
+                        <h2 id="courseTitle"></h2>
+                        <p id="courseGrade"></p>
+                    </div>
+                </div>
+                <div class="course-video">
+                    <div class="video-title" id="videoTitle"></div>
+                    <iframe id="courseVideo"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <div id="noVideoMessage"
+                        style="display: none; text-align: center; padding: 2rem; color: var(--text-light);">
+                        ستتوفر المحاضرات قريبا
+                    </div>
+                </div>
+            </div>
+
+            <!-- الجانب الأيمن: قائمة فيديوهات الدورة -->
+            <div class="col-lg-4">
+                <div class="sticky-container">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white videos-header">
+                            <i class="fab fa-youtube"></i> محتوى الدورة <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="card-body" id="videosList">
+                            <!-- سيتم تعبئة الفيديوهات ديناميكياً هنا -->
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header activities-header text-white">
+                            <i class="fas fa-file-pdf"></i> المستندات <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="card-body" id="activitiesList">
+                            <!-- سيتم تعبئة المستندات ديناميكياً هنا -->
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header bg-secondary text-white exams-header">
+                            <i class="fas fa-file-alt"></i> الاختبارات والواجبات <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="card-body" id="examsList">
+                            <!-- سيتم تعبئة الامتحانات ديناميكياً هنا -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لعرض الامتحان -->
+    <div class="modal fade" id="examModal" tabindex="-1" aria-labelledby="examModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="examModalLabel">خروج من الاختبار</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="examIframe" width="100%" height="500px" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم تذييل الصفحة -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="mb-1">&copy; N U M B E R 1</p>
+            <p>
+                <a href="#">سياسة الخصوصية</a> |
+                <a href="#">الشروط والأحكام</a>
+            </p>
+        </div>
+        <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both"><span
+                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
+                    class="text-redMelon-300">Developed By</span><span
+                    class="text-redMelon-600">&gt;</span></span><span><a href="https://wa.me/201552190276"
+                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Khaled Osman</a><span>,</span><a
+                    href="https://www.facebook.com/share/19xa9j7611/"
+                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Education Plus</a></span><span
+                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
+                    class="text-redMelon-300">All Copy Rights Reserved @2025</span><span
+                    class="text-redMelon-600">&gt;</span></span></div>
+    </footer>
+
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // التحقق من وجود التوكن، وإلا يتم إعادة التوجيه لتسجيل الدخول
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // استرجاع معرف الدورة من معلمات الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('id');
+
+            if (courseId) {
+                fetch(`/api/courses/${courseId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(course => {
+                        // تعبئة تفاصيل الدورة
+                        document.getElementById('courseTitle').textContent = course.title;
+                        document.getElementById('courseGrade').textContent = course.grade;
+                        document.getElementById('courseImage').src = course.imageURL;
+                        document.getElementById('courseVideo').src = course.videoURL;
+                        document.getElementById('videoTitle').textContent = course.videos[0]?.title || '';
+
+                        // تعبئة قائمة الفيديوهات
+                        const videosList = document.getElementById('videosList');
+                        videosList.innerHTML = '';
+                        if (course.videos && course.videos.length) {
+                            document.getElementById('courseVideo').src = course.videoURL;
+                            document.getElementById('videoTitle').textContent = course.videos[0]?.title || '';
+                            document.getElementById('noVideoMessage').style.display = 'none';
+                            course.videos.forEach((video, index) => {
+                                const li = document.createElement('li');
+                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                const addedDate = new Date(video.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
+                                li.innerHTML = `<div>
+                                    <strong>المحاضرة ${index + 1}:</strong> ${video.title}
+                                </div>
+                                `;
+                                li.addEventListener('click', function () {
+                                    document.getElementById('courseVideo').src = video.url;
+                                    document.getElementById('videoTitle').textContent = video.title;
+                                });
+                                videosList.appendChild(li);
+                            });
+                        } else {
+                            document.getElementById('courseVideo').style.display = 'none';
+                            document.getElementById('noVideoMessage').style.display = 'block';
+                            videosList.innerHTML = '<li class="list-group-item">لا توجد فيديوهات متاحة</li>';
+                        }
+
+                        // تعبئة قائمة المستندات
+                        const activitiesList = document.getElementById('activitiesList');
+                        activitiesList.innerHTML = '';
+                        if (course.activities && course.activities.length) {
+                            course.activities.forEach((activity, index) => {
+                                const li = document.createElement('li');
+                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                const addedDate = new Date(activity.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
+                                li.innerHTML = `<div>
+                                    <strong>مستند ${index + 1}:</strong> ${activity.title}
+                                </div>
+                                <a href="${activity.filePath}" class="btn btn-primary" download>تحميل</a>`;
+                                activitiesList.appendChild(li);
+                            });
+                        } else {
+                            activitiesList.innerHTML = '<li class="list-group-item">لا يوجد مستندات متاحة</li>';
+                        }
+
+                        // تعبئة قائمة الاختبارات والواجبات مع إرسال ترويسة Authorization
+                        const examsList = document.getElementById('examsList');
+                        examsList.innerHTML = '';
+                        fetch(`/api/exams?courseId=${courseId}&grade=${course.grade}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(({ exams }) => {
+                                if (exams && exams.length) {
+                                    exams.forEach((exam, index) => {
+                                        const li = document.createElement('li');
+                                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                        const addedDate = new Date(exam.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
+                                        li.innerHTML = `<div>
+                                            <strong>الامتحان ${index + 1}:</strong> ${exam.title}
+                                        </div>
+                                        <button class="btn btn-primary" onclick="viewExam('${exam.googleFormUrl}')">عرض</button>`;
+                                        examsList.appendChild(li);
+                                    });
+                                } else {
+                                    examsList.innerHTML = '<li class="list-group-item">لا يوجد اختبارات او واجبات متاحة</li>';
+                                }
+                            })
+                            .catch(err => {
+                                console.error('حدث خطأ أثناء جلب بيانات الامتحانات:', err);
+                                alert('حدث خطأ أثناء جلب بيانات الامتحانات');
+                            });
+                    })
+                    .catch(err => {
+                        console.error('حدث خطأ أثناء جلب بيانات الدورة:', err);
+                        alert('حدث خطأ أثناء جلب بيانات الدورة');
+                    });
+            } else {
+                alert('لم يتم العثور على معرف الدورة');
+            }
+
+            // تحديث روابط التنقل بناءً على حالة تسجيل الدخول
+            const navLinks = document.getElementById('navLinks');
+            navLinks.innerHTML = `
+                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+                `;
+            document.getElementById('logoutLink').addEventListener('click', function (e) {
+                e.preventDefault();
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+            });
+
+            // إضافة وظيفة الطي للبطاقات
+            document.querySelectorAll('.card-header').forEach(header => {
+                header.addEventListener('click', function () {
+                    const cardBody = this.nextElementSibling;
+                    cardBody.classList.toggle('show');
+                });
+            });
+        });
+
+        function viewExam(googleFormUrl) {
+            const examModal = new bootstrap.Modal(document.getElementById('examModal'));
+            document.getElementById('examIframe').src = googleFormUrl;
+            examModal.show();
+        }
+    </script>
+</body>
+
+</html>
