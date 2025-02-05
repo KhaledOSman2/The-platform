@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const xss = require('xss-clean'); // To sanitize user inputs
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 //
 // JWT secret key (should be changed and secured in production)
 const JWT_SECRET = 'your_secret_key';
