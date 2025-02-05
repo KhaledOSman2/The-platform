@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const itemsPerPage = 10; // Number of items per page
+    const itemsPerPage = 10; // عدد العناصر في كل صفحة
     let usersPage = 1;
     let coursesPage = 1;
     let gradesPage = 1;
     let examsPage = 1;
 
-    // Load users
+    // تحميل المستخدمين
     function loadUsers(page = 1) {
         fetch('/api/users', {
             method: 'GET',
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(users => {
-                // Store users in a global variable for later inspection
+                // تخزين المستخدمين في متغير عام للفحص لاحقًا
                 window.allUsers = users;
 
                 const totalPages = Math.ceil(users.length / itemsPerPage);
@@ -37,18 +37,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${user.email}</td>
                         <td>${user.grade || 'N/A'}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Delete</button>
-                            ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">Remove Admin</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">Make Admin</button>`}
+                            <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button>
+                            ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية المسؤول</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى مسؤول</button>`}
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             })
-            .catch(err => console.error('Error loading users:', err));
+            .catch(err => console.error(err));
     }
 
-    // Load courses
+    // تحميل الكورسات
     function loadCourses(page = 1) {
         fetch('/api/all-courses', {
             method: 'GET',
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(courses => {
-                // Store courses in a global variable for later inspection
+                // تخزين الكورسات في متغير عام للفحص لاحقًا
                 window.allCourses = courses;
 
                 const totalPages = Math.ceil(courses.length / itemsPerPage);
@@ -76,17 +76,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         </td>
                         <td>${course.grade}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">Delete</button>
+                            <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>تعديل</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">حذف</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             })
-            .catch(err => console.error('Error loading courses:', err));
+            .catch(err => console.error(err));
     }
 
-    // Load analytics
+    // تحميل الإحصائيات
     function loadAnalytics() {
         fetch('/api/analytics', {
             method: 'GET',
@@ -99,10 +99,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('totalActivities').textContent = data.totalActivities || 0;
                 document.getElementById('totalExams').textContent = data.totalExams || 0;
             })
-            .catch(err => console.error('Error loading analytics:', err));
+            .catch(err => console.error(err));
     }
 
-    // Load grades
+    // تحميل قائمة الصفوف الدراسية
     function loadGrades(page = 1) {
         fetch('/api/grades', {
             method: 'GET',
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const end = start + itemsPerPage;
                 const paginatedGrades = grades.slice(start, end);
 
-                // Populate grade select in course form
+                // تعبئة قائمة اختيار الصفوف في نموذج الدورة
                 const gradeSelect = document.getElementById('courseGrade');
                 if (gradeSelect) {
                     gradeSelect.innerHTML = '';
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 }
 
-                // Populate grades table
+                // تعبئة جدول الصفوف الدراسية
                 const gradesTableBody = document.querySelector('#gradesTable tbody');
                 if (gradesTableBody) {
                     gradesTableBody.innerHTML = '';
@@ -149,17 +149,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${examsCount}</td>
                             <td>${activitiesCount}</td>
                             <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">Delete</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">حذف</button>
                             </td>
                         `;
                         gradesTableBody.appendChild(tr);
                     });
                 }
             })
-            .catch(err => console.error('Error loading grades:', err));
+            .catch(err => console.error(err));
     }
 
-    // Load exams
+    // تحميل الامتحانات
     function loadExams(page = 1) {
         fetch('/api/all-exams', {
             method: 'GET',
@@ -182,24 +182,24 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${exam.grade}</td>
                         <td>${exam.courseTitle}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editExam(${JSON.stringify(exam)})'>Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteExam(${exam.id})">Delete</button>
+                            <button class="btn btn-sm btn-warning me-1" onclick='editExam(${JSON.stringify(exam)})'>تعديل</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteExam(${exam.id})">حذف</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             })
-            .catch(err => console.error('Error loading exams:', err));
+            .catch(err => console.error(err));
     }
 
-    // Start loading data on entry
+    // بدء تحميل البيانات عند الدخول
     loadUsers();
     loadCourses();
     loadAnalytics();
     loadGrades();
     loadExams();
 
-    // Handle add grade form
+    // معالجة نموذج إضافة صف دراسي
     const gradeForm = document.getElementById('gradeForm');
     if (gradeForm) {
         gradeForm.addEventListener('submit', function (e) {
@@ -219,13 +219,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const gradeModal = bootstrap.Modal.getInstance(document.getElementById('gradeModal'));
                     if (gradeModal) gradeModal.hide();
                 })
-                .catch(err => console.error('Error adding grade:', err));
+                .catch(err => console.error(err));
         });
     }
 
-    // Delete grade function
+    // دالة لحذف صف دراسي
     window.deleteGrade = function (gradeId) {
-        if (confirm('Are you sure you want to delete this grade?')) {
+        if (confirm('هل أنت متأكد من حذف الصف الدراسي؟')) {
             fetch(`/api/grades/${gradeId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
@@ -235,38 +235,38 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(res.message);
                     loadGrades();
                 })
-                .catch(err => console.error('Error deleting grade:', err));
+                .catch(err => console.error(err));
         }
     };
 
-    // Sanitize input function
+    // دالة لتصفية المدخلات
     function sanitizeInput(input) {
         const temp = document.createElement('div');
         temp.textContent = input;
         return temp.innerHTML;
     }
 
-    // Handle add/edit course form
+    // معالجة نموذج إضافة/تعديل دورة
     const courseForm = document.getElementById('courseForm');
     if (courseForm) {
         courseForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Read values from form
+            // قراءة القيم من النموذج
             const id = document.getElementById('courseId').value;
             const title = sanitizeInput(document.getElementById('courseTitle').value);
             const grade = document.getElementById('courseGrade').value;
             const courseImageInput = document.getElementById('courseImage');
             const courseImage = courseImageInput ? courseImageInput.files[0] : null;
 
-            // Read video data
+            // قراءة بيانات الفيديوهات
             const videos = Array.from(document.querySelectorAll('.video-input')).map(input => {
                 const videoTitle = sanitizeInput(input.querySelector('.video-title').value);
                 const videoUrl = input.querySelector('.video-url').value;
                 return { title: videoTitle, url: videoUrl };
             });
 
-            // Read activity data
+            // قراءة بيانات الأنشطة
             const activities = [];
             for (const input of document.querySelectorAll('.activity-input')) {
                 const activityTitle = sanitizeInput(input.querySelector('.activity-title').value);
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (courseImage) {
                 formData.append('courseImage', courseImage);
             } else if (id) {
-                // If the course already exists and no new image is uploaded, keep the current image
+                // إذا كانت الدورة موجودة بالفعل ولم يتم تحميل صورة جديدة، احتفظ بالصورة الحالية
                 formData.append('existingImageURL', document.getElementById('courseImageURL').value);
             }
             formData.append('videos', JSON.stringify(videos));
@@ -318,11 +318,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const courseModal = bootstrap.Modal.getInstance(document.getElementById('courseModal'));
                     if (courseModal) courseModal.hide();
                 })
-                .catch(err => console.error('Error adding/editing course:', err));
+                .catch(err => console.error(err));
         });
     }
 
-    // Add new video
+    // إضافة فيديو جديد
     const addVideoButton = document.getElementById('addVideoButton');
     if (addVideoButton) {
         addVideoButton.addEventListener('click', function () {
@@ -330,9 +330,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const videoInput = document.createElement('div');
             videoInput.className = 'video-input mb-3 d-flex align-items-center';
             videoInput.innerHTML = `
-                <input type="text" class="form-control video-title mb-2 me-2" placeholder="Video Title">
-                <input type="url" class="form-control video-url me-2" placeholder="Video URL">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Delete</button>
+                <input type="text" class="form-control video-title mb-2 me-2" placeholder="عنوان الفيديو">
+                <input type="url" class="form-control video-url me-2" placeholder="رابط الفيديو">
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
             `;
             videosContainer.appendChild(videoInput);
         });
@@ -346,15 +346,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const activityInput = document.createElement('div');
             activityInput.className = 'activity-input mb-3 d-flex align-items-center';
             activityInput.innerHTML = `
-                <input type="text" class="form-control activity-title mb-2 me-2" placeholder="Activity Title" required>
+                <input type="text" class="form-control activity-title mb-2 me-2" placeholder="عنوان المستند" required>
                 <input type="file" class="form-control activity-file me-2" accept=".pdf,video/*" required>
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Delete</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
             `;
             activitiesContainer.appendChild(activityInput);
         });
     }
 
-    // Handle edit user form
+    // معالجة نموذج تعديل المستخدم (الطالب)
     const userForm = document.getElementById('userForm');
     if (userForm) {
         userForm.addEventListener('submit', function (e) {
@@ -380,13 +380,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const userModal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
                     if (userModal) userModal.hide();
                 })
-                .catch(err => console.error('Error editing user:', err));
+                .catch(err => console.error(err));
         });
     }
 
-    // User functions
+    // دوال التعامل مع المستخدمين
     window.deleteUser = function (userId) {
-        if (confirm('Are you sure you want to delete this user?')) {
+        if (confirm('هل أنت متأكد من حذف المستخدم؟')) {
             fetch(`/api/users/${userId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
@@ -396,18 +396,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(res.message);
                     location.reload();
                 })
-                .catch(err => console.error('Error deleting user:', err));
+                .catch(err => console.error(err));
         }
     };
 
     window.editUser = function (user) {
-        // Populate form with user data
+        // تعبئة النموذج ببيانات المستخدم
         document.getElementById('userId').value = user.id;
         document.getElementById('editUsername').value = user.username;
         document.getElementById('editEmail').value = user.email;
         document.getElementById('editPassword').value = user.password;
 
-        // Load grades and populate select
+        // تحميل الصفوف الدراسية وتعبئة القائمة
         fetch('/api/grades', {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` }
@@ -428,14 +428,14 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(err => console.error('Error loading grades:', err));
 
-        // Open modal
+        // فتح المودال
         const userModal = new bootstrap.Modal(document.getElementById('userModal'));
         userModal.show();
     };
 
-    // Course functions
+    // دوال التعامل مع الدورات
     window.deleteCourse = function (courseId) {
-        if (confirm('Are you sure you want to delete this course?')) {
+        if (confirm('هل أنت متأكد من حذف الدورة؟')) {
             fetch(`/api/courses/${courseId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
@@ -445,16 +445,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(res.message);
                     location.reload();
                 })
-                .catch(err => console.error('Error deleting course:', err));
+                .catch(err => console.error(err));
         }
     };
 
     window.editCourse = function (course) {
-        // Populate course data
+        // تعبئة بيانات الدورة
         document.getElementById('courseId').value = course.id;
         document.getElementById('courseTitle').value = course.title;
         document.getElementById('courseGrade').value = course.grade;
-        // Set current image URL in hidden field
+        // تعيين عنوان الصورة الحالي في الحقل المخفي
         document.getElementById('courseImageURL').value = course.imageURL;
 
         const videosContainer = document.getElementById('videosContainer');
@@ -463,9 +463,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const videoInput = document.createElement('div');
             videoInput.className = 'video-input mb-3 d-flex align-items-center';
             videoInput.innerHTML = `
-                <input type="text" class="form-control video-title mb-2 me-2" placeholder="Video Title" value="${video.title.replace(/&quot;/g, '')}">
-                <input type="url" class="form-control video-url me-2" placeholder="Video URL" value="${video.url}">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Delete</button>
+                <input type="text" class="form-control video-title mb-2 me-2" placeholder="عنوان الفيديو" value="${video.title.replace(/&quot;/g, '')}">
+                <input type="url" class="form-control video-url me-2" placeholder="رابط الفيديو" value="${video.url}">
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
             `;
             videosContainer.appendChild(videoInput);
         });
@@ -476,21 +476,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const activityInput = document.createElement('div');
             activityInput.className = 'activity-input mb-3 d-flex align-items-center';
             activityInput.innerHTML = `
-                <input type="text" class="form-control activity-title mb-2 me-2" placeholder="Activity Title" value="${activity.title.replace(/&quot;/g, '')}" required>
+                <input type="text" class="form-control activity-title mb-2 me-2" placeholder="عنوان المستند" value="${activity.title.replace(/&quot;/g, '')}" required>
                 <input type="file" class="form-control activity-file me-2" accept=".pdf,video/*">
                 <input type="hidden" class="existing-file-path" value="${activity.filePath}">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Delete</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
             `;
             activitiesContainer.appendChild(activityInput);
         });
 
-        // Open modal
+        // فتح المودال
         const courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
         courseModal.show();
     };
 
     window.makeAdmin = function (userId) {
-        if (confirm('Are you sure you want to make this user an admin?')) {
+        if (confirm('هل أنت متأكد من ترقية هذا المستخدم إلى مسؤول؟')) {
             fetch(`/api/users/${userId}/make-admin`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` }
@@ -500,12 +500,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(res.message);
                     loadUsers();
                 })
-                .catch(err => console.error('Error making admin:', err));
+                .catch(err => console.error(err));
         }
     };
 
     window.removeAdmin = function (userId) {
-        if (confirm('Are you sure you want to remove admin privileges from this user?')) {
+        if (confirm('هل أنت متأكد من إزالة صلاحية المسؤول لهذا المستخدم؟')) {
             fetch(`/api/users/${userId}/remove-admin`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` }
@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(res.message);
                     loadUsers();
                 })
-                .catch(err => console.error('Error removing admin:', err));
+                .catch(err => console.error(err));
         }
     };
 
@@ -612,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('prevGradesPage').classList.add('btn', 'btn-outline-primary', 'me-2');
     document.getElementById('nextGradesPage').classList.add('btn', 'btn-outline-primary', 'ms-2');
 
-    // Load grades in add exam form
+    // تحميل قائمة الصفوف الدراسية في نموذج إضافة اختبار جديد
     fetch('/api/grades')
         .then(response => response.json())
         .then(grades => {
@@ -627,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(err => console.error('Error loading grades:', err));
 
-    // Load courses based on selected grade
+    // تحميل قائمة الدورات بناءً على الصف الدراسي المحدد
     document.getElementById('examGrade').addEventListener('change', function () {
         const grade = this.value;
         fetch(`/api/courses?grade=${grade}`, {
@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => console.error('Error loading courses:', err));
     });
 
-    // Handle add/edit exam form
+    // معالجة نموذج إضافة/تعديل اختبار جديد
     const examForm = document.getElementById('examForm');
     if (examForm) {
         examForm.addEventListener('submit', function (e) {
@@ -670,19 +670,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json())
                 .then(res => {
                     alert(res.message);
-                    loadExams(); // Reload exams after adding
+                    loadExams(); // إعادة تحميل قائمة الامتحانات بعد الإضافة
                     examForm.reset();
                     document.getElementById('examId').value = '';
                     const examModal = bootstrap.Modal.getInstance(document.getElementById('examModal'));
                     if (examModal) examModal.hide();
                 })
-                .catch(err => console.error('Error adding/editing exam:', err));
+                .catch(err => console.error(err));
         });
     }
 
-    // Delete exam function
+    // دالة لحذف امتحان
     window.deleteExam = function (examId) {
-        if (confirm('Are you sure you want to delete this exam?')) {
+        if (confirm('هل أنت متأكد من حذف الامتحان؟')) {
             fetch(`/api/exams/${examId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
@@ -692,11 +692,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(res.message);
                     loadExams();
                 })
-                .catch(err => console.error('Error deleting exam:', err));
+                .catch(err => console.error(err));
         }
     };
 
-    // Edit exam function
+    // دالة لتعديل امتحان
     window.editExam = function (exam) {
         document.getElementById('examId').value = exam.id;
         document.getElementById('examTitle').value = exam.title;
@@ -739,7 +739,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('prevExamsPage').classList.add('btn', 'btn-outline-primary', 'me-2');
     document.getElementById('nextExamsPage').classList.add('btn', 'btn-outline-primary', 'ms-2');
 
-    // Add search functionality to exams
+    // إضافة وظيفة البحث للامتحانات
     const examSearch = document.getElementById('examSearch');
     examSearch.addEventListener('input', function () {
         const searchTerm = examSearch.value.toLowerCase();
@@ -756,7 +756,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Handle add student form
+    // معالجة نموذج إضافة طالب جديد
     const addStudentForm = document.getElementById('addStudentForm');
     if (addStudentForm) {
         addStudentForm.addEventListener('submit', function (e) {
@@ -766,9 +766,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const password = sanitizeInput(document.getElementById('newPassword').value);
             const grade = document.getElementById('newGrade').value;
 
-            // Check if email already exists in loaded users
+            // فحص إذا كان البريد موجود مسبقاً ضمن قائمة المستخدمين المحملة
             if (window.allUsers && window.allUsers.find(user => user.email === email)) {
-                alert('Email is already in use');
+                alert('البريد الإلكتروني مستخدم بالفعل');
                 return;
             }
 
@@ -781,17 +781,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(res => {
                     alert(res.body.message);
                     if (res.status === 200) {
-                        loadUsers(); // Reload users after adding
+                        loadUsers(); // إعادة تحميل قائمة المستخدمين بعد الإضافة
                         addStudentForm.reset();
                         const addStudentModal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
                         if (addStudentModal) addStudentModal.hide();
                     }
                 })
-                .catch(err => console.error('Error adding student:', err));
+                .catch(err => console.error(err));
         });
     }
 
-    // Initial load (again to ensure data is loaded)
+    // Initial load (مرة أخرى لضمان تحميل البيانات)
     loadUsers();
     loadCourses();
     loadAnalytics();
