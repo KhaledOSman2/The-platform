@@ -75,7 +75,7 @@
         }
 
         .course-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
         }
 
         .footer {
@@ -95,7 +95,7 @@
         }
 
         .grade-title {
-            background-color: var(--secondary-color);
+            background-color: #2563eb;
             color: white;
             padding: 10px 15px;
             border-radius: 5px;
@@ -145,7 +145,7 @@
         </div>
     </section>
 
-    <!-- قسم تذييل الصفحة -->
+    <!-- تذييل الصفحة -->
     <footer class="footer text-center">
         <div class="container">
             <p class="mb-1">&copy; N U M B E R 1</p>
@@ -156,23 +156,18 @@
         </div>
         <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
             <span class="font-w-bold space-x-1">
-                <span class="text-redMelon-600">&lt;</span>
-                <span class="text-redMelon-300">Developed By</span>
-                <span class="text-redMelon-600">&gt;</span>
             </span>
             <span>
-                <a href="https://wa.me/201552190276"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Khaled Osman</a>
-                <span>,</span>
-                <a href="https://www.facebook.com/share/19xa9j7611/"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Education Plus</a>
-            </span>
-            <span class="font-w-bold space-x-1">
-                <span class="text-redMelon-600">&lt;</span>
-                <span class="text-redMelon-300">All Copy Rights Reserved @2025</span>
-                <span class="text-redMelon-600">&gt;</span>
+                <p>
+                    <span class="text-redMelon-300">Developed By</span>
+                    <a href="https://wa.me/201552190276">Khaled Osman</a>
+                    <a href="https://www.facebook.com/share/19xa9j7611/">Education Plus</a>
+                </p>
             </span>
         </div>
+        <span class="font-w-bold space-x-1">
+            <span class="text-redMelon-300">All Copy Rights Reserved @2025</span>
+        </span>
     </footer>
 
     <!-- ربط Bootstrap JS وملفات الجافاسكريبت -->
@@ -180,12 +175,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', async function () {
             try {
-                // استدعاء API لجلب الكورسات من endpoint الخاص بجلب جميع الدورات
-                const response = await fetch('/api/all-courses');
-                const courses = await response.json();
+                // Fetch all grades from the API
+                const gradesResponse = await fetch('/api/grades');
+                const grades = await gradesResponse.json();
+                const gradeOrder = grades.map(grade => grade.name);
+
+                // Fetch all courses from the API
+                const coursesResponse = await fetch('/api/all-courses');
+                const courses = await coursesResponse.json();
                 const coursesByGrade = {};
 
-                // تصنيف الكورسات حسب الصف الدراسي
+                // Categorize courses by grade
                 courses.forEach(course => {
                     if (!coursesByGrade[course.grade]) {
                         coursesByGrade[course.grade] = [];
@@ -196,23 +196,25 @@
                 const coursesByGradeContainer = document.getElementById('coursesByGrade');
                 const gradeFilterDropdown = document.getElementById('gradeFilter');
 
-                // إضافة الخيارات إلى القائمة المنسدلة (بجانب خيار "الكل")
-                for (const grade in coursesByGrade) {
+                // Add options to the dropdown (besides "all" option)
+                gradeOrder.forEach(grade => {
                     const option = document.createElement('option');
                     option.value = grade;
                     option.textContent = grade;
                     gradeFilterDropdown.appendChild(option);
-                }
+                });
 
-                // دالة لإعادة عرض الكورسات بناءً على الصف المختار
+                // Function to render courses based on selected grade
                 function renderCourses(filterGrade) {
-                    coursesByGradeContainer.innerHTML = ''; // مسح المحتوى السابق
+                    coursesByGradeContainer.innerHTML = ''; // Clear previous content
 
-                    // إذا كان المستخدم اختار "الكل" يتم عرض جميع الكورسات
+                    // If "all" is selected, display all courses
                     if (filterGrade === 'all') {
-                        for (const grade in coursesByGrade) {
-                            createGradeSection(grade, coursesByGrade[grade]);
-                        }
+                        gradeOrder.forEach(grade => {
+                            if (coursesByGrade[grade]) {
+                                createGradeSection(grade, coursesByGrade[grade]);
+                            }
+                        });
                     } else {
                         if (coursesByGrade[filterGrade]) {
                             createGradeSection(filterGrade, coursesByGrade[filterGrade]);
@@ -222,51 +224,41 @@
                     }
                 }
 
-                // دالة لإنشاء قسم للصف والكورسات الخاصة به
+                // Function to create a section for each grade and its courses
                 function createGradeSection(grade, coursesArray) {
                     const gradeSection = document.createElement('div');
                     gradeSection.className = 'mb-5';
                     gradeSection.innerHTML = `
-            <div class="grade-title">${grade}</div>
-<div class="row g-4">
-  ${coursesArray.map(course => `
-    <div class="col-md-4">
-      <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
-        <!-- الجزء العلوي للصورة -->
-        <div class="position-relative">
-          <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
-          <!-- يمكن إضافة بادج هنا إذا أردت -->
-          <div class="position-absolute top-0 start-0 m-3">
-            <!-- مثال: <span class="badge bg-danger fw-bold px-3 py-2">جديد</span> -->
-          </div>
-        </div>
-        
-        <!-- مساحة بيضاء تحتوي على عنوان الدورة والصف الدراسي -->
-        <div class="card-body p-4 bg-white">
-          <h5 class="card-title text-dark fw-bold">${course.title}</h5>
-          <p class="card-text text-muted small">${course.grade}</p>
-          
-          <!-- زر عرض التفاصيل (يمكن تعديل اللون أو إضافة عناصر أخرى) -->
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
-            <div class="rating text-warning">
-              <!-- إذا كان لديك تقييم يمكن إضافته هنا -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('')}
-</div>
-
-          `;
+                    <div class="grade-title">${grade}</div>
+                    <div class="row g-4">
+                        ${coursesArray.map(course => `
+                            <div class="col-md-4">
+                                <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
+                                    <div class="position-relative">
+                                        <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
+                                    </div>
+                                    <div class="card-body p-4 bg-white">
+                                        <h5 class="card-title text-dark fw-bold">${course.title}</h5>
+                                        <p class="card-text text-muted small">${course.grade}</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
+                                            <div class="rating text-warning">
+                                                <i class="fas fa-star"></i> ${course.rating || '5/5'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
                     coursesByGradeContainer.appendChild(gradeSection);
                 }
 
-                // عرض جميع الكورسات افتراضيًا
+                // Render all courses by default
                 renderCourses('all');
 
-                // استمع لتغيير اختيار القائمة المنسدلة لتصفية الكورسات
+                // Listen for changes in the dropdown to filter courses
                 gradeFilterDropdown.addEventListener('change', function () {
                     renderCourses(this.value);
                 });
@@ -274,17 +266,17 @@
                 console.error('حدث خطأ أثناء جلب الكورسات:', error);
             }
 
-            // تغيير الروابط بناءً على حالة تسجيل الدخول
+            // Update nav links based on login status
             const isLoggedIn = !!localStorage.getItem('token');
             const navLinks = document.getElementById('navLinks');
 
             if (isLoggedIn) {
                 navLinks.innerHTML = `
-          <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
-          <li class="nav-item"><a class="nav-link active" href="courses.html">الكورسات</a></li>
-          <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-        `;
+                <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link active" href="courses.html">الكورسات</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+            `;
 
                 document.getElementById('logoutLink').addEventListener('click', function (e) {
                     e.preventDefault();

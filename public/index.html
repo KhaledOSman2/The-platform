@@ -304,6 +304,11 @@
         .fade-in {
             animation: fadeIn 1s ease-out;
         }
+
+        section {
+            margin-bottom: 5rem;
+            /* Add consistent margin to all sections */
+        }
     </style>
 </head>
 
@@ -336,15 +341,14 @@
             <div class="row align-items-center">
                 <!-- العمود الأيسر: صورة صاحب المنصة مع تأثير انزلاق -->
                 <div class="col-md-5 text-center" data-aos="fade-right" data-aos-duration="1000">
-                    <img src="https://i.ibb.co/MYhkh75/photo.jpg"
-                        alt="صاحب المنصة" class="img-fluid rounded-circle shadow-lg border border-3 border-primary"
-                        style="width: 270px;">
+                    <img src="https://i.ibb.co/MYhkh75/photo.jpg" alt="صاحب المنصة"
+                        class="img-fluid rounded-circle shadow-lg border border-3 border-primary" style="width: 270px;">
                 </div>
                 <!-- العمود الأيمن: معلومات صاحب المنصة مع تأثير انزلاق -->
                 <div class="col-md-7" data-aos="fade-left" data-aos-duration="1000">
                     <div class="owner-info text-center text-md-start mt-4 mt-md-0">
-                        <h2 class="fw-bold mb-3">منصة N U M B E R 1</h2>
-                        <h4 class="text-muted mb-3">"لمستر محمد عويضة"</h4>
+                        <h1 class="fw-bold mb-3">منصة N U M B E R 1</h1>
+                        <h3 class="text-muted mb-3">"لمستر محمد عويضة"</h3>
                         <p class="lead mb-4">
                             نقدم محتوى تعليمي فريد ومتميز في مادة الدراسات الاجتماعية، باستخدام أحدث الأساليب التعليمية
                             لتطوير مهاراتك وتحقيق النجاح.
@@ -382,13 +386,14 @@
     </div>
 
     <!-- قسم الهيرو الجديد -->
-    <section class="hero text-center mb-5" data-aos="fade-up" data-aos-duration="1000">
+    <section class="hero text-center mb-5" data-aos="fade-up" data-aos-duration="1000" style="margin-bottom: 1px;">
         <div class="container hero-content">
             <h1 class="display-4 fw-bold mb-4">ارتقِ بمعرفتك معنا</h1>
             <p class="lead mb-5">انطلق في رحلة تعليمية استثنائية مع كورسات تفاعلية تُقدم بأسلوب عصري ومحتوى مميز</p>
             <a href="#coursesSection" class="btn btn-warning btn-lg px-5">اكتشف الكورسات</a>
         </div>
     </section>
+
 
     <!-- قسم "عن المنصة" -->
     <section id="aboutUs" class="py-6 bg-light mb-5" data-aos="fade-up" data-aos-duration="1000">
@@ -405,8 +410,9 @@
     </section>
 
     <!-- قسم "المميزات" -->
-    <section id="services" class="py-6 mb-5 fade-in" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container">
+    <section id="services" class="py-6 mb-5 fade-in" data-aos="fade-up" data-aos-duration="1000"
+        style="margin-top: 5rem;">
+        <div class=" container">
             <h2 class="section-heading mb-5">مميزات منصتنا <i class="fas fa-cogs"></i></h2>
             <div class="row g-4">
                 <div class="col-md-4">
@@ -464,23 +470,18 @@
         </div>
         <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
             <span class="font-w-bold space-x-1">
-                <span class="text-redMelon-600">&lt;</span>
-                <span class="text-redMelon-300">Developed By</span>
-                <span class="text-redMelon-600">&gt;</span>
             </span>
             <span>
-                <a href="https://wa.me/201552190276"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Khaled Osman</a>
-                <span>,</span>
-                <a href="https://www.facebook.com/share/19xa9j7611/"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Education Plus</a>
-            </span>
-            <span class="font-w-bold space-x-1">
-                <span class="text-redMelon-600">&lt;</span>
-                <span class="text-redMelon-300">All Copy Rights Reserved @2025</span>
-                <span class="text-redMelon-600">&gt;</span>
+                <p>
+                    <span class="text-redMelon-300">Developed By</span>
+                    <a href="https://wa.me/201552190276">Khaled Osman</a>
+                    <a href="https://www.facebook.com/share/19xa9j7611/">Education Plus</a>
+                </p>
             </span>
         </div>
+        <span class="font-w-bold space-x-1">
+            <span class="text-redMelon-300">All Copy Rights Reserved @2025</span>
+        </span>
     </footer>
 
     <!-- ربط Bootstrap JS -->

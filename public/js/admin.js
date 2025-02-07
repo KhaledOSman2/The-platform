@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 tbody.innerHTML = '';
                 paginatedUsers.forEach(user => {
                     const tr = document.createElement('tr');
+                    tr.classList.add('table-light'); // Add class for better design
                     tr.innerHTML = `
                         <td>${user.username} ${user.isAdmin ? '⭐' : ''}</td>
                         <td>${user.email}</td>
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button>
+                            ${user.isBanned ? `<button class="btn btn-sm btn-success" onclick="unbanUser(${user.id})">إلغاء الحظر</button>` : `<button class="btn btn-sm btn-danger" onclick="banUser(${user.id})">حظر</button>`}
                             ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية المسؤول</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى مسؤول</button>`}
                         </td>
                     `;
@@ -69,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 tbody.innerHTML = '';
                 paginatedCourses.forEach(course => {
                     const tr = document.createElement('tr');
+                    tr.classList.add('table-light'); // Add class for better design
                     tr.innerHTML = `
                         <td>
                             <img src="${course.imageURL}" alt="${course.title}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
@@ -141,13 +144,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         const activitiesCount = window.allCourses.reduce((count, course) => {
                             return course.grade === grade.name ? count + (course.activities ? course.activities.length : 0) : count;
                         }, 0);
+                        const gradevideoCount = window.allCourses.reduce((count, course) => {
+                            return course.grade === grade.name ? count + (course.videos ? course.videos.length : 0) : count;
+                        }, 0);
+
                         const tr = document.createElement('tr');
+                        tr.classList.add('table-light'); // Add class for better design
                         tr.innerHTML = `
                             <td>${grade.name}</td>
                             <td>${studentsCount}</td>
                             <td>${coursesCount}</td>
                             <td>${examsCount}</td>
                             <td>${activitiesCount}</td>
+                             <td>${gradevideoCount}</td>
                             <td>
                                 <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">حذف</button>
                             </td>
@@ -177,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 tbody.innerHTML = '';
                 paginatedExams.forEach(exam => {
                     const tr = document.createElement('tr');
+                    tr.classList.add('table-light'); // Add class for better design
                     tr.innerHTML = `
                         <td>${exam.title}</td>
                         <td>${exam.grade}</td>
@@ -431,6 +441,36 @@ document.addEventListener('DOMContentLoaded', function () {
         // فتح المودال
         const userModal = new bootstrap.Modal(document.getElementById('userModal'));
         userModal.show();
+    };
+
+    window.banUser = function (userId) {
+        if (confirm('هل أنت متأكد من حظر هذا المستخدم؟')) {
+            fetch(`/api/users/${userId}/ban`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    loadUsers();
+                })
+                .catch(err => console.error(err));
+        }
+    };
+
+    window.unbanUser = function (userId) {
+        if (confirm('هل أنت متأكد من إلغاء حظر هذا المستخدم؟')) {
+            fetch(`/api/users/${userId}/unban`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    loadUsers();
+                })
+                .catch(err => console.error(err));
+        }
     };
 
     // دوال التعامل مع الدورات

@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const xss = require('xss-clean'); // لتنظيف مدخلات المستخدم
 const app = express();
-const PORT = process.env.PORT || 8080;
-//
+const PORT = process.env.PORT || 3000;
+
 // سر التوقيع للتوكن (يجب تغييره وتأمينه في بيئة الإنتاج)
 const JWT_SECRET = 'your_secret_key';
 
@@ -61,6 +61,11 @@ function authenticateToken(req, res, next) {
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) return res.sendStatus(403);
+        let data = readData();
+        const currentUser = data.users.find(u => u.id === user.id);
+        if (currentUser && currentUser.isBanned) {
+            return res.status(403).json({ message: 'حسابك معطل. يرجى التواصل مع الدعم الفني.' });
+        }
         req.user = user;
         next();
     });
@@ -82,7 +87,7 @@ app.post('/api/register', (req, res) => {
     if (data.users.some(user => user.email.trim().toLowerCase() === email)) {
         return res.status(400).json({ message: 'البريد الإلكتروني مستخدم بالفعل' });
     }
-    data.users.push({ id: Date.now(), username, email, password, grade, isAdmin: false });
+    data.users.push({ id: Date.now(), username, email, password, grade, isAdmin: false, isBanned: false });
     writeData(data);
     console.log('Updated data:');
     res.status(201).json({ message: 'تم إنشاء الحساب بنجاح' });
@@ -96,6 +101,9 @@ app.post('/api/login', (req, res) => {
     let data = readData();
     const user = data.users.find(u => u.email === email && u.password === password);
     if (user) {
+        if (user.isBanned) {
+            return res.status(403).json({ message: 'حسابك معطل. يرجى التواصل مع الدعم الفني.' });
+        }
         const token = jwt.sign({ id: user.id, email: user.email, grade: user.grade, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '1h' });
         res.json({ message: 'تم تسجيل الدخول بنجاح', token, user });
     } else {
@@ -154,6 +162,32 @@ app.post('/api/users/:id/remove-admin', authenticateToken, (req, res) => {
         user.isAdmin = false;
         writeData(data);
         res.json({ message: 'تم إزالة صلاحية المسؤول من المستخدم' });
+    } else {
+        res.status(404).json({ message: 'المستخدم غير موجود' });
+    }
+});
+
+app.post('/api/users/:id/ban', authenticateToken, (req, res) => {
+    let data = readData();
+    const userId = parseInt(req.params.id);
+    const user = data.users.find(user => user.id === userId);
+    if (user) {
+        user.isBanned = true;
+        writeData(data);
+        res.json({ message: 'تم حظر المستخدم' });
+    } else {
+        res.status(404).json({ message: 'المستخدم غير موجود' });
+    }
+});
+
+app.post('/api/users/:id/unban', authenticateToken, (req, res) => {
+    let data = readData();
+    const userId = parseInt(req.params.id);
+    const user = data.users.find(user => user.id === userId);
+    if (user) {
+        user.isBanned = false;
+        writeData(data);
+        res.json({ message: 'تم إلغاء حظر المستخدم' });
     } else {
         res.status(404).json({ message: 'المستخدم غير موجود' });
     }
@@ -447,3 +481,5 @@ app.get('/api/admin/dashboard', authenticateToken, (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+//

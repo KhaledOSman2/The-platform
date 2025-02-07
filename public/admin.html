@@ -120,11 +120,21 @@
         .data-table th,
         .data-table td {
             border-right: 1px solid #dee2e6;
+            padding: 0.75rem;
+            vertical-align: middle;
         }
 
         .data-table th:last-child,
         .data-table td:last-child {
             border-right: none;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f1f1f1;
         }
 
         .section-divider {
@@ -259,7 +269,7 @@
                             style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover data-table" id="usersTable">
+                        <table class="table table-hover data-table table-striped table-bordered" id="usersTable">
                             <thead>
                                 <tr>
                                     <th>اسم المستخدم</th>
@@ -296,7 +306,7 @@
                             style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover data-table" id="coursesTable">
+                        <table class="table table-hover data-table table-striped table-bordered" id="coursesTable">
                             <thead>
                                 <tr>
                                     <th>العنوان</th>
@@ -335,7 +345,7 @@
 
                     </div>
                     <div class="table-responsive mt-4">
-                        <table class="table table-hover data-table" id="examsTable">
+                        <table class="table table-hover data-table table-striped table-bordered" id="examsTable">
                             <thead>
                                 <tr>
                                     <th>عنوان الامتحان</th>
@@ -370,7 +380,7 @@
                         </button>
                     </div>
                     <div class="table-responsive mt-4">
-                        <table class="table table-hover data-table" id="gradesTable">
+                        <table class="table table-hover data-table table-striped table-bordered" id="gradesTable">
                             <thead>
                                 <tr>
                                     <th>اسم الصف الدراسي</th>
@@ -378,6 +388,7 @@
                                     <th>عدد الكورسات</th>
                                     <th>عدد الامتحانات</th>
                                     <th>المستندات</th>
+                                    <th>عدد الفيديوهات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -828,6 +839,7 @@
                                     <td>${grade.courseCount}</td>
                                     <td>${grade.examCount}</td>
                                     <td>${grade.activityCount}</td>
+                                    <td>${grade.videoCount}</td>
                                     <td>
                                         <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">حذف</button>
                                     </td>

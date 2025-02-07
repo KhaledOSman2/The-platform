@@ -366,7 +366,7 @@
         </div>
     </div>
 
-    <!-- قسم تذييل الصفحة -->
+    <!-- تذييل الصفحة -->
     <footer class="footer text-center">
         <div class="container">
             <p class="mb-1">&copy; N U M B E R 1</p>
@@ -375,18 +375,21 @@
                 <a href="#">الشروط والأحكام</a>
             </p>
         </div>
-        <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both"><span
-                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
-                    class="text-redMelon-300">Developed By</span><span
-                    class="text-redMelon-600">&gt;</span></span><span><a href="https://wa.me/201552190276"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Khaled Osman</a><span>,</span><a
-                    href="https://www.facebook.com/share/19xa9j7611/"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Education Plus</a></span><span
-                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
-                    class="text-redMelon-300">All Copy Rights Reserved @2025</span><span
-                    class="text-redMelon-600">&gt;</span></span></div>
+        <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
+            <span class="font-w-bold space-x-1">
+            </span>
+            <span>
+                <p>
+                    <span class="text-redMelon-300">Developed By</span>
+                    <a href="https://wa.me/201552190276">Khaled Osman</a>
+                    <a href="https://www.facebook.com/share/19xa9j7611/">Education Plus</a>
+                </p>
+            </span>
+        </div>
+        <span class="font-w-bold space-x-1">
+            <span class="text-redMelon-300">All Copy Rights Reserved @2025</span>
+        </span>
     </footer>
-
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -463,7 +466,7 @@
                                 activitiesList.appendChild(li);
                             });
                         } else {
-                            activitiesList.innerHTML = '<li class="list-group-item">لا يوجد مستندات متاحة</li>';
+                            activitiesList.innerHTML = '<li class="list-group-item">لا توجد مستندات متاحة</li>';
                         }
 
                         // تعبئة قائمة الاختبارات والواجبات مع إرسال ترويسة Authorization
@@ -539,3 +542,51 @@
 </body>
 
 </html>
+<!-- زر الرجوع إلى الأعلى -->
+<button onclick="topFunction()" id="backToTopBtn" title="الرجوع إلى الأعلى">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<style>
+    #backToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        background-color: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    #backToTopBtn:hover {
+        background-color: var(--secondary-color);
+    }
+</style>
+
+<script>
+    // إظهار زر الرجوع إلى الأعلى عند التمرير
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        const backToTopBtn = document.getElementById("backToTopBtn");
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            backToTopBtn.style.display = "block";
+        } else {
+            backToTopBtn.style.display = "none";
+        }
+    }
+
+    // وظيفة الرجوع إلى الأعلى
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>

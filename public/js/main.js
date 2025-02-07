@@ -42,6 +42,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             const data = await response.json();
 
+            // إذا كان الحساب محظورًا
+            if (data.user.isBanned) {
+                alert('حسابك معطل. يرجى التواصل مع الدعم الفني.');
+                localStorage.removeItem('token');
+                window.location.href = 'support.html';
+                return;
+            }
+
             // إذا كانت الصفحة الخاصة بالأدمن ولكن المستخدم ليس أدمن
             if (currentPath.endsWith('admin.html') && !data.user.isAdmin) {
                 window.location.href = 'login.html';
@@ -245,9 +253,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function fetchCourses() {
         try {
+            const gradesResponse = await fetch('/api/grades');
+            const grades = await gradesResponse.json();
             const response = await fetch('/api/courses');
             const courses = await response.json();
-            displayCourses(courses);
+            const sortedCourses = courses.sort((a, b) => {
+                const gradeAIndex = grades.findIndex(grade => grade.name === a.grade);
+                const gradeBIndex = grades.findIndex(grade => grade.name === b.grade);
+                return gradeAIndex - gradeBIndex;
+            });
+            displayCourses(sortedCourses);
         } catch (error) {
             console.error('حدث خطأ أثناء جلب الكورسات:', error);
         }
@@ -255,7 +270,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     function displayCourses(courses) {
         const coursesGrid = document.getElementById('coursesGrid');
+        const noCoursesMessage = document.getElementById('noCoursesMessage');
         coursesGrid.innerHTML = '';
+
+        if (courses.length === 0) {
+            noCoursesMessage.style.display = 'block';
+        } else {
+            noCoursesMessage.style.display = 'none';
+        }
 
         courses.forEach(course => {
             const courseImage = course.imageURL || 'images/course-placeholder.jpg';

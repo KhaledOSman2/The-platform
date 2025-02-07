@@ -96,6 +96,47 @@
 
         .course-card {
             margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .course-card img {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .course-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .course-card .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .course-card .card-text {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .course-card .btn {
+            background-color: var(--primary-color);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .course-card .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .course-card .rating {
+            font-size: 0.875rem;
+            color: var(--accent-color);
         }
     </style>
 </head>
@@ -124,7 +165,16 @@
         <!-- شريط البحث أو الفلاتر -->
         <div class="row search-bar">
             <div class="col-md-12">
-                <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن دورة">
+                <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن كورس">
+            </div>
+        </div>
+        <h2 class="text-center mb-4">الكورسات الخاصة بك</h2>
+
+
+        <!-- رسالة عدم وجود كورسات -->
+        <div class="row" id="noCoursesMessage" style="display: none;">
+            <div class="col-md-12 text-center">
+                <p>لا توجد كورسات حاليا ستتوفر قريبا</p>
             </div>
         </div>
 
@@ -217,40 +267,39 @@
 
         function displayCourses(courses) {
             const coursesGrid = document.getElementById('coursesGrid');
+            const noCoursesMessage = document.getElementById('noCoursesMessage');
             coursesGrid.innerHTML = '';
 
-            courses.forEach(course => {
-                const courseImage = course.imageURL || 'images/course-placeholder.jpg';
-                const courseCard = document.createElement('div');
-                courseCard.className = 'col-md-4 course-card';
-                courseCard.innerHTML = `
-                     <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
-  <!-- الجزء العلوي للصورة -->
-  <div class="position-relative">
-    <img src="${courseImage}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
-    <!-- بادج "جديد" -->
-    <div class="position-absolute top-0 start-0 m-3">
-    </div>
-  </div>
-  
-  <!-- مساحة بيضاء تحتوي على عنوان ووصف الفيديو -->
-  <div class="card-body p-4 bg-white">
-    <h5 class="card-title text-dark fw-bold">${course.title}</h5>
-    <p class="card-text text-muted small">${course.grade}</p>
-    
-    <!-- زر عرض التفاصيل والتقييم في الأسفل -->
-    <div class="d-flex justify-content-between align-items-center mt-3">
-<button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
-      <div class="rating text-warning">
-      </div>
-    </div>
-  </div>
-</div>
-                `;
-                coursesGrid.appendChild(courseCard);
-            });
+            if (courses.length === 0) {
+                noCoursesMessage.style.display = 'block';
+            } else {
+                noCoursesMessage.style.display = 'none';
+                courses.forEach(course => {
+                    const courseImage = course.imageURL || 'images/course-placeholder.jpg';
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'col-md-4 course-card';
+                    courseCard.innerHTML = `<div class="course-card card border-0 rounded-4 overflow-hidden shadow">
+              <div class="position-relative">
+                <img src="${courseImage}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
+                <div class="position-absolute top-0 start-0 m-3">
+                </div>
+              </div>
+              <div class="card-body p-4 bg-white">
+                <h5 class="card-title text-dark fw-bold">${course.title}</h5>
+                <p class="card-text text-muted small">${course.grade}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">مشاهدة</button>
+                  <div class="rating text-warning">
+                    <i class="fas fa-star"></i> ${course.rating || '5/5'}
+                  </div>
+                </div>
+              </div>
+            </div>
+                    `;
+                    coursesGrid.appendChild(courseCard);
+                });
+            }
         }
-
 
         function filterCourses(searchTerm) {
             const courses = document.querySelectorAll('.course-card');
@@ -261,6 +310,7 @@
         }
     </script>
 
+    <!-- تذييل الصفحة -->
     <footer class="footer text-center">
         <div class="container">
             <p class="mb-1">&copy; N U M B E R 1</p>
@@ -269,16 +319,20 @@
                 <a href="#">الشروط والأحكام</a>
             </p>
         </div>
-        <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both"><span
-                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
-                    class="text-redMelon-300">Developed By</span><span
-                    class="text-redMelon-600">&gt;</span></span><span><a href="https://wa.me/201552190276"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Khaled Osman</a><span>,</span><a
-                    href="https://www.facebook.com/share/19xa9j7611/"
-                    class="bg-sakrBlue-700 hover-shadow smooth px-2 py-2 rounded-md">Education Plus</a></span><span
-                class="font-w-bold space-x-1"><span class="text-redMelon-600">&lt;</span><span
-                    class="text-redMelon-300">All Copy Rights Reserved @2025</span><span
-                    class="text-redMelon-600">&gt;</span></span></div>
+        <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
+            <span class="font-w-bold space-x-1">
+            </span>
+            <span>
+                <p>
+                    <span class="text-redMelon-300">Developed By</span>
+                    <a href="https://wa.me/201552190276">Khaled Osman</a>
+                    <a href="https://www.facebook.com/share/19xa9j7611/">Education Plus</a>
+                </p>
+            </span>
+        </div>
+        <span class="font-w-bold space-x-1">
+            <span class="text-redMelon-300">All Copy Rights Reserved @2025</span>
+        </span>
     </footer>
 
 </body>
