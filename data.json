@@ -101,34 +101,19 @@
   ],
   "courses": [
     {
-      "id": 1739099556672,
-      "title": "احياء - الصف الثالث اثانوي - الفصل الاول - الدعامة والحركة في الكائنات الحيه",
-      "videoURL": "https://www.youtube.com/embed/L6oKEyO5ClI?si=xpWPgpu2Bch0tKsY",
+      "id": 1739105534467,
+      "title": "سكان قارة افريقيا",
+      "videoURL": "",
       "videos": [
         {
-          "title": "محاضرة تأسيس عن الخاصية الاسموزية",
-          "url": "https://www.youtube.com/embed/L6oKEyO5ClI?si=xpWPgpu2Bch0tKsY",
-          "addedDate": "2025-02-09T11:13:15.763Z"
+          "title": "الدرس الاول نمو وتوزيع سكان قارة افريقيا",
+          "url": "",
+          "addedDate": "2025-02-09T12:52:14.467Z"
         }
       ],
-      "activities": [
-        {
-          "title": "ملخص الشرح",
-          "filePath": "/uploads/1739099556602.pdf",
-          "addedDate": "2025-02-09T11:12:36.617Z"
-        }
-      ],
+      "activities": [],
       "grade": "الصف الاول الاعدادي",
-      "imageURL": "/uploads/1739099556658.webp",
-      "exams": [
-        {
-          "id": 1739099652203,
-          "title": "الاختبار الاول",
-          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
-          "courseId": 1739099556672,
-          "addedDate": "2025-02-09T11:14:12.203Z"
-        }
-      ]
+      "imageURL": "/uploads/1739105534455.jpeg"
     }
   ],
   "grades": [
