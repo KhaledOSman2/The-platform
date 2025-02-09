@@ -23,6 +23,7 @@
             background: #f8fafc;
             min-height: 100vh;
             overflow-x: hidden;
+
         }
 
         #sidebar-wrapper {
@@ -122,6 +123,10 @@
             border-right: 1px solid #dee2e6;
             padding: 0.75rem;
             vertical-align: middle;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .data-table th:last-child,
@@ -177,6 +182,10 @@
             .data-table td {
                 font-size: 0.8rem;
                 padding: 0.5rem;
+                max-width: none;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
             }
 
             .list-group-item {
@@ -217,6 +226,7 @@
                 <a class="list-group-item list-group-item-action" href="#coursesSection">إدارة الكورسات</a>
                 <a class="list-group-item list-group-item-action" href="#examsSection">إدارة الامتحانات</a>
                 <a class="list-group-item list-group-item-action" href="#gradesSection">إدارة الصفوف الدراسية</a>
+                <a class="list-group-item list-group-item-action" href="#notificationsSection">إدارة الإشعارات</a>
                 <a class="list-group-item list-group-item-action" href="/dashboard.html">لوحة التحكم</a>
                 <a class="list-group-item list-group-item-action" href="index.html">الرئيسية</a>
                 <a class="list-group-item list-group-item-action" href="#" id="logoutLink">تسجيل الخروج</a>
@@ -229,7 +239,7 @@
             <!-- شريط التنقل العلوي -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white">
                 <button class="btn btn-primary" id="sidebarToggle">☰</button>
-                <div class="ms-auto">مرحبا، أدمن</div>
+                &nbsp;&nbsp;&nbsp;<div class="ms-auto">مرحبا، أدمن</div>
             </nav>
             <div class="section-divider"></div>
             <!-- محتوى الصفحة الرئيسية -->
@@ -237,7 +247,6 @@
 
                 <!-- قسم الإحصائيات -->
                 <section id="analyticsSection">
-                    <h2 class="mb-4"><i class="fas fa-chart-bar"></i> إحصائيات النظام</h2>
                     <div class="row">
                         <div class="col-md-3 col-sm-6 mb-3">
                             <div class="stat-card">عدد الطلاب: <span id="totalUsers">0</span></div>
@@ -275,6 +284,7 @@
                                     <th>اسم المستخدم</th>
                                     <th>البريد الإلكتروني</th>
                                     <th>الصف الدراسي</th>
+                                    <th>تعديل</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -283,10 +293,12 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2" id="prevUsersPage">Previous</button>
+                            <button class="btn btn-outline-primary me-2"
+                                id="prevUsersPage">Previous</button>&nbsp;&nbsp;&nbsp;
                             <span>Page <input type="number" id="usersPageNumber" value="1" min="1" style="width: 50px;">
                                 of <span id="usersTotalPages">1</span></span>
-                            <button class="btn btn-outline-primary ms-2" id="nextUsersPage">Next</button>
+                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
+                                id="nextUsersPage">Next</button>
                         </div>
                     </div>
                 </section>
@@ -300,9 +312,9 @@
                     </div>
                     <div class="mb-3">
                         <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#courseModal">
-                            <i class="fas fa-plus"></i> إضافة دورة جديدة
+                            <i class="fas fa-plus"></i> إضافة كورس جديد
                         </button>
-                        <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن دورة..."
+                        <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن كورس..."
                             style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
                     </div>
                     <div class="table-responsive">
@@ -311,6 +323,8 @@
                                 <tr>
                                     <th>العنوان</th>
                                     <th>الصف الدراسي</th>
+                                    <th>عدد الفيديوهات</th>
+                                    <th>عدد الامتحانات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -319,11 +333,13 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2" id="prevCoursesPage">Previous</button>
+                            <button class="btn btn-outline-primary me-2"
+                                id="prevCoursesPage">Previous</button>&nbsp;&nbsp;&nbsp;
                             <span>Page <input type="number" id="coursesPageNumber" value="1" min="1"
                                     style="width: 50px;"> of
                                 <span id="coursesTotalPages">1</span></span>
-                            <button class="btn btn-outline-primary ms-2" id="nextCoursesPage">Next</button>
+                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
+                                id="nextCoursesPage">Next</button>
                         </div>
                     </div>
                 </section>
@@ -350,7 +366,7 @@
                                 <tr>
                                     <th>عنوان الامتحان</th>
                                     <th>الصف الدراسي</th>
-                                    <th>الدورة</th>
+                                    <th>الكورس</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -359,10 +375,12 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2" id="prevExamsPage">Previous</button>
+                            <button class="btn btn-outline-primary me-2"
+                                id="prevExamsPage">Previous</button>&nbsp;&nbsp;&nbsp;
                             <span>Page <input type="number" id="examsPageNumber" value="1" min="1" style="width: 50px;">
                                 of <span id="examsTotalPages">1</span></span>
-                            <button class="btn btn-outline-primary ms-2" id="nextExamsPage">Next</button>
+                            &nbsp;&nbsp;&nbsp; <button class="btn btn-outline-primary ms-2"
+                                id="nextExamsPage">Next</button>
                         </div>
                     </div>
                 </section>
@@ -397,14 +415,55 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2" id="prevGradesPage">Previous</button>
+                            <button class="btn btn-outline-primary me-2"
+                                id="prevGradesPage">Previous</button>&nbsp;&nbsp;&nbsp;
                             <span>Page <input type="number" id="gradesPageNumber" value="1" min="1"
                                     style="width: 50px;"> of
                                 <span id="gradesTotalPages">1</span></span>
-                            <button class="btn btn-outline-primary ms-2" id="nextGradesPage">Next</button>
+                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
+                                id="nextGradesPage">Next</button>
                         </div>
                     </div>
                 </section>
+
+                <div class="section-divider"></div>
+
+                <!-- قسم إدارة الإشعارات -->
+                <section id="notificationsSection">
+                    <div class="grade-title">
+                        <h2 class="mb-4"><i class="fas fa-bell"></i> إدارة الإشعارات</h2>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                            <i class="fas fa-plus"></i> إضافة إشعار جديد
+                        </button>
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table class="table table-hover data-table table-striped table-bordered"
+                            id="notificationsTable">
+                            <thead>
+                                <tr>
+                                    <th>عنوان الإشعار</th>
+                                    <th>محتوى الإشعار</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم تعبئتها ديناميكيًا -->
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-outline-primary me-2"
+                                id="prevNotificationsPage">Previous</button>&nbsp;&nbsp;&nbsp;
+                            <span>Page <input type="number" id="notificationsPageNumber" value="1" min="1"
+                                    style="width: 50px;">
+                                of <span id="notificationsTotalPages">1</span></span>
+                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
+                                id="nextNotificationsPage">Next</button>
+                        </div>
+                    </div>
+                </section>
+
 
                 <div class="section-divider"></div>
             </div>
@@ -413,13 +472,13 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- Modal لإضافة/تعديل دورة -->
+    <!-- Modal لإضافة/تعديل كورس -->
     <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="courseForm" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="courseModalLabel">إضافة/ تعديل دورة</h5>
+                        <h5 class="modal-title" id="courseModalLabel">إضافة/ تعديل كورس</h5>
                         <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                     </div>
                     <div class="modal-body">
@@ -427,7 +486,7 @@
                         <input type="hidden" id="courseImageURL" name="courseImageURL">
 
                         <div class="mb-3">
-                            <label for="courseTitle" class="form-label">عنوان الدورة</label>
+                            <label for="courseTitle" class="form-label">عنوان الكورس</label>
                             <input type="text" class="form-control" id="courseTitle" name="title" required>
                         </div>
 
@@ -439,7 +498,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="courseImage" class="form-label">صورة الدورة</label>
+                            <label for="courseImage" class="form-label">صورة الكورس</label>
                             <input type="file" class="form-control" id="courseImage" name="courseImage"
                                 accept="image/*">
                         </div>
@@ -453,7 +512,7 @@
                                         data-bs-target="#collapseVideos" aria-expanded="false"
                                         aria-controls="collapseVideos">
                                         <i class="fas fa-video"></i>
-                                        <span style="margin-right: 12px;">فيديوهات الدورة</span>
+                                        <span style="margin-right: 12px;">فيديوهات الكورس</span>&nbsp;&nbsp;&nbsp;
                                     </button>
                                 </h2>
                                 <div id="collapseVideos" class="accordion-collapse collapse"
@@ -473,7 +532,7 @@
                                         data-bs-target="#collapseDocuments" aria-expanded="false"
                                         aria-controls="collapseDocuments">
                                         <i class="fas fa-file-alt"></i>
-                                        <span style="margin-right: 12px;">المستندات</span>
+                                        <span style="margin-right: 12px;">المستندات</span>&nbsp;&nbsp;&nbsp;
                                     </button>
                                 </h2>
                                 <div id="collapseDocuments" class="accordion-collapse collapse"
@@ -491,7 +550,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                        <button type="submit" class="btn btn-primary">حفظ الدورة</button>
+                        <button type="submit" class="btn btn-primary">حفظ الكورس</button>
                     </div>
                 </div>
             </form>
@@ -616,7 +675,7 @@
                             <select class="form-control" id="examGrade" required></select>
                         </div>
                         <div class="mb-3">
-                            <label for="examCourse" class="form-label">الدورة</label>
+                            <label for="examCourse" class="form-label">الكورس</label>
                             <select class="form-control" id="examCourse" required></select>
                         </div>
                         <div class="mb-3">
@@ -627,6 +686,36 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
                         <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لإضافة/تعديل إشعار -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="notificationForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notificationModalLabel">إضافة/تعديل إشعار</h5>
+                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="notificationId" value="">
+                        <div class="mb-3">
+                            <label for="notificationTitle" class="form-label">عنوان الإشعار</label>
+                            <input type="text" class="form-control" id="notificationTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notificationContent" class="form-label">محتوى الإشعار</label>
+                            <textarea class="form-control" id="notificationContent" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ الإشعار</button>
                     </div>
                 </div>
             </form>
@@ -655,6 +744,7 @@
             <a class="list-group-item list-group-item-action" href="#coursesSection">إدارة الكورسات</a>
             <a class="list-group-item list-group-item-action" href="#examsSection">إدارة الامتحانات</a>
             <a class="list-group-item list-group-item-action" href="#gradesSection">إدارة الصفوف الدراسية</a>
+            <a class="list-group-item list-group-item-action" href="#notificationsSection">إدارة الإشعارات</a>
             <a class="list-group-item list-group-item-action" href="/dashboard.html">لوحة التحكم</a>
             <a class="list-group-item list-group-item-action" href="index.html">الرئيسية</a>
             <a class="list-group-item list-group-item-action" href="#" id="logoutLink">تسجيل الخروج</a>
@@ -963,6 +1053,18 @@
                 }
             });
             // ...existing code...
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ...existing code...
+            const charLimit = 50; // maximum allowed characters
+            document.querySelectorAll('.data-table td').forEach(cell => {
+                if (cell.innerText.length > charLimit) {
+                    cell.title = cell.innerText; // full text tooltip
+                    cell.innerText = cell.innerText.substring(0, charLimit) + '...';
+                }
+            });
         });
     </script>
 </body>

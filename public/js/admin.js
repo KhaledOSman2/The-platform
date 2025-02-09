@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let coursesPage = 1;
     let gradesPage = 1;
     let examsPage = 1;
+    let notificationsPage = 1;
 
     // تحميل المستخدمين
     function loadUsers(page = 1) {
@@ -39,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${user.grade || 'N/A'}</td>
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button> </td>
+                            <td>
                             ${user.isBanned ? `<button class="btn btn-sm btn-success" onclick="unbanUser(${user.id})">إلغاء الحظر</button>` : `<button class="btn btn-sm btn-danger" onclick="banUser(${user.id})">حظر</button>`}
                             ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية المسؤول</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى مسؤول</button>`}
                         </td>
@@ -78,6 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${course.title}
                         </td>
                         <td>${course.grade}</td>
+                        <td>${course.videos ? course.videos.length : 0}</td>
+                        <td>${course.exams ? course.exams.length : 0}</td>
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>تعديل</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">حذف</button>
@@ -97,8 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('totalUsers').textContent = data.totalUsers;
-                document.getElementById('totalCourses').textContent = data.totalCourses;
+                document.getElementById('totalUsers').textContent = data.totalUsers || 0;
+                document.getElementById('totalCourses').textContent = data.totalCourses || 0;
                 document.getElementById('totalActivities').textContent = data.totalActivities || 0;
                 document.getElementById('totalExams').textContent = data.totalExams || 0;
             })
@@ -119,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const end = start + itemsPerPage;
                 const paginatedGrades = grades.slice(start, end);
 
-                // تعبئة قائمة اختيار الصفوف في نموذج الدورة
+                // تعبئة قائمة اختيار الصفوف في نموذج الكورس
                 const gradeSelect = document.getElementById('courseGrade');
                 if (gradeSelect) {
                     gradeSelect.innerHTML = '';
@@ -202,12 +206,46 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => console.error(err));
     }
 
+    // تحميل الإشعارات
+    function loadNotifications(page = 1) {
+        fetch('/api/notifications', {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(response => response.json())
+            .then(notifications => {
+                const totalPages = Math.ceil(notifications.length / itemsPerPage);
+                document.getElementById('notificationsTotalPages').textContent = totalPages;
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const paginatedNotifications = notifications.slice(start, end);
+
+                const tbody = document.querySelector('#notificationsTable tbody');
+                tbody.innerHTML = '';
+                paginatedNotifications.forEach(notification => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('table-light');
+                    tr.innerHTML = `
+                        <td>${notification.title}</td>
+                        <td>${notification.content}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick='editNotification(${JSON.stringify(notification)})'>تعديل</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})">حذف</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => console.error(err));
+    }
+
     // بدء تحميل البيانات عند الدخول
     loadUsers();
     loadCourses();
     loadAnalytics();
     loadGrades();
     loadExams();
+    loadNotifications();
 
     // معالجة نموذج إضافة صف دراسي
     const gradeForm = document.getElementById('gradeForm');
@@ -256,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return temp.innerHTML;
     }
 
-    // معالجة نموذج إضافة/تعديل دورة
+    // معالجة نموذج إضافة/تعديل كورس
     const courseForm = document.getElementById('courseForm');
     if (courseForm) {
         courseForm.addEventListener('submit', async function (e) {
@@ -303,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (courseImage) {
                 formData.append('courseImage', courseImage);
             } else if (id) {
-                // إذا كانت الدورة موجودة بالفعل ولم يتم تحميل صورة جديدة، احتفظ بالصورة الحالية
+                // إذا كانت الكورس موجودة بالفعل ولم يتم تحميل صورة جديدة، احتفظ بالصورة الحالية
                 formData.append('existingImageURL', document.getElementById('courseImageURL').value);
             }
             formData.append('videos', JSON.stringify(videos));
@@ -338,11 +376,17 @@ document.addEventListener('DOMContentLoaded', function () {
         addVideoButton.addEventListener('click', function () {
             const videosContainer = document.getElementById('videosContainer');
             const videoInput = document.createElement('div');
-            videoInput.className = 'video-input mb-3 d-flex align-items-center';
+            videoInput.className = 'video-input mb-3';
             videoInput.innerHTML = `
-                <input type="text" class="form-control video-title mb-2 me-2" placeholder="عنوان الفيديو">
-                <input type="url" class="form-control video-url me-2" placeholder="رابط الفيديو">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
+                <div class="d-flex align-items-center w-100">
+                    <div class="input-group flex-fill me-2">
+                        <input type="text" class="form-control video-title" placeholder="عنوان الفيديو">
+                    </div>
+                    <div class="input-group flex-fill me-2">
+                        <input type="url" class="form-control video-url" placeholder="رابط الفيديو">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                </div>
             `;
             videosContainer.appendChild(videoInput);
         });
@@ -354,15 +398,24 @@ document.addEventListener('DOMContentLoaded', function () {
         addActivityButton.addEventListener('click', function () {
             const activitiesContainer = document.getElementById('activitiesContainer');
             const activityInput = document.createElement('div');
-            activityInput.className = 'activity-input mb-3 d-flex align-items-center';
+            activityInput.className = 'activity-input mb-3';
             activityInput.innerHTML = `
-                <input type="text" class="form-control activity-title mb-2 me-2" placeholder="عنوان المستند" required>
-                <input type="file" class="form-control activity-file me-2" accept=".pdf,video/*" required>
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
+                <div class="d-flex align-items-center w-100">
+                    <div class="input-group flex-fill me-2">
+                        <input type="text" class="form-control activity-title" placeholder="عنوان المستند" required>
+                    </div>
+                    <div class="input-group flex-fill me-2">
+                        <input type="file" class="form-control activity-file" accept=".pdf,video/*" required>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                </div>
             `;
             activitiesContainer.appendChild(activityInput);
         });
     }
+
+
+
 
     // معالجة نموذج تعديل المستخدم (الطالب)
     const userForm = document.getElementById('userForm');
@@ -475,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // دوال التعامل مع الدورات
     window.deleteCourse = function (courseId) {
-        if (confirm('هل أنت متأكد من حذف الدورة؟')) {
+        if (confirm('هل أنت متأكد من حذف الكورس؟')) {
             fetch(`/api/courses/${courseId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
@@ -490,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     window.editCourse = function (course) {
-        // تعبئة بيانات الدورة
+        // تعبئة بيانات الكورس
         document.getElementById('courseId').value = course.id;
         document.getElementById('courseTitle').value = course.title;
         document.getElementById('courseGrade').value = course.grade;
@@ -501,11 +554,17 @@ document.addEventListener('DOMContentLoaded', function () {
         videosContainer.innerHTML = '';
         (course.videos || []).forEach(video => {
             const videoInput = document.createElement('div');
-            videoInput.className = 'video-input mb-3 d-flex align-items-center';
+            videoInput.className = 'video-input mb-3'; // remove extra d-flex; included in innerHTML
             videoInput.innerHTML = `
-                <input type="text" class="form-control video-title mb-2 me-2" placeholder="عنوان الفيديو" value="${video.title.replace(/&quot;/g, '')}">
-                <input type="url" class="form-control video-url me-2" placeholder="رابط الفيديو" value="${video.url}">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
+                <div class="d-flex align-items-center w-100">
+                    <div class="input-group flex-fill me-2">
+                        <input type="text" class="form-control video-title" placeholder="عنوان الفيديو" value="${video.title.replace(/&quot;/g, '')}">
+                    </div>
+                    <div class="input-group flex-fill me-2">
+                        <input type="url" class="form-control video-url" placeholder="رابط الفيديو" value="${video.url}">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                </div>
             `;
             videosContainer.appendChild(videoInput);
         });
@@ -514,12 +573,18 @@ document.addEventListener('DOMContentLoaded', function () {
         activitiesContainer.innerHTML = '';
         (course.activities || []).forEach(activity => {
             const activityInput = document.createElement('div');
-            activityInput.className = 'activity-input mb-3 d-flex align-items-center';
+            activityInput.className = 'activity-input mb-3';
             activityInput.innerHTML = `
-                <input type="text" class="form-control activity-title mb-2 me-2" placeholder="عنوان المستند" value="${activity.title.replace(/&quot;/g, '')}" required>
-                <input type="file" class="form-control activity-file me-2" accept=".pdf,video/*">
-                <input type="hidden" class="existing-file-path" value="${activity.filePath}">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">حذف</button>
+                <div class="d-flex align-items-center w-100">
+                    <div class="input-group flex-fill me-2">
+                        <input type="text" class="form-control activity-title" placeholder="عنوان المستند" value="${activity.title.replace(/&quot;/g, '')}" required>
+                    </div>
+                    <div class="input-group flex-fill me-2">
+                        <input type="file" class="form-control activity-file" accept=".pdf,video/*">
+                    </div>
+                    <input type="hidden" class="existing-file-path" value="${activity.filePath}">
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                </div>
             `;
             activitiesContainer.appendChild(activityInput);
         });
@@ -808,7 +873,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // فحص إذا كان البريد موجود مسبقاً ضمن قائمة المستخدمين المحملة
             if (window.allUsers && window.allUsers.find(user => user.email === email)) {
-                alert('البريد الإلكتروني مستخدم بالفعل');
                 return;
             }
 
@@ -831,12 +895,98 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // معالجة نموذج إضافة/تعديل إشعار
+    const notificationForm = document.getElementById('notificationForm');
+    if (notificationForm) {
+        notificationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('notificationId').value;
+            const title = sanitizeInput(document.getElementById('notificationTitle').value);
+            const content = sanitizeInput(document.getElementById('notificationContent').value);
+            const payload = { title, content };
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `/api/notifications/${id}` : '/api/notifications';
+
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify(payload)
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    loadNotifications();
+                    notificationForm.reset();
+                    document.getElementById('notificationId').value = '';
+                    const notificationModal = bootstrap.Modal.getInstance(document.getElementById('notificationModal'));
+                    if (notificationModal) notificationModal.hide();
+                })
+                .catch(err => console.error(err));
+        });
+    }
+
+    // دالة لحذف إشعار
+    window.deleteNotification = function (notificationId) {
+        if (confirm('هل أنت متأكد من حذف الإشعار؟')) {
+            fetch(`/api/notifications/${notificationId}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    loadNotifications();
+                })
+                .catch(err => console.error(err));
+        }
+    };
+
+    // دالة لتعديل إشعار
+    window.editNotification = function (notification) {
+        document.getElementById('notificationId').value = notification.id;
+        document.getElementById('notificationTitle').value = notification.title;
+        document.getElementById('notificationContent').value = notification.content;
+
+        const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
+        notificationModal.show();
+    };
+
+    document.getElementById('prevNotificationsPage').addEventListener('click', () => {
+        if (notificationsPage > 1) {
+            notificationsPage--;
+            document.getElementById('notificationsPageNumber').value = notificationsPage;
+            loadNotifications(notificationsPage);
+        }
+    });
+
+    document.getElementById('nextNotificationsPage').addEventListener('click', () => {
+        const totalPages = parseInt(document.getElementById('notificationsTotalPages').textContent);
+        if (notificationsPage < totalPages) {
+            notificationsPage++;
+            document.getElementById('notificationsPageNumber').value = notificationsPage;
+            loadNotifications(notificationsPage);
+        }
+    });
+
+    document.getElementById('notificationsPageNumber').addEventListener('change', (e) => {
+        const page = parseInt(e.target.value);
+        const totalPages = parseInt(document.getElementById('notificationsTotalPages').textContent);
+        if (page >= 1 && page <= totalPages) {
+            notificationsPage = page;
+            loadNotifications(notificationsPage);
+        } else {
+            e.target.value = notificationsPage;
+        }
+    });
+
     // Initial load (مرة أخرى لضمان تحميل البيانات)
     loadUsers();
     loadCourses();
     loadAnalytics();
     loadGrades();
     loadExams();
+    loadNotifications();
 
     const sidebarToggle = document.getElementById("sidebarToggle");
     sidebarToggle.addEventListener("click", function () {

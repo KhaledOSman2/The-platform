@@ -122,8 +122,13 @@
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">كلمة المرور</label>
-                                <input type="password" class="form-control" id="password" placeholder="********"
-                                    required>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" placeholder="********"
+                                        required>
+                                    <span class="input-group-text toggle-password" id="toggleRegisterPassword">
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="grade" class="form-label">الصف الدراسي</label>
@@ -176,11 +181,12 @@
 
             if (isLoggedIn) {
                 navLinks.innerHTML = `
-                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                   <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
                     <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
                     <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-                `;
+                      
+                    `;
 
                 document.getElementById('logoutLink').addEventListener('click', function (e) {
                     e.preventDefault();
@@ -189,7 +195,7 @@
                 });
             }
 
-            // Handle form submission
+            // Handle form submission for registration
             const registerForm = document.getElementById('registerForm');
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -208,7 +214,19 @@
                     const data = await response.json();
                     if (response.ok) {
                         alert(data.message);
-                        window.location.href = 'login.html';
+                        // تسجيل الدخول تلقائيًا بعد إنشاء الحساب
+                        const loginResponse = await fetch('/api/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                        const loginData = await loginResponse.json();
+                        if (loginResponse.ok) {
+                            localStorage.setItem('token', loginData.token);
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            alert(loginData.message);
+                        }
                     } else {
                         alert(data.message);
                     }
@@ -217,6 +235,18 @@
                     alert('حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى.');
                 }
             });
+
+            // Toggle password visibility for register page
+            const toggleReg = document.getElementById('toggleRegisterPassword');
+            if (toggleReg) {
+                toggleReg.addEventListener('click', function () {
+                    const passwordField = document.getElementById('password');
+                    const newType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordField.setAttribute('type', newType);
+                    this.firstElementChild.classList.toggle('fa-eye');
+                    this.firstElementChild.classList.toggle('fa-eye-slash');
+                });
+            }
         });
     </script>
 </body>

@@ -16,44 +16,119 @@
       "grade": "الصف الاول الاعدادي",
       "isAdmin": false,
       "isBanned": false
+    },
+    {
+      "id": 1739032723658,
+      "username": "test",
+      "email": "test@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739032996966,
+      "username": "user",
+      "email": "user2@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739034240230,
+      "username": "admin",
+      "email": "admin1@gmail.com",
+      "password": "1",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739034361381,
+      "username": "user",
+      "email": "user12@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739034695330,
+      "username": "1234",
+      "email": "1234@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739034857106,
+      "username": "1234",
+      "email": "12340@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739037907642,
+      "username": "hassan@gmail.com",
+      "email": "hassan@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739051689779,
+      "username": "admin",
+      "email": "admin11@gmail.com",
+      "password": "1",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1739052148050,
+      "username": "khaled@gmail.com",
+      "email": "khaled1@gmail.com",
+      "password": "123",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
     }
   ],
   "courses": [
     {
-      "id": 1738941986896,
-      "title": "كورس الهرمونات",
-      "videoURL": "",
-      "videos": [],
-      "activities": [],
-      "grade": "الصف الثالث الاعدادي",
-      "imageURL": "/uploads/1738941986888.webp"
-    },
-    {
-      "id": 1738942014378,
-      "title": "كورس المناعة",
-      "videoURL": "",
-      "videos": [],
-      "activities": [],
+      "id": 1739099556672,
+      "title": "احياء - الصف الثالث اثانوي - الفصل الاول - الدعامة والحركة في الكائنات الحيه",
+      "videoURL": "https://www.youtube.com/embed/L6oKEyO5ClI?si=xpWPgpu2Bch0tKsY",
+      "videos": [
+        {
+          "title": "محاضرة تأسيس عن الخاصية الاسموزية",
+          "url": "https://www.youtube.com/embed/L6oKEyO5ClI?si=xpWPgpu2Bch0tKsY",
+          "addedDate": "2025-02-09T11:13:15.763Z"
+        }
+      ],
+      "activities": [
+        {
+          "title": "ملخص الشرح",
+          "filePath": "/uploads/1739099556602.pdf",
+          "addedDate": "2025-02-09T11:12:36.617Z"
+        }
+      ],
       "grade": "الصف الاول الاعدادي",
-      "imageURL": "/uploads/1738942014369.webp"
-    },
-    {
-      "id": 1738942027759,
-      "title": "كورس التكاثر",
-      "videoURL": "",
-      "videos": [],
-      "activities": [],
-      "grade": "الصف الثاني الاعدادي",
-      "imageURL": "/uploads/1738942081307.webp"
-    },
-    {
-      "id": 1738943134327,
-      "title": "كورس الدعامة والحركة",
-      "videoURL": "",
-      "videos": [],
-      "activities": [],
-      "grade": "الصف الاول الاعدادي",
-      "imageURL": "/uploads/1738943134307.webp"
+      "imageURL": "/uploads/1739099556658.webp",
+      "exams": [
+        {
+          "id": 1739099652203,
+          "title": "الاختبار الاول",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": 1739099556672,
+          "addedDate": "2025-02-09T11:14:12.203Z"
+        }
+      ]
     }
   ],
   "grades": [
@@ -68,6 +143,13 @@
     {
       "id": 1738789236778,
       "name": "الصف الثالث الاعدادي"
+    }
+  ],
+  "notifications": [
+    {
+      "id": 1739057849512,
+      "title": "تعليمات منصة NUMBER 1",
+      "content": "لضمان تشغيل المنصة بدون أي عطل أو بطء في تحميل الفيديوهات، يرجى الالتزام بالتعليمات التالية:\n\n1-المنصة عبارة عن موقع ويب متاح على متصفحي جوجل كروم أو فاير فوكس فقط.\n\n2-يجب فتح المنصة من هاتف محمول أو جهاز كمبيوتر أو لاب توب، ويحظر تماماً استخدام أجهزة التابلت الخاصة بالمدارس لأنها غير مؤهلة لاستخدام المنصة حتى وإن كانت متهكرة.\n\n3-بعد الاشتراك، مش هيكون متاح استرجاع الكورس أو تبديله، لذا يجب التأكد جيداً من الكورس الذي ترغب في الاشتراك فيه.\n\n4- الحساب مخصص لاستخدامك الشخصي فقط ولا يُسمح بمشاركته مع أصدقائك. في حالة اكتشاف مشاركة الحساب سيتم إغلاقه نهائياً.\n\n5-يجب استخدام إنترنت قوي ومستقر ويفضل استخدام شبكة واي فاي مستقرة.\n\n6-عند التسجيل على المنصة، يجب التأكد من صحة بياناتك لضمان المتابعة الدورية بشكل صحيح.\n\n7-يجب كتابة الاسم باللغة العربية كما هو في البطاقة عند التسجيل.\n\n8-لا تنسَ التأكد من رقم الهاتف وكلمة المرور وكتابة هذه المعلومات في مكان آمن حتى لا تنساها.\n\n9-يمكنك مشاهدة الفيديو الواحد على المنصة بحد أقصى خمس مرات خلال العام الدراسي الواحد.\n\n10-تُحسب المشاهدة عند تجاوز 30% من مدة الفيديو.\n\n11-يجب متابعة المنصة بشكل دوري وحل الواجبات والاختبارات لأن هناك تقارير أسبوعية تُرسل إلى ولي الأمر حول نشاطك على المنصة.\n\n12- ستكون المنصة متاحة لك حتى امتحانات الدور الأول فقط.\n\nيرجى الالتزام بهذه التعليمات لضمان استفادتك الكاملة من خدمات المنصة"
     }
   ]
 }

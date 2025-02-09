@@ -19,11 +19,14 @@
         }
 
         body {
-            background-color: #f8fafc;
+            background-color: #ffffff;
             font-family: 'Cairo', sans-serif;
             color: var(--text-dark);
             line-height: 1.7;
             margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .navbar {
@@ -62,16 +65,15 @@
         }
 
         .course-card img {
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
         }
 
         .course-card {
             border: 1px solid #ddd;
             border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .course-card:hover {
@@ -107,7 +109,7 @@
     </style>
 </head>
 
-<body style="margin-top: 120px;">
+<body style="margin-top: 120px; display: flex; flex-direction: column; min-height: 100vh;">
     <!-- شريط تنقل محسّن -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
@@ -129,21 +131,31 @@
         </div>
     </nav>
 
-    <!-- قسم عرض الكورسات -->
-    <section id="coursesSection" class="py-5 bg-white">
-        <div class="container">
-            <h2 class="text-center mb-4">جميع الكورسات المتاحة</h2>
-            <!-- القائمة المنسدلة لتصفية الكورسات حسب الصف الدراسي -->
-            <div class="mb-4 text-center">
-                <select id="gradeFilter" class="form-select d-inline-block w-auto">
-                    <option value="all">الكل</option>
-                </select>
+    <!-- Added wrapper to ensure footer stays at the bottom -->
+    <div id="main-content" style="flex: 1;">
+        <!-- قسم عرض الكورسات -->
+        <section id="coursesSection" class="py-5 bg-white">
+            <div class="container">
+                <h2 class="text-center mb-4">جميع الكورسات المتاحة</h2>
+
+                <!-- القائمة المنسدلة لتصفية الكورسات حسب الصف الدراسي -->
+                <div class="mb-4 text-center">
+                    <select id="gradeFilter" class="form-select d-inline-block w-auto">
+                        <option value="all">الكل</option>
+                    </select>
+                </div>
+                <!-- Added noCoursesMessage -->
+                <div id="noCoursesMessage" style="display: none;" class="row">
+                    <div class="col-12 text-center">
+                        <p>لا تتوفر كورسات حاليا.</p>
+                    </div>
+                </div>
+                <div id="coursesByGrade">
+                    <!-- سيتم تعبئة الكورسات حسب الصف الدراسي ديناميكياً بواسطة JavaScript -->
+                </div>
             </div>
-            <div id="coursesByGrade">
-                <!-- سيتم تعبئة الكورسات حسب الصف الدراسي ديناميكياً بواسطة JavaScript -->
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- تذييل الصفحة -->
     <footer class="footer text-center">
@@ -183,8 +195,16 @@
                 // Fetch all courses from the API
                 const coursesResponse = await fetch('/api/all-courses');
                 const courses = await coursesResponse.json();
-                const coursesByGrade = {};
 
+                // Show noCoursesMessage if no courses are available
+                const noCoursesMessage = document.getElementById('noCoursesMessage');
+                if (courses.length === 0) {
+                    noCoursesMessage.style.display = 'block';
+                } else {
+                    noCoursesMessage.style.display = 'none';
+                }
+
+                const coursesByGrade = {};
                 // Categorize courses by grade
                 courses.forEach(course => {
                     if (!coursesByGrade[course.grade]) {
@@ -208,51 +228,66 @@
                 function renderCourses(filterGrade) {
                     coursesByGradeContainer.innerHTML = ''; // Clear previous content
 
-                    // If "all" is selected, display all courses
                     if (filterGrade === 'all') {
+                        let hasCourses = false;
                         gradeOrder.forEach(grade => {
-                            if (coursesByGrade[grade]) {
+                            if (coursesByGrade[grade] && coursesByGrade[grade].length > 0) {
                                 createGradeSection(grade, coursesByGrade[grade]);
+                                hasCourses = true;
                             }
                         });
+                        // Show noCoursesMessage if no courses found in any grade
+                        noCoursesMessage.style.display = hasCourses ? 'none' : 'block';
                     } else {
-                        if (coursesByGrade[filterGrade]) {
+                        if (coursesByGrade[filterGrade] && coursesByGrade[filterGrade].length > 0) {
                             createGradeSection(filterGrade, coursesByGrade[filterGrade]);
+                            noCoursesMessage.style.display = 'none';
                         } else {
-                            coursesByGradeContainer.innerHTML = '<p class="text-center">لا توجد كورسات لهذا الصف.</p>';
+                            coursesByGradeContainer.innerHTML = '';
+                            noCoursesMessage.style.display = 'block';
                         }
                     }
                 }
 
-                // Function to create a section for each grade and its courses
+                // Modified function: sort courses descending and add a new badge to the newest course.
                 function createGradeSection(grade, coursesArray) {
+                    coursesArray = coursesArray.slice().reverse();
                     const gradeSection = document.createElement('div');
                     gradeSection.className = 'mb-5';
                     gradeSection.innerHTML = `
-                    <div class="grade-title">${grade}</div>
-                    <div class="row g-4">
-                        ${coursesArray.map(course => `
-                            <div class="col-md-4">
-                                <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
-                                    <div class="position-relative">
-                                        <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
-                                    </div>
-                                    <div class="card-body p-4 bg-white">
-                                        <h5 class="card-title text-dark fw-bold">${course.title}</h5>
-                                        <p class="card-text text-muted small">${course.grade}</p>
-                                        <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
-                                            <div class="rating text-warning">
-                                                <i class="fas fa-star"></i> ${course.rating || '5/5'}
+                        <div class="grade-title">${grade}</div>
+                        <div class="row g-4">
+                            ${coursesArray.map((course, index) => {
+                        const badge = (index === 0)
+                            ? `<div class="position-absolute top-0 start-0 m-3">
+                 <span class="badge bg-danger fw-bold px-3 py-2">جديد</span>
+                                       </div>`
+                            : '';
+                        return `
+                                    <div class="col-md-4">
+                                        <div class="course-card card border-0 rounded-4 overflow-hidden shadow position-relative">
+                                            <div class="position-relative">
+                                                <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
+                                                ${badge}
+                                            </div>
+                                            <div class="card-body p-4 bg-white">
+                                                <h5 class="card-title text-dark fw-bold">${course.title}</h5>
+                                                <p class="card-text text-muted small">${course.grade}</p>
+                                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
+                                             <span class="ms-2"><i class="fab fa-youtube"></i> عدد الفيديوهات: ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span>
+                                                    <div class="rating text-warning">
+                                                        <i class="fas fa-star"></i> ${course.rating || '5/5'}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                    coursesByGradeContainer.appendChild(gradeSection);
+                                `;
+                    }).join('')}
+                        </div>
+                    `;
+                    document.getElementById('coursesByGrade').appendChild(gradeSection);
                 }
 
                 // Render all courses by default

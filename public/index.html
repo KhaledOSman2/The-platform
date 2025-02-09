@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"="width=device-width, initial-scale=1">
     <title>N U M B E R 1 - اكتشف كورساتك المستقبلية</title>
     <!-- ربط Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -30,8 +30,7 @@
             font-family: 'Cairo', sans-serif;
             color: var(--text-dark);
             line-height: 1.7;
-            margin: 0;
-            padding: 0;
+            margin-top: 80px;
         }
 
         .container {
@@ -76,6 +75,7 @@
             color: white !important;
         }
 
+
         /* قسم الهيرو */
         .hero {
             background: url('https://source.unsplash.com/1600x900/?education,university') center/cover no-repeat;
@@ -103,14 +103,48 @@
         }
 
         .course-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .course-card:hover {
             transform: translateY(-10px);
+        }
+
+        .course-card img {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .course-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .course-card .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .course-card .card-text {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .course-card .btn {
+            background-color: var(--primary-color);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .course-card .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .course-card .rating {
+            font-size: 0.875rem;
+            color: var(--accent-color);
         }
 
         @media (max-width: 576px) {
@@ -154,7 +188,7 @@
         }
 
         .owner-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
@@ -320,6 +354,16 @@
             margin-bottom: 5rem;
             /* Add consistent margin to all sections */
         }
+
+        @media (min-width: 992px) {
+
+            /* Override container inside coursesSection to use full width on computer screens */
+            #coursesSection .container {
+                max-width: 90%;
+                padding: 0 30px;
+                /* Adjust the horizontal padding as needed */
+            }
+        }
     </style>
 </head>
 
@@ -392,7 +436,7 @@
         </div>
         <div class="achievement-item">
             <div class="achievement-number">50+</div>
-            <div class="achievement-text">دورة تدريبية</div>
+            <div class="achievement-text">كورس تدريبية</div>
         </div>
     </div>
 
@@ -430,7 +474,7 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body text-center">
                             <i class="fas fa-video fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">فيديوهات مسجلة</h5>
+                            <h5 class="card-title">فيديوهات تفاعلية</h5>
                             <p class="card-text text-muted">تعلم بسهولة من خلال فيديوهات مميزة ومحتوى تفاعلي.</p>
                         </div>
                     </div>
@@ -457,6 +501,7 @@
         </div>
     </section>
 
+
     <!-- قسم "أحدث الكورسات" -->
     <section id="coursesSection" data-aos="fade-up" data-aos-duration="1000">
         <div class="container">
@@ -465,10 +510,12 @@
                 <!-- سيتم تعبئة الكورسات ديناميكيًا بواسطة JavaScript -->
             </div>
             <div class="text-center mt-4">
-                <a href="courses.html" class="btn btn-outline-primary">عرض جميع الدورات</a>
+                <a href="courses.html" class="btn btn-outline-primary">عرض جميع الكورسات</a>
             </div>
         </div>
     </section>
+
+
 
     <!-- تذييل الصفحة -->
     <footer class="footer text-center">
@@ -506,7 +553,7 @@
 
         document.addEventListener('DOMContentLoaded', async function () {
             try {
-                // استدعاء API لجلب أحدث 3 كورسات من endpoint جميع الدورات
+                // استدعاء API لجلب أحدث 3 كورسات من endpoint جميع الكورسات
                 const response = await fetch('/api/all-courses');
                 const courses = await response.json();
                 const latestCoursesGrid = document.getElementById('latestCoursesGrid');
@@ -518,27 +565,30 @@
                     courseCard.className = 'col-lg-4 col-md-6';
                     courseCard.innerHTML = `
             <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
-              <!-- الجزء العلوي للصورة -->
-              <div class="position-relative">
-                <img src="${courseImage}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
-                <!-- بادج "جديد" -->
-                <div class="position-absolute top-0 start-0 m-3">
-                  <span class="badge bg-danger fw-bold px-3 py-2">جديد</span>
+             <div class="position-relative">
+                                <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
+                                <div class="position-absolute top-0 start-0 m-3">
+                 <span class="badge bg-danger fw-bold px-3 py-2">جديد</span>
+                                       </div>
+                                <div class="position-absolute top-0 start-0 m-3">
+                                <div class="position-absolute top-0 start-0 m-3">
+                  
                 </div>
-              </div>
-              <!-- مساحة بيضاء تحتوي على عنوان ووصف الدورة -->
-              <div class="card-body p-4 bg-white">
-                <h5 class="card-title text-dark fw-bold">${course.title}</h5>
-                <p class="card-text text-muted small">${course.grade}</p>
-                <!-- زر عرض التفاصيل والتقييم في الأسفل -->
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
-                  <div class="rating text-warning">
-                    <i class="fas fa-star"></i> ${course.rating || '5/5'}
-                  </div>
-                </div>
-              </div>
-            </div>
+                                    </div>
+                            </div>
+                            <div class="card-body p-4 bg-white">
+                                <h5 class="card-title text-dark fw-bold">${course.title}</h5>
+                                <p class="card-text text-muted small">${course.grade}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
+                                      <span class="ms-2"><i class="fab fa-youtube"></i> عدد الفيديوهات: ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span>
+
+                                    <div class="rating text-warning">
+                                        <i class="fas fa-star"></i> ${course.rating || '5/5'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
           `;
                     latestCoursesGrid.appendChild(courseCard);
                 });

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>تفاصيل الدورة</title>
+    <title>تفاصيل الكورس</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -215,13 +215,20 @@
         }
 
         .card-body {
-            display: none;
-            padding: 1rem 1.5rem;
-            background-color: #f9f9f9;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+            padding: 0 1.5rem;
+            /* الحفاظ على البادينج الأفقي */
         }
 
         .card-body.show {
-            display: block;
+            max-height: 500px;
+            /* قيمة كبيرة بما يكفي لعرض المحتوى */
+            opacity: 1;
+            padding: 1rem 1.5rem;
+            /* استعادة البادينج عند الفتح */
         }
 
         .activities-header {
@@ -285,7 +292,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto" id="navLinks">
                     <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
                     <li class="nav-item"><a class="nav-link" href="login.html">تسجيل الدخول</a></li>
                     <li class="nav-item"><a class="nav-link" href="register.html">إنشاء حساب</a></li>
                 </ul>
@@ -296,11 +303,11 @@
     <!-- محتوى الصفحة الرئيسية -->
     <div class="container">
         <div class="row">
-            <!-- الجانب الأيسر: تفاصيل الدورة والفيديو الرئيسي -->
+            <!-- الجانب الأيسر: تفاصيل الكورس والفيديو الرئيسي -->
             <div class="col-lg-8 mb-4">
                 <div class="course-header">
                     <div class="course-thumbnail">
-                        <img id="courseImage" src="" alt="صورة الدورة">
+                        <img id="courseImage" src="" alt="صورة الكورس">
                     </div>
                     <div class="course-content">
                         <h2 id="courseTitle"></h2>
@@ -319,12 +326,12 @@
                 </div>
             </div>
 
-            <!-- الجانب الأيمن: قائمة فيديوهات الدورة -->
+            <!-- الجانب الأيمن: قائمة فيديوهات الكورس -->
             <div class="col-lg-4">
                 <div class="sticky-container">
                     <div class="card">
                         <div class="card-header bg-primary text-white videos-header">
-                            <i class="fab fa-youtube"></i> محتوى الدورة <i class="fas fa-chevron-down"></i>
+                            <i class="fab fa-youtube"></i> محتوى الكورس <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="card-body" id="videosList">
                             <!-- سيتم تعبئة الفيديوهات ديناميكياً هنا -->
@@ -351,12 +358,12 @@
         </div>
     </div>
 
-    <!-- Modal لعرض الامتحان -->
+    <!-- Modal لعرض الاختبار -->
     <div class="modal fade" id="examModal" tabindex="-1" aria-labelledby="examModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="examModalLabel">خروج من الاختبار</h5>
+                    <h5 class="modal-title" id="examModalLabel">خروج من الاختبار</h5>&nbsp;&nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                 </div>
                 <div class="modal-body">
@@ -402,7 +409,7 @@
                 return;
             }
 
-            // استرجاع معرف الدورة من معلمات الرابط
+            // استرجاع معرف الكورس من معلمات الرابط
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('id');
 
@@ -417,7 +424,7 @@
                         return response.json();
                     })
                     .then(course => {
-                        // تعبئة تفاصيل الدورة
+                        // تعبئة تفاصيل الكورس
                         document.getElementById('courseTitle').textContent = course.title;
                         document.getElementById('courseGrade').textContent = course.grade;
                         document.getElementById('courseImage').src = course.imageURL;
@@ -436,9 +443,9 @@
                                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                                 const addedDate = new Date(video.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
                                 li.innerHTML = `<div>
-                                    <strong>المحاضرة ${index + 1}:</strong> ${video.title}
-                                </div>
-                                `;
+                                        <strong>المحاضرة ${index + 1}:</strong> ${video.title}
+                                    </div>
+                                    `;
                                 li.addEventListener('click', function () {
                                     document.getElementById('courseVideo').src = video.url;
                                     document.getElementById('videoTitle').textContent = video.title;
@@ -448,7 +455,7 @@
                         } else {
                             document.getElementById('courseVideo').style.display = 'none';
                             document.getElementById('noVideoMessage').style.display = 'block';
-                            videosList.innerHTML = '<li class="list-group-item">لا توجد فيديوهات متاحة</li>';
+                            videosList.innerHTML = '<li class="list-group-item">لا تتوفر فيديوهات حاليا</li>';
                         }
 
                         // تعبئة قائمة المستندات
@@ -460,13 +467,13 @@
                                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                                 const addedDate = new Date(activity.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
                                 li.innerHTML = `<div>
-                                    <strong>مستند ${index + 1}:</strong> ${activity.title}
-                                </div>
-                                <a href="${activity.filePath}" class="btn btn-primary" download>تحميل</a>`;
+                                        <strong>المستند ${index + 1}:</strong> ${activity.title}
+                                    </div>
+                                    <a href="${activity.filePath}" class="btn btn-primary" download>تحميل</a>`;
                                 activitiesList.appendChild(li);
                             });
                         } else {
-                            activitiesList.innerHTML = '<li class="list-group-item">لا توجد مستندات متاحة</li>';
+                            activitiesList.innerHTML = '<li class="list-group-item">لا تتوفر مستندات حاليا</li>';
                         }
 
                         // تعبئة قائمة الاختبارات والواجبات مع إرسال ترويسة Authorization
@@ -488,13 +495,13 @@
                                         li.className = 'list-group-item d-flex justify-content-between align-items-center';
                                         const addedDate = new Date(exam.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
                                         li.innerHTML = `<div>
-                                            <strong>الامتحان ${index + 1}:</strong> ${exam.title}
-                                        </div>
-                                        <button class="btn btn-primary" onclick="viewExam('${exam.googleFormUrl}')">عرض</button>`;
+                                                <strong>الاختبار ${index + 1}:</strong> ${exam.title}
+                                            </div>
+                                            <button class="btn btn-primary" onclick="viewExam('${exam.googleFormUrl}')">عرض</button>`;
                                         examsList.appendChild(li);
                                     });
                                 } else {
-                                    examsList.innerHTML = '<li class="list-group-item">لا يوجد اختبارات او واجبات متاحة</li>';
+                                    examsList.innerHTML = '<li class="list-group-item">لا تتوفر اختبارات او واجبات حاليا</li>';
                                 }
                             })
                             .catch(err => {
@@ -503,21 +510,21 @@
                             });
                     })
                     .catch(err => {
-                        console.error('حدث خطأ أثناء جلب بيانات الدورة:', err);
-                        alert('حدث خطأ أثناء جلب بيانات الدورة');
+                        console.error('حدث خطأ أثناء جلب بيانات الكورس:', err);
+                        alert('حدث خطأ أثناء جلب بيانات الكورس');
                     });
             } else {
-                alert('لم يتم العثور على معرف الدورة');
+                alert('لم يتم العثور على معرف الكورس');
             }
 
             // تحديث روابط التنقل بناءً على حالة تسجيل الدخول
             const navLinks = document.getElementById('navLinks');
             navLinks.innerHTML = `
-                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">لوحة التحكم</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-                `;
+                        <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                        <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+                        <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+                    `;
             document.getElementById('logoutLink').addEventListener('click', function (e) {
                 e.preventDefault();
                 localStorage.removeItem('token');

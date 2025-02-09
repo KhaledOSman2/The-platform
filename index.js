@@ -64,7 +64,7 @@ function authenticateToken(req, res, next) {
         let data = readData();
         const currentUser = data.users.find(u => u.id === user.id);
         if (currentUser && currentUser.isBanned) {
-            return res.status(403).json({ message: 'حسابك معطل. يرجى التواصل مع الدعم الفني.' });
+            return res.status(403).json({ message: 'حسابك محظور. يرجى التواصل مع الدعم الفني.' });
         }
         req.user = user;
         next();
@@ -99,16 +99,18 @@ app.post('/api/register', (req, res) => {
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
     let data = readData();
-    const user = data.users.find(u => u.email === email && u.password === password);
-    if (user) {
-        if (user.isBanned) {
-            return res.status(403).json({ message: 'حسابك معطل. يرجى التواصل مع الدعم الفني.' });
-        }
-        const token = jwt.sign({ id: user.id, email: user.email, grade: user.grade, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: 'تم تسجيل الدخول بنجاح', token, user });
-    } else {
-        res.status(401).json({ message: 'بيانات الاعتماد غير صحيحة' });
+    const user = data.users.find(u => u.email === email.trim().toLowerCase());
+    if (!user) {
+        return res.status(401).json({ message: 'البريد الإلكتروني خطأ' });
     }
+    if (user.password !== password) {
+        return res.status(401).json({ message: 'كلمة المرور خطأ' });
+    }
+    if (user.isBanned) {
+        return res.status(403).json({ message: 'حسابك محظور. يرجى التواصل مع الدعم الفني.' });
+    }
+    const token = jwt.sign({ id: user.id, email: user.email, grade: user.grade, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ message: 'تم تسجيل الدخول بنجاح', token, user });
 });
 
 // ----------------------
@@ -219,7 +221,7 @@ app.get('/api/courses/:id', (req, res) => {
     if (course) {
         res.json(course);
     } else {
-        res.status(404).json({ message: 'الدورة غير موجودة' });
+        res.status(404).json({ message: 'الكورس غير موجودة' });
     }
 });
 
@@ -248,7 +250,7 @@ app.post('/api/courses', authenticateToken, upload.single('courseImage'), (req, 
     };
     data.courses.push(newCourse);
     writeData(data);
-    res.json({ message: 'تم إضافة الدورة بنجاح' });
+    res.json({ message: 'تم إضافة الكورس بنجاح' });
 });
 
 app.put('/api/courses/:id', authenticateToken, upload.single('courseImage'), (req, res) => {
@@ -284,9 +286,9 @@ app.put('/api/courses/:id', authenticateToken, upload.single('courseImage'), (re
             imageURL
         };
         writeData(data);
-        res.json({ message: 'تم تحديث الدورة بنجاح' });
+        res.json({ message: 'تم تحديث الكورس بنجاح' });
     } else {
-        res.status(404).json({ message: 'الدورة غير موجودة' });
+        res.status(404).json({ message: 'الكورس غير موجودة' });
     }
 });
 
@@ -295,7 +297,7 @@ app.delete('/api/courses/:id', authenticateToken, (req, res) => {
     const courseId = parseInt(req.params.id);
     data.courses = data.courses.filter(course => course.id !== courseId);
     writeData(data);
-    res.json({ message: 'تم حذف الدورة' });
+    res.json({ message: 'تم حذف الكورس' });
 });
 
 app.post('/api/uploadActivity', authenticateToken, upload.single('activityFile'), (req, res) => {
@@ -348,7 +350,7 @@ app.post('/api/exams', authenticateToken, (req, res) => {
     const { title, grade, courseId, googleFormUrl } = req.body;
     const course = data.courses.find(c => c.id === parseInt(courseId) && c.grade.toString() === grade.toString());
     if (!course) {
-        return res.status(404).json({ message: 'الدورة غير موجودة لهذا الصف الدراسي' });
+        return res.status(404).json({ message: 'الكورس غير موجودة لهذا الصف الدراسي' });
     }
     const newExam = {
         id: Date.now(),
@@ -370,7 +372,7 @@ app.get('/api/exams', authenticateToken, (req, res) => {
     let data = readData();
     const course = data.courses.find(c => c.id === parseInt(courseId) && (!grade || c.grade.toString() === grade.toString()));
     if (!course) {
-        return res.status(404).json({ message: 'الدورة غير موجودة لهذا الصف الدراسي' });
+        return res.status(404).json({ message: 'الكورس غير موجودة لهذا الصف الدراسي' });
     }
     res.json({ exams: course.exams || [], course });
 });
@@ -395,10 +397,10 @@ app.put('/api/exams/:id', authenticateToken, (req, res) => {
     const { title, grade, courseId, googleFormUrl } = req.body;
     const newCourseId = parseInt(courseId);
 
-    // البحث عن الدورة الجديدة التي يجب أن ينتمي إليها الامتحان
+    // البحث عن الكورس الجديدة التي يجب أن ينتمي إليها الامتحان
     const newCourse = data.courses.find(c => c.id === newCourseId && c.grade.toString() === grade.toString());
     if (!newCourse) {
-        return res.status(404).json({ message: 'الدورة غير موجودة لهذا الصف الدراسي' });
+        return res.status(404).json({ message: 'الكورس غير موجودة لهذا الصف الدراسي' });
     }
 
     // البحث عن الامتحان في جميع الدورات
@@ -409,7 +411,7 @@ app.put('/api/exams/:id', authenticateToken, (req, res) => {
             const examIndex = course.exams.findIndex(e => e.id === examId);
             if (examIndex !== -1) {
                 examData = course.exams[examIndex];
-                // إزالة الامتحان من الدورة القديمة
+                // إزالة الامتحان من الكورس القديمة
                 course.exams.splice(examIndex, 1);
                 examFound = true;
             }
@@ -425,7 +427,7 @@ app.put('/api/exams/:id', authenticateToken, (req, res) => {
     examData.googleFormUrl = googleFormUrl;
     examData.courseId = newCourseId;
 
-    // إضافة الامتحان إلى قائمة الامتحانات للدورة الجديدة
+    // إضافة الامتحان إلى قائمة الامتحانات للكورس الجديدة
     if (!newCourse.exams) {
         newCourse.exams = [];
     }
@@ -457,6 +459,47 @@ app.delete('/api/exams/:id', authenticateToken, (req, res) => {
 });
 
 // ----------------------
+// API لإدارة الإشعارات
+// ----------------------
+app.get('/api/notifications', authenticateToken, (req, res) => {
+    let data = readData();
+    res.json(data.notifications || []);
+});
+
+app.post('/api/notifications', authenticateToken, (req, res) => {
+    let data = readData();
+    const { title, content } = req.body;
+    if (!data.notifications) {
+        data.notifications = [];
+    }
+    data.notifications.push({ id: Date.now(), title, content });
+    writeData(data);
+    res.json({ message: 'تم إضافة الإشعار بنجاح' });
+});
+
+app.put('/api/notifications/:id', authenticateToken, (req, res) => {
+    let data = readData();
+    const notificationId = parseInt(req.params.id);
+    const index = data.notifications.findIndex(n => n.id === notificationId);
+    if (index !== -1) {
+        const { title, content } = req.body;
+        data.notifications[index] = { ...data.notifications[index], title, content };
+        writeData(data);
+        res.json({ message: 'تم تحديث الإشعار بنجاح' });
+    } else {
+        res.status(404).json({ message: 'الإشعار غير موجود' });
+    }
+});
+
+app.delete('/api/notifications/:id', authenticateToken, (req, res) => {
+    let data = readData();
+    const notificationId = parseInt(req.params.id);
+    data.notifications = data.notifications.filter(notification => notification.id !== notificationId);
+    writeData(data);
+    res.json({ message: 'تم حذف الإشعار' });
+});
+
+// ----------------------
 // API للإحصائيات (محمية)
 // ----------------------
 app.get('/api/analytics', authenticateToken, (req, res) => {
@@ -482,4 +525,3 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-//
