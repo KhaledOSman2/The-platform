@@ -15,21 +15,47 @@
             --accent-color: #10b981;
             --text-dark: #1e293b;
             --text-light: #64748b;
-            --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            --gradient-primary: linear-gradient(135deg, #2563eb, #1d4ed8);
+        }
+
+        /* إعدادات الظهور التدريجي للعناصر */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* تأثير حركة أساسية */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         body {
-            background-color: #f8fafc;
+            background: #f8fafc;
             font-family: 'Cairo', sans-serif;
             color: var(--text-dark);
             line-height: 1.7;
             margin-top: 80px;
         }
 
+        /* شريط التنقل - النسخة القديمة */
         .navbar {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             padding: 1rem 0;
-            background: rgba(255, 255, 255, 0.95) !important;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
         }
 
@@ -61,11 +87,25 @@
             color: white !important;
         }
 
+        /* التذييل */
+
         .footer {
             background: var(--text-dark);
             color: white;
-            padding: 4rem 0 2rem;
+            padding: 2rem 0 2rem;
             margin-top: 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
 
         .footer a {
@@ -77,58 +117,80 @@
             color: var(--accent-color);
         }
 
-        .course-header {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            margin-top: 2rem;
+        /* قسم تفاصيل الكورس */
+        .course-header.innovative {
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .course-image-container {
+            flex: 1 1 50%;
+            overflow: hidden;
             position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .course-thumbnail {
-            height: 300px;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .course-thumbnail img {
+        .course-image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 12px;
+            transition: transform 0.5s ease, filter 0.5s ease;
         }
 
-        .course-thumbnail:hover {
-            transform: translateY(-5px);
+        .course-image-container:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
         }
 
-        .course-content {
+        .course-details-container {
+            flex: 1 1 50%;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            text-align: right;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .course-details-container::after {
+            content: "";
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 1rem;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
+            height: 5px;
+            background: var(--gradient-primary);
         }
 
-        .course-content h2 {
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.3;
+        .course-details-container h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
 
-        .course-content p {
-            font-size: 0.9rem;
-            line-height: 1.8;
-            margin-bottom: 0;
+        .course-details-container p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
         }
 
+        .course-meta {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .course-meta span {
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        /* قسم الفيديو */
         .course-video {
             border-radius: 12px;
             overflow: hidden;
@@ -136,6 +198,7 @@
             margin-top: 2rem;
             background: white;
             padding: 1rem;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .course-video .video-title {
@@ -151,15 +214,24 @@
             height: 500px;
             border: none;
             border-radius: 12px;
+            transition: transform 0.3s ease;
         }
 
+        .course-video iframe:hover {
+            transform: scale(1.02);
+        }
+
+        /* تنسيق قائمة العناصر والبطاقات */
         .list-group-item {
             padding: 1.2rem 1.5rem;
-            border-color: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
             box-sizing: border-box;
+            background: #fff;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
         }
 
         .list-group-item:hover {
@@ -172,11 +244,17 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         @media (min-width: 992px) {
             .sticky-container {
-                position: -webkit-sticky;
                 position: sticky;
                 top: 10rem;
             }
@@ -204,6 +282,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .card-header:hover {
+            background: var(--gradient-primary);
         }
 
         .card-header i {
@@ -218,17 +301,14 @@
             max-height: 0;
             overflow: hidden;
             opacity: 0;
-            transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding 0.5s ease;
             padding: 0 1.5rem;
-            /* الحفاظ على البادينج الأفقي */
         }
 
         .card-body.show {
             max-height: 500px;
-            /* قيمة كبيرة بما يكفي لعرض المحتوى */
             opacity: 1;
             padding: 1rem 1.5rem;
-            /* استعادة البادينج عند الفتح */
         }
 
         .activities-header {
@@ -243,9 +323,49 @@
             text-align: center;
         }
 
+        /* استجابة الشاشات الصغيرة */
         @media (max-width: 576px) {
+            .course-header.innovative {
+                flex-direction: column;
+                animation: none;
+            }
+
+            .course-image-container,
+            .course-details-container {
+                flex: 1 1 100%;
+                width: 100%;
+            }
+
+            .course-image-container img {
+                max-height: 250px;
+            }
+
+            .course-details-container {
+                padding: 1rem;
+                text-align: center;
+                backdrop-filter: none;
+            }
+
+            .course-details-container h1 {
+                font-size: 2rem;
+            }
+
+            .course-details-container p {
+                font-size: 1rem;
+            }
+
             .course-video iframe {
                 height: 300px;
+            }
+
+            /* تقليل التأثيرات على الهواتف المحمولة */
+            .navbar {
+                backdrop-filter: none;
+            }
+
+            .course-video,
+            .course-header.innovative {
+                animation: none;
             }
 
             .modal-dialog {
@@ -268,23 +388,39 @@
                 height: 100%;
                 width: 100%;
             }
+        }
 
-            .video-title {
-                font-size: 0.5rem;
-                /* Reduce font size for mobile */
-            }
+        /* زر الرجوع إلى الأعلى */
+        #backToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 10px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        #backToTopBtn:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
         }
     </style>
 </head>
 
-<body style="margin-top: 80px;">
-
-    <!-- شريط تنقل محسّن -->
+<body>
+    <!-- شريط التنقل - النسخة القديمة -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <i class="fas fa-graduation-cap"></i>
-                N U M B E R 1
+                <i class="fas fa-graduation-cap"></i> N U M B E R 1
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -300,18 +436,22 @@
         </div>
     </nav>
 
-    <!-- محتوى الصفحة الرئيسية -->
-    <div class="container">
+    <!-- المحتوى الرئيسي مع تأثيرات الظهور التدريجي -->
+    <div class="container" id="courseContent">
         <div class="row">
             <!-- الجانب الأيسر: تفاصيل الكورس والفيديو الرئيسي -->
-            <div class="col-lg-8 mb-4">
-                <div class="course-header">
-                    <div class="course-thumbnail">
+            <div class="col-lg-8 mb-4 reveal">
+                <div class="course-header innovative">
+                    <div class="course-image-container">
                         <img id="courseImage" src="" alt="صورة الكورس">
                     </div>
-                    <div class="course-content">
-                        <h2 id="courseTitle"></h2>
+                    <div class="course-details-container">
+                        <h1 id="courseTitle"></h1>
                         <p id="courseGrade"></p>
+                        <div class="course-meta">
+                            <span class="course-duration">مدة الكورس: 5 ساعات</span>
+                            <i class="fas fa-star" style="color:#f7a619"></i> 4.5</span>
+                        </div>
                     </div>
                 </div>
                 <div class="course-video">
@@ -325,20 +465,19 @@
                     </div>
                 </div>
             </div>
-
-            <!-- الجانب الأيمن: قائمة فيديوهات الكورس -->
-            <div class="col-lg-4">
+            <!-- الجانب الأيمن: قائمة فيديوهات الكورس والمستندات والاختبارات -->
+            <div class="col-lg-4 reveal">
                 <div class="sticky-container">
                     <div class="card">
-                        <div class="card-header bg-primary text-white videos-header">
-                            <i class="fab fa-youtube"></i> محتوى الكورس <i class="fas fa-chevron-down"></i>
+                        <div class="card-header bg-primary text-white videos-header" aria-expanded="false">
+                            <i class="fab fa-youtube"></i> المحاضرات <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="card-body" id="videosList">
                             <!-- سيتم تعبئة الفيديوهات ديناميكياً هنا -->
                         </div>
                     </div>
                     <div class="card mt-4">
-                        <div class="card-header activities-header text-white">
+                        <div class="card-header bg-primary text-white" aria-expanded="false">
                             <i class="fas fa-file-pdf"></i> المستندات <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="card-body" id="activitiesList">
@@ -346,8 +485,9 @@
                         </div>
                     </div>
                     <div class="card mt-4">
-                        <div class="card-header bg-secondary text-white exams-header">
-                            <i class="fas fa-file-alt"></i> الاختبارات والواجبات <i class="fas fa-chevron-down"></i>
+                        <!-- تغيير لون رأس بطاقة الاختبارات إلى bg-primary بدلاً من bg-info -->
+                        <div class="card-header bg-primary text-white exams-header" aria-expanded="false">
+                            <i class="fas fa-file-alt"></i> الاختبارات <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="card-body" id="examsList">
                             <!-- سيتم تعبئة الامتحانات ديناميكياً هنا -->
@@ -358,12 +498,12 @@
         </div>
     </div>
 
-    <!-- Modal لعرض الاختبار -->
+    <!-- Modal لعرض الاختبار (عرض كامل الشاشة على الأجهزة المحمولة) -->
     <div class="modal fade" id="examModal" tabindex="-1" aria-labelledby="examModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="examModalLabel">خروج من الاختبار</h5>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h5 class="modal-title" id="examModalLabel"></h5>&nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                 </div>
                 <div class="modal-body">
@@ -373,8 +513,13 @@
         </div>
     </div>
 
-    <!-- تذييل الصفحة -->
-    <footer class="footer text-center">
+    <!-- زر الرجوع إلى الأعلى -->
+    <button onclick="topFunction()" id="backToTopBtn" title="الرجوع إلى الأعلى">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- التذييل -->
+    <footer class="footer">
         <div class="container">
             <p class="mb-1">&copy; N U M B E R 1</p>
             <p>
@@ -383,8 +528,7 @@
             </p>
         </div>
         <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
-            <span class="font-w-bold space-x-1">
-            </span>
+            <span class="font-w-bold space-x-1"></span>
             <span>
                 <p>
                     <span class="text-redMelon-300">Developed By</span>
@@ -401,199 +545,155 @@
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // التحقق من وجود التوكن، وإلا يتم إعادة التوجيه لتسجيل الدخول
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // استرجاع معرف الكورس من معلمات الرابط
-            const urlParams = new URLSearchParams(window.location.search);
-            const courseId = urlParams.get('id');
-
-            if (courseId) {
-                fetch(`/api/courses/${courseId}`, {
+        // دالة تحميل بيانات الكورس باستخدام async/await مع معالجة الأخطاء
+        async function loadCourseData() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const urlParams = new URLSearchParams(window.location.search);
+                const courseId = urlParams.get('id');
+                if (!courseId) {
+                    alert('لم يتم العثور على معرف الكورس');
+                    return;
+                }
+                const courseResponse = await fetch(`/api/courses/${courseId}`, {
                     headers: { Authorization: `Bearer ${token}` }
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(course => {
-                        // تعبئة تفاصيل الكورس
-                        document.getElementById('courseTitle').textContent = course.title;
-                        document.getElementById('courseGrade').textContent = course.grade;
-                        document.getElementById('courseImage').src = course.imageURL;
-                        document.getElementById('courseVideo').src = course.videoURL;
-                        document.getElementById('videoTitle').textContent = course.videos[0]?.title || '';
+                });
+                if (!courseResponse.ok) throw new Error('Network response was not ok');
+                const course = await courseResponse.json();
+                document.getElementById('courseTitle').textContent = course.title;
+                document.getElementById('courseGrade').textContent = course.grade;
+                document.getElementById('courseImage').src = course.imageURL;
+                document.getElementById('courseVideo').src = course.videoURL;
+                document.getElementById('videoTitle').textContent = course.videos[0]?.title || '';
 
-                        // تعبئة قائمة الفيديوهات
-                        const videosList = document.getElementById('videosList');
-                        videosList.innerHTML = '';
-                        if (course.videos && course.videos.length) {
-                            document.getElementById('courseVideo').src = course.videoURL;
-                            document.getElementById('videoTitle').textContent = course.videos[0]?.title || '';
-                            document.getElementById('noVideoMessage').style.display = 'none';
-                            course.videos.forEach((video, index) => {
-                                const li = document.createElement('li');
-                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                                const addedDate = new Date(video.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
-                                li.innerHTML = `<div>
-                                        <strong>المحاضرة ${index + 1}:</strong> ${video.title}
-                                    </div>
-                                    `;
-                                li.addEventListener('click', function () {
-                                    document.getElementById('courseVideo').src = video.url;
-                                    document.getElementById('videoTitle').textContent = video.title;
-                                });
-                                videosList.appendChild(li);
-                            });
-                        } else {
-                            document.getElementById('courseVideo').style.display = 'none';
-                            document.getElementById('noVideoMessage').style.display = 'block';
-                            videosList.innerHTML = '<li class="list-group-item">لا تتوفر فيديوهات حاليا</li>';
-                        }
-
-                        // تعبئة قائمة المستندات
-                        const activitiesList = document.getElementById('activitiesList');
-                        activitiesList.innerHTML = '';
-                        if (course.activities && course.activities.length) {
-                            course.activities.forEach((activity, index) => {
-                                const li = document.createElement('li');
-                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                                const addedDate = new Date(activity.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
-                                li.innerHTML = `<div>
-                                        <strong>المستند ${index + 1}:</strong> ${activity.title}
-                                    </div>
-                                    <a href="${activity.filePath}" class="btn btn-primary" download>تحميل</a>`;
-                                activitiesList.appendChild(li);
-                            });
-                        } else {
-                            activitiesList.innerHTML = '<li class="list-group-item">لا تتوفر مستندات حاليا</li>';
-                        }
-
-                        // تعبئة قائمة الاختبارات والواجبات مع إرسال ترويسة Authorization
-                        const examsList = document.getElementById('examsList');
-                        examsList.innerHTML = '';
-                        fetch(`/api/exams?courseId=${courseId}&grade=${course.grade}`, {
-                            headers: { Authorization: `Bearer ${token}` }
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(({ exams }) => {
-                                if (exams && exams.length) {
-                                    exams.forEach((exam, index) => {
-                                        const li = document.createElement('li');
-                                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                                        const addedDate = new Date(exam.addedDate).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
-                                        li.innerHTML = `<div>
-                                                <strong>الاختبار ${index + 1}:</strong> ${exam.title}
-                                            </div>
-                                            <button class="btn btn-primary" onclick="viewExam('${exam.googleFormUrl}')">عرض</button>`;
-                                        examsList.appendChild(li);
-                                    });
-                                } else {
-                                    examsList.innerHTML = '<li class="list-group-item">لا تتوفر اختبارات او واجبات حاليا</li>';
-                                }
-                            })
-                            .catch(err => {
-                                console.error('حدث خطأ أثناء جلب بيانات الامتحانات:', err);
-                                alert('برجاء اعادة تسجيل الدخول');
-                            });
-                    })
-                    .catch(err => {
-                        console.error('حدث خطأ أثناء جلب بيانات الكورس:', err);
-                        alert('حدث خطأ أثناء جلب بيانات الكورس');
+                // تعبئة قائمة الفيديوهات
+                const videosList = document.getElementById('videosList');
+                videosList.innerHTML = '';
+                if (course.videos && course.videos.length > 0) {
+                    document.getElementById('noVideoMessage').style.display = 'none';
+                    course.videos.forEach((video, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        li.innerHTML = `<div><strong>المحاضرة ${index + 1}:</strong> ${video.title}</div>`;
+                        li.addEventListener('click', () => {
+                            document.getElementById('courseVideo').src = video.url;
+                            document.getElementById('videoTitle').textContent = video.title;
+                        });
+                        videosList.appendChild(li);
                     });
-            } else {
-                alert('لم يتم العثور على معرف الكورس');
-            }
+                } else {
+                    document.getElementById('courseVideo').style.display = 'none';
+                    document.getElementById('noVideoMessage').style.display = 'block';
+                    videosList.innerHTML = '<li class="list-group-item">لا تتوفر محاضرات حاليا</li>';
+                }
 
-            // تحديث روابط التنقل بناءً على حالة تسجيل الدخول
+                // تعبئة قائمة المستندات
+                const activitiesList = document.getElementById('activitiesList');
+                activitiesList.innerHTML = '';
+                if (course.activities && course.activities.length > 0) {
+                    course.activities.forEach((activity, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        li.innerHTML = `<div><strong>المستند ${index + 1}:</strong> ${activity.title}</div>
+              <a href="${activity.filePath}" class="btn btn-primary" download>تحميل</a>`;
+                        activitiesList.appendChild(li);
+                    });
+                } else {
+                    activitiesList.innerHTML = '<li class="list-group-item">لا تتوفر مستندات حاليا</li>';
+                }
+
+                // تعبئة قائمة الاختبارات والواجبات
+                const examsList = document.getElementById('examsList');
+                examsList.innerHTML = '';
+                try {
+                    const examsResponse = await fetch(`/api/exams?courseId=${courseId}&grade=${course.grade}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    if (!examsResponse.ok) throw new Error('Network response was not ok');
+                    const { exams } = await examsResponse.json();
+                    if (exams && exams.length > 0) {
+                        exams.forEach((exam, index) => {
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                            li.innerHTML = `<div><strong>الاختبار ${index + 1}:</strong> ${exam.title}</div>
+                <button class="btn btn-primary" onclick="viewExam('${exam.googleFormUrl}','${exam.title}')">عرض</button>`;
+                            examsList.appendChild(li);
+                        });
+                    } else {
+                        examsList.innerHTML = '<li class="list-group-item">لا تتوفر اختبارات  حاليا</li>';
+                    }
+                } catch (examsError) {
+                    console.error('Error loading exams:', examsError);
+                    examsList.innerHTML = '<li class="list-group-item">لا تتوفر اختبارات حاليا</li>';
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                    alert('انتهت صلاحية الجلسة الرجاء تسجيل الدخول مرة أخرى.');
+
+                }
+            } catch (error) {
+                console.error('Error loading course data:', error);
+                alert('حدث خطأ أثناء جلب بيانات الكورس');
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCourseData();
             const navLinks = document.getElementById('navLinks');
             navLinks.innerHTML = `
-                        <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
-                        <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
-                        <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-                    `;
-            document.getElementById('logoutLink').addEventListener('click', function (e) {
+        <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+        <li class="nav-item"><a class="nav-link active" href="courses.html">الكورسات</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+      `;
+            document.getElementById('logoutLink').addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('token');
                 window.location.href = 'login.html';
             });
-
-            // إضافة وظيفة الطي للبطاقات
             document.querySelectorAll('.card-header').forEach(header => {
                 header.addEventListener('click', function () {
                     const cardBody = this.nextElementSibling;
                     cardBody.classList.toggle('show');
+                    const expanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !expanded);
+                    this.classList.toggle('collapsed');
                 });
             });
+
+            // تطبيق تأثير الظهور التدريجي على العناصر ذات الفئة reveal
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
         });
 
-        function viewExam(googleFormUrl) {
+        function viewExam(googleFormUrl, examTitle) {
             const examModal = new bootstrap.Modal(document.getElementById('examModal'));
             document.getElementById('examIframe').src = googleFormUrl;
+            document.getElementById('examModalLabel').textContent = examTitle;
             examModal.show();
+        }
+
+        window.onscroll = function () {
+            const backToTopBtn = document.getElementById("backToTopBtn");
+            backToTopBtn.style.display = (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) ? "block" : "none";
+        };
+
+        function topFunction() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
 
 </html>
-<!-- زر الرجوع إلى الأعلى -->
-<button onclick="topFunction()" id="backToTopBtn" title="الرجوع إلى الأعلى">
-    <i class="fas fa-arrow-up"></i>
-</button>
-
-<style>
-    #backToTopBtn {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 30px;
-        z-index: 99;
-        font-size: 18px;
-        border: none;
-        outline: none;
-        background-color: var(--primary-color);
-        color: white;
-        cursor: pointer;
-        padding: 15px;
-        border-radius: 10px;
-    }
-
-    #backToTopBtn:hover {
-        background-color: var(--secondary-color);
-    }
-</style>
-
-<script>
-    // إظهار زر الرجوع إلى الأعلى عند التمرير
-    window.onscroll = function () {
-        scrollFunction();
-    };
-
-    function scrollFunction() {
-        const backToTopBtn = document.getElementById("backToTopBtn");
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            backToTopBtn.style.display = "block";
-        } else {
-            backToTopBtn.style.display = "none";
-        }
-    }
-
-    // وظيفة الرجوع إلى الأعلى
-    function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
-</script>

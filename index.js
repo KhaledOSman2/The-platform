@@ -130,8 +130,10 @@ app.delete('/api/users/:id', authenticateToken, (req, res) => {
 });
 
 app.put('/api/users/:id', authenticateToken, (req, res) => {
-    let data = readData();
     const userId = parseInt(req.params.id);
+    // Allow update only if the requester is admin or it's their own account
+    if (!req.user.isAdmin && req.user.id !== userId) return res.sendStatus(403);
+    let data = readData();
     const index = data.users.findIndex(u => u.id === userId);
     if (index !== -1) {
         const { username, email, password, grade } = req.body;
@@ -144,6 +146,8 @@ app.put('/api/users/:id', authenticateToken, (req, res) => {
 });
 
 app.post('/api/users/:id/make-admin', authenticateToken, (req, res) => {
+    // Only an admin can perform this action
+    if (!req.user.isAdmin) return res.sendStatus(403);
     let data = readData();
     const userId = parseInt(req.params.id);
     const user = data.users.find(user => user.id === userId);
@@ -157,6 +161,8 @@ app.post('/api/users/:id/make-admin', authenticateToken, (req, res) => {
 });
 
 app.post('/api/users/:id/remove-admin', authenticateToken, (req, res) => {
+    // Only an admin can perform this action
+    if (!req.user.isAdmin) return res.sendStatus(403);
     let data = readData();
     const userId = parseInt(req.params.id);
     const user = data.users.find(user => user.id === userId);
@@ -254,6 +260,8 @@ app.post('/api/courses', authenticateToken, upload.single('courseImage'), (req, 
 });
 
 app.put('/api/courses/:id', authenticateToken, upload.single('courseImage'), (req, res) => {
+    // Only an admin is allowed to update course details
+    if (!req.user.isAdmin) return res.sendStatus(403);
     let data = readData();
     const courseId = parseInt(req.params.id);
     const index = data.courses.findIndex(c => c.id === courseId);
@@ -392,6 +400,8 @@ app.get('/api/all-exams', authenticateToken, (req, res) => {
 
 // API لتحديث امتحان
 app.put('/api/exams/:id', authenticateToken, (req, res) => {
+    // Only an admin is allowed to update exam details
+    if (!req.user.isAdmin) return res.sendStatus(403);
     let data = readData();
     const examId = parseInt(req.params.id);
     const { title, grade, courseId, googleFormUrl } = req.body;
@@ -508,12 +518,15 @@ app.get('/api/analytics', authenticateToken, (req, res) => {
     const totalUsers = data.users.length;
     const totalCourses = data.courses.length;
     const totalActivities = data.courses.reduce((sum, course) => sum + (course.activities ? course.activities.length : 0), 0);
+    const totalVideos = data.courses.reduce((sum, course) => sum + (course.videos ? course.videos.length : 0), 0);
     const totalExams = data.courses.reduce((sum, course) => sum + (course.exams ? course.exams.length : 0), 0);
-    res.json({ totalUsers, totalCourses, totalActivities, totalExams });
+    res.json({ totalUsers, totalCourses, totalActivities, totalVideos, totalExams });
 });
 
 app.get('/api/dashboard', authenticateToken, (req, res) => {
-    res.json({ message: 'لوحة تحكم الطالب', user: req.user });
+    let data = readData();
+    const currentUser = data.users.find(u => u.id === req.user.id);
+    res.json({ message: 'لوحة تحكم الطالب', user: currentUser });
 });
 
 app.get('/api/admin/dashboard', authenticateToken, (req, res) => {

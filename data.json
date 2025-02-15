@@ -2,11 +2,12 @@
   "users": [
     {
       "id": 1738562296250,
-      "username": "ADMIN",
+      "username": "admin",
       "email": "admin@gmail.com",
       "password": "1",
       "isAdmin": true,
-      "grade": "الصف الاول الاعدادي"
+      "grade": "الصف الاول الاعدادي",
+      "isBanned": false
     },
     {
       "id": 1738667145002,
@@ -63,17 +64,8 @@
       "isBanned": false
     },
     {
-      "id": 1739034857106,
-      "username": "1234",
-      "email": "12340@gmail.com",
-      "password": "123",
-      "grade": "الصف الاول الاعدادي",
-      "isAdmin": false,
-      "isBanned": false
-    },
-    {
       "id": 1739037907642,
-      "username": "hassan@gmail.com",
+      "username": "hassan",
       "email": "hassan@gmail.com",
       "password": "123",
       "grade": "الصف الاول الاعدادي",
@@ -83,7 +75,7 @@
     {
       "id": 1739051689779,
       "username": "admin",
-      "email": "admin11@gmail.com",
+      "email": "admin1@gmail.com",
       "password": "1",
       "grade": "الصف الاول الاعدادي",
       "isAdmin": false,
@@ -97,23 +89,57 @@
       "grade": "الصف الاول الاعدادي",
       "isAdmin": false,
       "isBanned": false
+    },
+    {
+      "id": 1739642099899,
+      "username": "admin@gmail.com",
+      "email": "moha000med@gmail.com",
+      "password": "1",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
     }
   ],
   "courses": [
     {
-      "id": 1739105534467,
-      "title": "سكان قارة افريقيا",
-      "videoURL": "",
+      "id": 1739638299705,
+      "title": "سكان قارة افريقيا.",
+      "videoURL": "https://www.youtube.com/embed/Yns0ZTupI3Q?si=WbVOGN5ayyt6Iggs",
       "videos": [
         {
           "title": "الدرس الاول نمو وتوزيع سكان قارة افريقيا",
-          "url": "",
-          "addedDate": "2025-02-09T12:52:14.467Z"
+          "url": "https://www.youtube.com/embed/Yns0ZTupI3Q?si=WbVOGN5ayyt6Iggs",
+          "addedDate": "2025-02-15T17:25:45.232Z"
+        },
+        {
+          "title": "الدرس الثاني المناخ العام",
+          "url": "https://www.youtube.com/embed/Yns0ZTupI3Q?si=WbVOGN5ayyt6Iggs",
+          "addedDate": "2025-02-15T17:25:45.232Z"
         }
       ],
-      "activities": [],
+      "activities": [
+        {
+          "title": "ملخص الشرح",
+          "filePath": "/uploads/1739638299548.pdf",
+          "addedDate": "2025-02-15T16:51:39.584Z"
+        },
+        {
+          "title": "واجب",
+          "filePath": "/uploads/1739638299548.pdf",
+          "addedDate": "2025-02-15T16:51:39.664Z"
+        }
+      ],
       "grade": "الصف الاول الاعدادي",
-      "imageURL": "/uploads/1739105534455.jpeg"
+      "imageURL": "/uploads/1739638299693.jpeg",
+      "exams": [
+        {
+          "id": 1739638348007,
+          "title": " الاختبار الاول الشامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": 1739638299705,
+          "addedDate": "2025-02-15T16:52:28.007Z"
+        }
+      ]
     }
   ],
   "grades": [

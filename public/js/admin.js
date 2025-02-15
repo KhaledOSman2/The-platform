@@ -35,15 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     const tr = document.createElement('tr');
                     tr.classList.add('table-light'); // Add class for better design
                     tr.innerHTML = `
-                        <td>${user.username} ${user.isAdmin ? '⭐' : ''}</td>
+                        <td>${user.isAdmin ? '<span class="badge bg-success fw-bold py-2">ادمن</span></div>' : ''} ${user.isBanned ? '<span class="badge bg-danger fw-bold py-2">محظور</span></div> ' : ''} ${user.username}</td>
                         <td>${user.email}</td>
                         <td>${user.grade || 'N/A'}</td>
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button> </td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i></button> </td>
                             <td>
                             ${user.isBanned ? `<button class="btn btn-sm btn-success" onclick="unbanUser(${user.id})">إلغاء الحظر</button>` : `<button class="btn btn-sm btn-danger" onclick="banUser(${user.id})">حظر</button>`}
-                            ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية المسؤول</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى مسؤول</button>`}
+                            ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية الادمن</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى ادمن</button>`}
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         </td>
                         <td>${course.grade}</td>
                         <td>${course.videos ? course.videos.length : 0}</td>
-                        <td>${course.exams ? course.exams.length : 0}</td>
+                        <td>${course.activities ? course.activities.length : 0}</td>
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">حذف</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})"><i class="fas fa-trash"></i></button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -101,13 +101,22 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
+                console.log('Analytics response:', data);
+                // Convert totalVideos to a number
+                const videosCount = parseInt(data.totalVideos, 10);
+                if (!isNaN(videosCount)) {
+                    document.getElementById('totalVideos').textContent = videosCount;
+                } else {
+                    console.error('Invalid totalVideos:', data.totalVideos);
+                    document.getElementById('totalVideos').textContent = 0;
+                }
                 document.getElementById('totalUsers').textContent = data.totalUsers || 0;
                 document.getElementById('totalCourses').textContent = data.totalCourses || 0;
-                document.getElementById('totalActivities').textContent = data.totalActivities || 0;
                 document.getElementById('totalExams').textContent = data.totalExams || 0;
             })
             .catch(err => console.error(err));
     }
+
 
     // تحميل قائمة الصفوف الدراسية
     function loadGrades(page = 1) {
@@ -162,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${activitiesCount}</td>
                              <td>${gradevideoCount}</td>
                             <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">حذف</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})"><i class="fas fa-trash"></i></button>
                             </td>
                         `;
                         gradesTableBody.appendChild(tr);
@@ -197,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${exam.courseTitle}</td>
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editExam(${JSON.stringify(exam)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteExam(${exam.id})">حذف</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteExam(${exam.id})"><i class="fas fa-trash"></i></button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -230,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${notification.content}</td>
                         <td>
                             <button class="btn btn-sm btn-warning me-1" onclick='editNotification(${JSON.stringify(notification)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})">حذف</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})"><i class="fas fa-trash"></i></button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -385,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="input-group flex-fill me-2">
                         <input type="url" class="form-control video-url" placeholder="رابط الفيديو">
                     </div>
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
                 </div>
             `;
             videosContainer.appendChild(videoInput);
@@ -407,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="input-group flex-fill me-2">
                         <input type="file" class="form-control activity-file" accept=".pdf,video/*" required>
                     </div>
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
                 </div>
             `;
             activitiesContainer.appendChild(activityInput);
@@ -563,7 +572,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="input-group flex-fill me-2">
                         <input type="url" class="form-control video-url" placeholder="رابط الفيديو" value="${video.url}">
                     </div>
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
                 </div>
             `;
             videosContainer.appendChild(videoInput);
@@ -583,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <input type="file" class="form-control activity-file" accept=".pdf,video/*">
                     </div>
                     <input type="hidden" class="existing-file-path" value="${activity.filePath}">
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
                 </div>
             `;
             activitiesContainer.appendChild(activityInput);
@@ -610,7 +619,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     window.removeAdmin = function (userId) {
-        if (confirm('هل أنت متأكد من إزالة صلاحية المسؤول لهذا المستخدم؟')) {
+        if (confirm('هل أنت متأكد من إزالة صلاحية الادمن لهذا المستخدم؟')) {
             fetch(`/api/users/${userId}/remove-admin`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` }

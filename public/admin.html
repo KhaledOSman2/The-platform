@@ -222,14 +222,22 @@
         <div id="sidebar-wrapper">
             <div class="sidebar-heading">لوحة الأدمن</div>
             <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action" href="#usersSection">إدارة الطلاب</a>
-                <a class="list-group-item list-group-item-action" href="#coursesSection">إدارة الكورسات</a>
-                <a class="list-group-item list-group-item-action" href="#examsSection">إدارة الامتحانات</a>
-                <a class="list-group-item list-group-item-action" href="#gradesSection">إدارة الصفوف الدراسية</a>
-                <a class="list-group-item list-group-item-action" href="#notificationsSection">إدارة الإشعارات</a>
-                <a class="list-group-item list-group-item-action" href="/dashboard.html">لوحة التحكم</a>
-                <a class="list-group-item list-group-item-action" href="index.html">الرئيسية</a>
-                <a class="list-group-item list-group-item-action" href="#" id="logoutLink">تسجيل الخروج</a>
+                <a class="list-group-item" href="#usersSection"><i class="fas fa-user-graduate me-2"></i> إدارة
+                    الطلاب</a>
+                <a class="list-group-item" href="#coursesSection"><i class="fab fa-youtube me-2"></i> إدارة
+                    الكورسات</a>
+                <a class="list-group-item" href="#examsSection"><i class="fas fa-file-alt me-2"></i> إدارة
+                    الامتحانات</a>
+                <a class="list-group-item" href="#gradesSection"><i class="fas fa-chalkboard-teacher me-2"></i>
+                    إدارة الصفوف
+                    الدراسية</a>
+                <a class="list-group-item" href="#notificationsSection"><i class="fas fa-bell me-2"></i> إدارة
+                    الإشعارات</a>
+                <a class="list-group-item" href="/dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> لوحة
+                    التحكم</a>
+                <a class="list-group-item" href="index.html"><i class="fas fa-home me-2"></i> الرئيسية</a>
+                <a class="list-group-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> تسجيل
+                    الخروج</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -249,16 +257,16 @@
                 <section id="analyticsSection">
                     <div class="row">
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card">عدد الطلاب: <span id="totalUsers">0</span></div>
+                            <div class="stat-card">الطلاب: <span id="totalUsers">0</span></div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card">عدد الكورسات: <span id="totalCourses">0</span></div>
+                            <div class="stat-card">الكورسات: <span id="totalCourses">0</span></div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card">المستندات: <span id="totalActivities">0</span></div>
+                            <div class="stat-card">الفيديوهات: <span id="totalVideos">0</span></div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card">عدد الامتحانات: <span id="totalExams">0</span></div>
+                            <div class="stat-card">الامتحانات: <span id="totalExams">0</span></div>
                         </div>
                     </div>
                 </section>
@@ -323,8 +331,8 @@
                                 <tr>
                                     <th>العنوان</th>
                                     <th>الصف الدراسي</th>
-                                    <th>عدد الفيديوهات</th>
-                                    <th>عدد الامتحانات</th>
+                                    <th>الفيديوهات</th>
+                                    <th>المستندات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -402,11 +410,11 @@
                             <thead>
                                 <tr>
                                     <th>اسم الصف الدراسي</th>
-                                    <th>عدد الطلاب</th>
-                                    <th>عدد الكورسات</th>
-                                    <th>عدد الامتحانات</th>
+                                    <th>الطلاب</th>
+                                    <th>الكورسات</th>
+                                    <th>الامتحانات</th>
                                     <th>المستندات</th>
-                                    <th>عدد الفيديوهات</th>
+                                    <th>الفيديوهات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -465,10 +473,11 @@
                 </section>
 
 
-                <div class="section-divider"></div>
+                <di class="section-divider">
             </div>
         </div>
-        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#page-content-wrapper -->
     </div>
     <!-- /#wrapper -->
 
@@ -740,14 +749,16 @@
 
             if (isLoggedIn) {
                 navLinks.innerHTML = `
-            <a class="list-group-item list-group-item-action" href="#usersSection">إدارة الطلاب</a>
-            <a class="list-group-item list-group-item-action" href="#coursesSection">إدارة الكورسات</a>
-            <a class="list-group-item list-group-item-action" href="#examsSection">إدارة الامتحانات</a>
-            <a class="list-group-item list-group-item-action" href="#gradesSection">إدارة الصفوف الدراسية</a>
-            <a class="list-group-item list-group-item-action" href="#notificationsSection">إدارة الإشعارات</a>
-            <a class="list-group-item list-group-item-action" href="/dashboard.html">لوحة التحكم</a>
-            <a class="list-group-item list-group-item-action" href="index.html">الرئيسية</a>
-            <a class="list-group-item list-group-item-action" href="#" id="logoutLink">تسجيل الخروج</a>
+           <a class="list-group-item" href="#usersSection"><i class="fas fa-user-graduate me-2"></i> إدارة الطلاب</a>
+            <a class="list-group-item" href="#coursesSection"><i class="fab fa-youtube me-2"></i> إدارة الكورسات</a>
+            <a class="list-group-item" href="#examsSection"><i class="fas fa-file-alt me-2"></i> إدارة الامتحانات</a>
+            <a class="list-group-item" href="#gradesSection"><i class="fas fa-chalkboard-teacher me-2"></i> إدارة الصفوف
+                الدراسية</a>
+            <a class="list-group-item" href="#notificationsSection"><i class="fas fa-bell me-2"></i> إدارة الإشعارات</a>
+            <a class="list-group-item" href="/dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> لوحة التحكم</a>
+            <a class="list-group-item" href="index.html"><i class="fas fa-home me-2"></i> الرئيسية</a>
+            <a class="list-group-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> تسجيل
+                الخروج</a>
             `;
 
                 document.getElementById('logoutLink').addEventListener('click', function (e) {
@@ -802,233 +813,6 @@
                     });
                 })
                 .catch(err => console.error('Error loading grades:', err));
-
-            // معالجة نموذج إضافة طالب جديد
-            const addStudentForm = document.getElementById('addStudentForm');
-            addStudentForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const username = sanitizeInput(document.getElementById('newUsername').value);
-                const email = sanitizeInput(document.getElementById('newEmail').value);
-                const password = sanitizeInput(document.getElementById('newPassword').value);
-                const grade = document.getElementById('newGrade').value;
-
-                fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password, grade })
-                })
-                    .then(response => response.json())
-                    .then(res => {
-                        alert(res.message);
-                        if (response.ok) {
-                            loadUsers();
-                            addStudentForm.reset();
-                            const addStudentModal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
-                            if (addStudentModal) addStudentModal.hide();
-                        }
-                    })
-                    .catch(err => console.error(err));
-            });
-
-            // Pagination variables
-            let usersPage = 1;
-            let coursesPage = 1;
-            let gradesPage = 1;
-            const itemsPerPage = 10;
-
-            // Load users with pagination
-            function loadUsers(page = 1) {
-                fetch('/api/users', {
-                    method: 'GET',
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                    .then(response => response.json())
-                    .then(users => {
-                        const totalPages = Math.ceil(users.length / itemsPerPage);
-                        document.getElementById('usersTotalPages').textContent = totalPages;
-                        const start = (page - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        const paginatedUsers = users.slice(start, end);
-
-                        const tbody = document.querySelector('#usersTable tbody');
-                        tbody.innerHTML = '';
-                        paginatedUsers.forEach(user => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                    <td>${user.username} ${user.isAdmin ? '⭐' : ''}</td>
-                                    <td>${user.email}</td>
-                                    <td>${user.grade || 'N/A'}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">حذف</button>
-                                        ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية المسؤول</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى مسؤول</button>`}
-                                    </td>
-                                `;
-                            tbody.appendChild(tr);
-                        });
-                    })
-                    .catch(err => console.error(err));
-            }
-
-            // Load courses with pagination
-            function loadCourses(page = 1) {
-                fetch('/api/courses', {
-                    method: 'GET',
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                    .then(response => response.json())
-                    .then(courses => {
-                        const totalPages = Math.ceil(courses.length / itemsPerPage);
-                        document.getElementById('coursesTotalPages').textContent = totalPages;
-                        const start = (page - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        const paginatedCourses = courses.slice(start, end);
-
-                        const tbody = document.querySelector('#coursesTable tbody');
-                        tbody.innerHTML = '';
-                        paginatedCourses.forEach(course => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                    <td>
-                                        <img src="${course.imageURL}" alt="${course.title}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
-                                        ${course.title}
-                                    </td>
-                                    <td>${course.grade}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>تعديل</button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})">حذف</button>
-                                    </td>
-                                `;
-                            tbody.appendChild(tr);
-                        });
-                    })
-                    .catch(err => console.error(err));
-            }
-
-            // Load grades with pagination
-            function loadGrades(page = 1) {
-                fetch('/api/grades', {
-                    method: 'GET',
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                    .then(response => response.json())
-                    .then(grades => {
-                        const totalPages = Math.ceil(grades.length / itemsPerPage);
-                        document.getElementById('gradesTotalPages').textContent = totalPages;
-                        const start = (page - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        const paginatedGrades = grades.slice(start, end);
-
-                        const gradesTableBody = document.querySelector('#gradesTable tbody');
-                        gradesTableBody.innerHTML = '';
-                        paginatedGrades.forEach(grade => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                    <td>${grade.name}</td>
-                                    <td>${grade.studentCount}</td>
-                                    <td>${grade.courseCount}</td>
-                                    <td>${grade.examCount}</td>
-                                    <td>${grade.activityCount}</td>
-                                    <td>${grade.videoCount}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})">حذف</button>
-                                    </td>
-                                `;
-                            gradesTableBody.appendChild(tr);
-                        });
-                    })
-                    .catch(err => console.error(err));
-            }
-
-            // Event listeners for pagination buttons
-            document.getElementById('prevUsersPage').addEventListener('click', () => {
-                if (usersPage > 1) {
-                    usersPage--;
-                    document.getElementById('usersPageNumber').value = usersPage;
-                    loadUsers(usersPage);
-                }
-            });
-
-            document.getElementById('nextUsersPage').addEventListener('click', () => {
-                const totalPages = parseInt(document.getElementById('usersTotalPages').textContent);
-                if (usersPage < totalPages) {
-                    usersPage++;
-                    document.getElementById('usersPageNumber').value = usersPage;
-                    loadUsers(usersPage);
-                }
-            });
-
-            document.getElementById('usersPageNumber').addEventListener('change', (e) => {
-                const page = parseInt(e.target.value);
-                const totalPages = parseInt(document.getElementById('usersTotalPages').textContent);
-                if (page >= 1 && page <= totalPages) {
-                    usersPage = page;
-                    loadUsers(usersPage);
-                } else {
-                    e.target.value = usersPage;
-                }
-            });
-
-            document.getElementById('prevCoursesPage').addEventListener('click', () => {
-                if (coursesPage > 1) {
-                    coursesPage--;
-                    document.getElementById('coursesPageNumber').value = coursesPage;
-                    loadCourses(coursesPage);
-                }
-            });
-
-            document.getElementById('nextCoursesPage').addEventListener('click', () => {
-                const totalPages = parseInt(document.getElementById('coursesTotalPages').textContent);
-                if (coursesPage < totalPages) {
-                    coursesPage++;
-                    document.getElementById('coursesPageNumber').value = coursesPage;
-                    loadCourses(coursesPage);
-                }
-            });
-
-            document.getElementById('coursesPageNumber').addEventListener('change', (e) => {
-                const page = parseInt(e.target.value);
-                const totalPages = parseInt(document.getElementById('coursesTotalPages').textContent);
-                if (page >= 1 && page <= totalPages) {
-                    coursesPage = page;
-                    loadCourses(coursesPage);
-                } else {
-                    e.target.value = coursesPage;
-                }
-            });
-
-            document.getElementById('prevGradesPage').addEventListener('click', () => {
-                if (gradesPage > 1) {
-                    gradesPage--;
-                    document.getElementById('gradesPageNumber').value = gradesPage;
-                    loadGrades(gradesPage);
-                }
-            });
-
-            document.getElementById('nextGradesPage').addEventListener('click', () => {
-                const totalPages = parseInt(document.getElementById('gradesTotalPages').textContent);
-                if (gradesPage < totalPages) {
-                    gradesPage++;
-                    document.getElementById('gradesPageNumber').value = gradesPage;
-                    loadGrades(gradesPage);
-                }
-            });
-
-            document.getElementById('gradesPageNumber').addEventListener('change', (e) => {
-                const page = parseInt(e.target.value);
-                const totalPages = parseInt(document.getElementById('gradesTotalPages').textContent);
-                if (page >= 1 && page <= totalPages) {
-                    gradesPage = page;
-                    loadGrades(gradesPage);
-                } else {
-                    e.target.value = gradesPage;
-                }
-            });
-
-            // Initial load
-            loadUsers();
-            loadCourses();
-            loadGrades();
         });
     </script>
 

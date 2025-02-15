@@ -16,8 +16,10 @@
             --text-dark: #1e293b;
             --text-light: #64748b;
             --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            --transition-speed: 0.3s;
         }
 
+        /* Global Styles */
         body {
             background-color: #f8fafc;
             font-family: 'Cairo', sans-serif;
@@ -26,11 +28,14 @@
             margin-top: 80px;
         }
 
+        /* Navbar */
         .navbar {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 1rem 0;
             background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+            transition: background var(--transition-speed);
         }
 
         .navbar-brand {
@@ -44,7 +49,7 @@
 
         .nav-link {
             color: var(--text-dark) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 600;
             padding: 0.5rem 1rem !important;
             border-radius: 0.5rem;
@@ -52,8 +57,9 @@
 
         .nav-link:hover {
             color: var(--primary-color) !important;
-            background: rgba(37, 99, 235, 0.05);
+            background: rgba(37, 99, 235, 0.1);
             transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .nav-link.active {
@@ -61,51 +67,98 @@
             color: white !important;
         }
 
+        /* Search Bar */
+        .search-bar input {
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--primary-color);
+            transition: all var(--transition-speed);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Course Cards */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .course-card {
+            margin-bottom: 2rem;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .course-card img {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        /* Modal Enhancements */
+        .modal-content {
+            border-radius: 1rem;
+            overflow: hidden;
+            animation: fadeIn 0.4s ease-in-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background: #e9ecef;
+        }
+
+        /* Footer */
         .footer {
             background: var(--text-dark);
             color: white;
-            padding: 4rem 0 2rem;
+            padding: 2rem 0 2rem;
             margin-top: 4rem;
+            text-align: center;
+            position: relative;
+
         }
 
         .footer a {
             color: var(--secondary-color);
-            transition: color 0.3s ease;
+            transition: color var(--transition-speed) ease;
         }
 
         .footer a:hover {
             color: var(--accent-color);
         }
 
-        .search-bar {
-            margin-bottom: 2rem;
-        }
-
-        .search-bar input {
-            border-radius: 20px;
-            padding: 0.75rem 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
-        }
-
-        .course-card {
-            margin-bottom: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .course-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .course-card img {
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
     </style>
 </head>
@@ -120,7 +173,9 @@
                 <span>لوحة التحكم</span>
             </a>
             <!-- إضافة زر الإشعارات في حاوية مستقلة -->
-            <div class="d-flex align-items-center">
+            &nbsp;
+            &nbsp;
+            &nbsp; <div class="d-flex align-items-center">
                 <div class="dropdown">
                     <!-- تعديل: إضافة badge لعدد الإشعارات -->
                     <button class="btn btn-link text-dark dropdown-toggle position-relative" id="notificationsButton"
@@ -139,7 +194,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto" id="navLinks">
-                    <!-- سيتم تعبئة الروابط بناءً على حالة تسجيل الدخول -->
+                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="profileLink">الإعدادات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
                 </ul>
             </div>
         </div>
@@ -152,11 +211,12 @@
             <!-- شريط البحث أو الفلاتر -->
             <div class="row search-bar">
                 <div class="col-md-12">
-                    <input type="text" id="courseSearch" class="form-control" placeholder="ابحث">
+                    <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن كورس...">
                 </div>
             </div>
 
-            <h2 class="text-center mb-4">الكورسات الخاصة بك</h2>
+            <h1 class="text-center mb-4 display-10  fw-bold" style=" margin-top: 15px; margin-bottom: 15px;">الكورسات
+                الخاصة بك</h1>
             <!-- رسالة عدم وجود كورسات -->
             <div class="row" id="noCoursesMessage" style="display: none;">
                 <div class="col-md-12 text-center">
@@ -170,27 +230,65 @@
             </div>
         </div>
 
-
         <!-- Modal لعرض تفاصيل الإشعار مع تصميم محسّن -->
         <div class="modal fade" id="notificationDetailsModal" tabindex="-1"
             aria-labelledby="notificationDetailsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-                <div class="modal-content shadow-lg" style="border-radius: 1rem; overflow: hidden;">
+                <div class="modal-content shadow-lg">
                     <div class="modal-header"
-                        style="background: linear-gradient(90deg, #2563eb, #1d4ed8); color: #fff; padding: 1rem 1.5rem;">
+                        style="background: linear-gradient(90deg, #2563eb, #1d4ed8); color: #fff;">
                         <h5 class="modal-title" id="notificationDetailsModalLabel" style="font-weight: bold;">عنوان
                             الإشعار
                         </h5>&nbsp;&nbsp;&nbsp;
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="إغلاق"></button>
                     </div>
-                    <div class="modal-body" style="padding: 2rem; background: #f8f9fa;">
+                    <div class="modal-body">
                         <!-- تعديل: إضافة white-space: pre-wrap لتنسيق النص في كل سطر منفصل -->
                         <p id="notificationDetailsContent"
                             style="font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap;"></p>
                     </div>
-                    <div class="modal-footer" style="background: #e9ecef; padding: 1rem 1.5rem;">
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Profile Modal -->
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="profileModalLabel">بيانات الحساب - <span
+                                id="displayUsername"></span>
+                        </h5>&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="profileForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">الاسم</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">البريد الالكتروني</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">كلمة المرور</label>
+                                <!-- Pre-fill with existing password -->
+                                <input type="text" class="form-control" id="password" name="password"
+                                    placeholder="أدخل كلمة مرور جديدة">
+                            </div>
+                            <!-- Replace grade text input with a dropdown -->
+                            <div class="mb-3">
+                                <label for="grade" class="form-label">الصف</label>
+                                <select class="form-select" id="grade" name="grade">
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">تحديث البيانات</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -210,6 +308,7 @@
                         <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
                         <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
                         <li class="nav-item"><a class="nav-link active" href="dashboard.html">لوحة التحكم</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" id="profileLink">الإعدادات</a></li>
                         <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
                     `;
 
@@ -223,6 +322,42 @@
                     // إذا لم يكن المستخدم مسجّل الدخول يتم إعادة التوجيه إلى صفحة تسجيل الدخول
                     window.location.href = 'login.html';
                 }
+
+                // Open Profile Modal on link click
+                document.getElementById('profileLink').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+                    modal.show();
+                });
+
+                // Fetch profile info from /api/dashboard and pre-fill form
+                let currentUserId = null;
+                fetch('/api/dashboard', { headers: { 'Authorization': 'Bearer ' + token } })
+                    .then(response => response.json())
+                    .then(data => {
+                        const user = data.user;
+                        currentUserId = user.id;
+                        document.getElementById('username').value = user.username || '';
+                        document.getElementById('email').value = user.email || '';
+                        // Pre-fill password with existing password
+                        document.getElementById('password').value = user.password || '';
+                        document.getElementById('displayUsername').textContent = user.username || '';
+                        // Fetch available grades and set dropdown options
+                        fetch('/api/grades')
+                            .then(response => response.json())
+                            .then(grades => {
+                                const gradeSelect = document.getElementById('grade');
+                                grades.forEach(g => {
+                                    const option = document.createElement('option');
+                                    option.value = g.name;
+                                    option.textContent = g.name;
+                                    if (g.name === user.grade) option.selected = true;
+                                    gradeSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Error fetching grades:', error));
+                    })
+                    .catch(error => console.error('Error fetching profile:', error));
 
                 // تعديل: تحديث badge الإشعارات عند تحميل الصفحة
                 async function fetchNotificationsCount() {
@@ -291,6 +426,33 @@
                 document.getElementById('courseSearch').addEventListener('input', function (e) {
                     const searchTerm = e.target.value.toLowerCase();
                     filterCourses(searchTerm);
+                });
+
+                // Profile form submission
+                document.getElementById('profileForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const updatedData = {
+                        username: document.getElementById('username').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        password: document.getElementById('password').value.trim(),
+                        grade: document.getElementById('grade').value.trim()
+                    };
+                    try {
+                        const response = await fetch(`/api/users/${currentUserId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': 'Bearer ' + token,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updatedData)
+                        });
+                        const result = await response.json();
+                        alert(result.message);
+                        // Optionally clear password field after update.
+                        document.getElementById('password').value = '';
+                    } catch (error) {
+                        console.error('Error updating profile:', error);
+                    }
                 });
             });
 

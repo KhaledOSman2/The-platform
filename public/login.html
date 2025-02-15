@@ -64,8 +64,9 @@
         .footer {
             background: var(--text-dark);
             color: white;
-            padding: 4rem 0 2rem;
+            padding: 2rem 0 2rem;
             margin-top: 4rem;
+            position: relative;
         }
 
         .footer a {
@@ -75,6 +76,16 @@
 
         .footer a:hover {
             color: var(--accent-color);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
     </style>
 </head>
