@@ -5,14 +5,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const itemsPerPage = 10; // عدد العناصر في كل صفحة
+    const itemsPerPage = 5;
     let usersPage = 1;
     let coursesPage = 1;
     let gradesPage = 1;
-    let examsPage = 1;
     let notificationsPage = 1;
 
-    // تحميل المستخدمين
+    function sanitizeInput(input) {
+        if (typeof input !== 'string') return '';
+        const temp = document.createElement('div');
+        temp.textContent = input;
+        return temp.innerHTML.replace(/[<>&"']/g, '');
+    }
+
     function loadUsers(page = 1) {
         fetch('/api/users', {
             method: 'GET',
@@ -20,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(users => {
-                // تخزين المستخدمين في متغير عام للفحص لاحقًا
+                if (!Array.isArray(users)) return;
                 window.allUsers = users;
 
                 const totalPages = Math.ceil(users.length / itemsPerPage);
@@ -33,26 +38,48 @@ document.addEventListener('DOMContentLoaded', function () {
                 tbody.innerHTML = '';
                 paginatedUsers.forEach(user => {
                     const tr = document.createElement('tr');
-                    tr.classList.add('table-light'); // Add class for better design
-                    tr.innerHTML = `
-                        <td>${user.isAdmin ? '<span class="badge bg-success fw-bold py-2">ادمن</span></div>' : ''} ${user.isBanned ? '<span class="badge bg-danger fw-bold py-2">محظور</span></div> ' : ''} ${user.username}</td>
-                        <td>${user.email}</td>
-                        <td>${user.grade || 'N/A'}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify(user)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i></button> </td>
-                            <td>
-                            ${user.isBanned ? `<button class="btn btn-sm btn-success" onclick="unbanUser(${user.id})">إلغاء الحظر</button>` : `<button class="btn btn-sm btn-danger" onclick="banUser(${user.id})">حظر</button>`}
-                            ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية الادمن</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى ادمن</button>`}
-                        </td>
+                    tr.classList.add('table-light');
+
+                    const td1 = document.createElement('td');
+                    td1.innerHTML = `${sanitizeInput(user.username)} ${user.isAdmin ? '<span class="badge bg-success fw-bold py-2">ادمن</span> ' : ''}${user.isBanned ? '<span class="badge bg-danger fw-bold py-2">محظور</span> ' : ''}`;
+
+                    const td2 = document.createElement('td');
+                    td2.textContent = sanitizeInput(user.email);
+
+                    const td3 = document.createElement('td');
+                    td3.textContent = sanitizeInput(user.grade || 'N/A');
+
+                    const td4 = document.createElement('td');
+                    td4.innerHTML = `
+                        <button class="btn btn-sm btn-warning me-1" onclick='editUser(${JSON.stringify({
+                        id: user.id,
+                        username: sanitizeInput(user.username),
+                        email: sanitizeInput(user.email),
+                        password: sanitizeInput(user.password),
+                        grade: sanitizeInput(user.grade),
+                        isAdmin: user.isAdmin,
+                        isBanned: user.isBanned
+                    })})'>تعديل</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i></button>
                     `;
+
+                    const td5 = document.createElement('td');
+                    td5.innerHTML = `
+                        ${user.isBanned ? `<button class="btn btn-sm btn-success" onclick="unbanUser(${user.id})">إلغاء الحظر</button>` : `<button class="btn btn-sm btn-danger" onclick="banUser(${user.id})">حظر</button>`}
+                        ${user.isAdmin ? `<button class="btn btn-sm btn-secondary" onclick="removeAdmin(${user.id})">إزالة صلاحية الادمن</button>` : `<button class="btn btn-sm btn-primary" onclick="makeAdmin(${user.id})">ترقية إلى ادمن</button>`}
+                    `;
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
                     tbody.appendChild(tr);
                 });
             })
             .catch(err => console.error(err));
     }
 
-    // تحميل الكورسات
     function loadCourses(page = 1) {
         fetch('/api/all-courses', {
             method: 'GET',
@@ -60,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(courses => {
-                // تخزين الكورسات في متغير عام للفحص لاحقًا
+                if (!Array.isArray(courses)) return;
                 window.allCourses = courses;
 
                 const totalPages = Math.ceil(courses.length / itemsPerPage);
@@ -73,17 +100,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 tbody.innerHTML = '';
                 paginatedCourses.forEach(course => {
                     const tr = document.createElement('tr');
-                    tr.classList.add('table-light'); // Add class for better design
+                    tr.classList.add('table-light');
                     tr.innerHTML = `
                         <td>
-                            <img src="${course.imageURL}" alt="${course.title}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
-                            ${course.title}
+                            <img src="${sanitizeInput(course.imageURL || '')}" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover; margin-left: 10px;">
+                            ${sanitizeInput(course.title || '')}
                         </td>
-                        <td>${course.grade}</td>
+                        <td>${sanitizeInput(course.grade || '')}</td>
                         <td>${course.videos ? course.videos.length : 0}</td>
                         <td>${course.activities ? course.activities.length : 0}</td>
+                        <td>${course.exams ? course.exams.length : 0}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})'>تعديل</button>
+                            <button class="btn btn-sm btn-warning me-1" onclick='editCourse(${JSON.stringify(course)})'>تعديل</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteCourse(${course.id})"><i class="fas fa-trash"></i></button>
                         </td>
                     `;
@@ -93,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => console.error(err));
     }
 
-    // تحميل الإحصائيات
     function loadAnalytics() {
         fetch('/api/analytics', {
             method: 'GET',
@@ -101,15 +128,9 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Analytics response:', data);
-                // Convert totalVideos to a number
+                if (!data || typeof data !== 'object') return;
                 const videosCount = parseInt(data.totalVideos, 10);
-                if (!isNaN(videosCount)) {
-                    document.getElementById('totalVideos').textContent = videosCount;
-                } else {
-                    console.error('Invalid totalVideos:', data.totalVideos);
-                    document.getElementById('totalVideos').textContent = 0;
-                }
+                document.getElementById('totalVideos').textContent = videosCount || 0;
                 document.getElementById('totalUsers').textContent = data.totalUsers || 0;
                 document.getElementById('totalCourses').textContent = data.totalCourses || 0;
                 document.getElementById('totalExams').textContent = data.totalExams || 0;
@@ -117,8 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => console.error(err));
     }
 
-
-    // تحميل قائمة الصفوف الدراسية
     function loadGrades(page = 1) {
         fetch('/api/grades', {
             method: 'GET',
@@ -126,25 +145,24 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(grades => {
+                if (!Array.isArray(grades)) return;
                 const totalPages = Math.ceil(grades.length / itemsPerPage);
                 document.getElementById('gradesTotalPages').textContent = totalPages;
                 const start = (page - 1) * itemsPerPage;
                 const end = start + itemsPerPage;
                 const paginatedGrades = grades.slice(start, end);
 
-                // تعبئة قائمة اختيار الصفوف في نموذج الكورس
                 const gradeSelect = document.getElementById('courseGrade');
                 if (gradeSelect) {
                     gradeSelect.innerHTML = '';
                     grades.forEach(grade => {
                         const option = document.createElement('option');
-                        option.value = grade.name;
-                        option.textContent = grade.name;
+                        option.value = sanitizeInput(grade.name || '');
+                        option.textContent = sanitizeInput(grade.name || '');
                         gradeSelect.appendChild(option);
                     });
                 }
 
-                // تعبئة جدول الصفوف الدراسية
                 const gradesTableBody = document.querySelector('#gradesTable tbody');
                 if (gradesTableBody) {
                     gradesTableBody.innerHTML = '';
@@ -162,18 +180,38 @@ document.addEventListener('DOMContentLoaded', function () {
                         }, 0);
 
                         const tr = document.createElement('tr');
-                        tr.classList.add('table-light'); // Add class for better design
-                        tr.innerHTML = `
-                            <td>${grade.name}</td>
-                            <td>${studentsCount}</td>
-                            <td>${coursesCount}</td>
-                            <td>${examsCount}</td>
-                            <td>${activitiesCount}</td>
-                             <td>${gradevideoCount}</td>
-                            <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})"><i class="fas fa-trash"></i></button>
-                            </td>
+                        tr.classList.add('table-light');
+
+                        const td1 = document.createElement('td');
+                        td1.textContent = sanitizeInput(grade.name || '');
+
+                        const td2 = document.createElement('td');
+                        td2.textContent = studentsCount;
+
+                        const td3 = document.createElement('td');
+                        td3.textContent = coursesCount;
+
+                        const td4 = document.createElement('td');
+                        td4.textContent = gradevideoCount;
+
+                        const td5 = document.createElement('td');
+                        td5.textContent = activitiesCount;
+
+                        const td6 = document.createElement('td');
+                        td6.textContent = examsCount;
+
+                        const td7 = document.createElement('td');
+                        td7.innerHTML = `
+                            <button class="btn btn-sm btn-danger" onclick="deleteGrade(${grade.id})"><i class="fas fa-trash"></i></button>
                         `;
+
+                        tr.appendChild(td1);
+                        tr.appendChild(td2);
+                        tr.appendChild(td3);
+                        tr.appendChild(td4);
+                        tr.appendChild(td5);
+                        tr.appendChild(td6);
+                        tr.appendChild(td7);
                         gradesTableBody.appendChild(tr);
                     });
                 }
@@ -181,41 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => console.error(err));
     }
 
-    // تحميل الامتحانات
-    function loadExams(page = 1) {
-        fetch('/api/all-exams', {
-            method: 'GET',
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(response => response.json())
-            .then(exams => {
-                const totalPages = Math.ceil(exams.length / itemsPerPage);
-                document.getElementById('examsTotalPages').textContent = totalPages;
-                const start = (page - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                const paginatedExams = exams.slice(start, end);
-
-                const tbody = document.querySelector('#examsTable tbody');
-                tbody.innerHTML = '';
-                paginatedExams.forEach(exam => {
-                    const tr = document.createElement('tr');
-                    tr.classList.add('table-light'); // Add class for better design
-                    tr.innerHTML = `
-                        <td>${exam.title}</td>
-                        <td>${exam.grade}</td>
-                        <td>${exam.courseTitle}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editExam(${JSON.stringify(exam)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteExam(${exam.id})"><i class="fas fa-trash"></i></button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(err => console.error(err));
-    }
-
-    // تحميل الإشعارات
     function loadNotifications(page = 1) {
         fetch('/api/notifications', {
             method: 'GET',
@@ -223,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(notifications => {
+                if (!Array.isArray(notifications)) return;
                 const totalPages = Math.ceil(notifications.length / itemsPerPage);
                 document.getElementById('notificationsTotalPages').textContent = totalPages;
                 const start = (page - 1) * itemsPerPage;
@@ -234,34 +238,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 paginatedNotifications.forEach(notification => {
                     const tr = document.createElement('tr');
                     tr.classList.add('table-light');
-                    tr.innerHTML = `
-                        <td>${notification.title}</td>
-                        <td>${notification.content}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick='editNotification(${JSON.stringify(notification)})'>تعديل</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})"><i class="fas fa-trash"></i></button>
-                        </td>
+
+                    const td1 = document.createElement('td');
+                    td1.textContent = sanitizeInput(notification.title || '');
+
+                    const td2 = document.createElement('td');
+                    td2.textContent = sanitizeInput(notification.content || '');
+
+                    const td3 = document.createElement('td');
+                    td3.innerHTML = `
+                        <button class="btn btn-sm btn-warning me-1" onclick='editNotification(${JSON.stringify(notification)})'>تعديل</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})"><i class="fas fa-trash"></i></button>
                     `;
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
                     tbody.appendChild(tr);
                 });
             })
             .catch(err => console.error(err));
     }
 
-    // بدء تحميل البيانات عند الدخول
     loadUsers();
     loadCourses();
     loadAnalytics();
     loadGrades();
-    loadExams();
     loadNotifications();
 
-    // معالجة نموذج إضافة صف دراسي
     const gradeForm = document.getElementById('gradeForm');
     if (gradeForm) {
         gradeForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            const name = document.getElementById('gradeName').value;
+            const name = sanitizeInput(document.getElementById('gradeName').value);
 
             fetch('/api/grades', {
                 method: 'POST',
@@ -280,7 +289,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // دالة لحذف صف دراسي
     window.deleteGrade = function (gradeId) {
         if (confirm('هل أنت متأكد من حذف الصف الدراسي؟')) {
             fetch(`/api/grades/${gradeId}`, {
@@ -296,53 +304,62 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // دالة لتصفية المدخلات
-    function sanitizeInput(input) {
-        const temp = document.createElement('div');
-        temp.textContent = input;
-        return temp.innerHTML;
-    }
-
-    // معالجة نموذج إضافة/تعديل كورس
     const courseForm = document.getElementById('courseForm');
     if (courseForm) {
         courseForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // قراءة القيم من النموذج
             const id = document.getElementById('courseId').value;
             const title = sanitizeInput(document.getElementById('courseTitle').value);
-            const grade = document.getElementById('courseGrade').value;
+            const grade = sanitizeInput(document.getElementById('courseGrade').value);
             const courseImageInput = document.getElementById('courseImage');
             const courseImage = courseImageInput ? courseImageInput.files[0] : null;
 
-            // قراءة بيانات الفيديوهات
             const videos = Array.from(document.querySelectorAll('.video-input')).map(input => {
                 const videoTitle = sanitizeInput(input.querySelector('.video-title').value);
-                const videoUrl = input.querySelector('.video-url').value;
-                return { title: videoTitle, url: videoUrl };
+                const videoUrl = sanitizeInput(input.querySelector('.video-url').value);
+                const videoId = input.querySelector('.video-id') ? sanitizeInput(input.querySelector('.video-id').value) : '';
+                return { id: videoId, title: videoTitle, url: videoUrl };
             });
 
-            // قراءة بيانات الأنشطة
             const activities = [];
             for (const input of document.querySelectorAll('.activity-input')) {
                 const activityTitle = sanitizeInput(input.querySelector('.activity-title').value);
                 const activityFile = input.querySelector('.activity-file').files[0];
+                const activityId = input.querySelector('.activity-id') ? sanitizeInput(input.querySelector('.activity-id').value) : '';
                 if (activityFile) {
-                    const formData = new FormData();
-                    formData.append('activityFile', activityFile);
+                    const formDataActivity = new FormData();
+                    formDataActivity.append('activityFile', activityFile);
                     const response = await fetch('/api/uploadActivity', {
                         method: 'POST',
                         headers: { Authorization: `Bearer ${token}` },
-                        body: formData
+                        body: formDataActivity
                     });
                     const data = await response.json();
-                    activities.push({ title: activityTitle, filePath: data.filePath, addedDate: new Date().toISOString() });
+                    activities.push({ id: activityId, title: activityTitle, filePath: data.filePath, addedDate: new Date().toISOString() });
                 } else {
-                    const existingFilePath = input.querySelector('.existing-file-path').value;
-                    activities.push({ title: activityTitle, filePath: existingFilePath });
+                    const existingFilePath = sanitizeInput(input.querySelector('.existing-file-path').value);
+                    if (existingFilePath) activities.push({ id: activityId, title: activityTitle, filePath: existingFilePath });
                 }
             }
+
+            const examInputs = document.querySelectorAll('.exam-input');
+            const exams = Array.from(examInputs).map(input => {
+                const titleEl = input.querySelector('.exam-title');
+                const urlEl = input.querySelector('.exam-url');
+                const idEl = input.querySelector('.exam-id');
+                if (!titleEl || !urlEl) return null;
+                const examTitle = sanitizeInput(titleEl.value.trim());
+                const examUrl = sanitizeInput(urlEl.value.trim());
+                const examId = idEl ? sanitizeInput(idEl.value) : '';
+                return {
+                    id: examId || '',
+                    title: examTitle,
+                    googleFormUrl: examUrl,
+                    courseId: id || '',
+                    grade: grade
+                };
+            }).filter(exam => exam !== null && exam.title && exam.googleFormUrl);
 
             const formData = new FormData();
             formData.append('title', title);
@@ -350,16 +367,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (courseImage) {
                 formData.append('courseImage', courseImage);
             } else if (id) {
-                // إذا كانت الكورس موجودة بالفعل ولم يتم تحميل صورة جديدة، احتفظ بالصورة الحالية
-                formData.append('existingImageURL', document.getElementById('courseImageURL').value);
+                formData.append('existingImageURL', sanitizeInput(document.getElementById('courseImageURL').value));
             }
             formData.append('videos', JSON.stringify(videos));
             formData.append('activities', JSON.stringify(activities));
+            formData.append('exams', JSON.stringify(exams));
 
             const method = id ? 'PUT' : 'POST';
-            const url = id ? `/api/courses/${id}` : '/api/courses';
+            const urlEndpoint = id ? `/api/courses/${id}` : '/api/courses';
 
-            fetch(url, {
+            fetch(urlEndpoint, {
                 method,
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData
@@ -372,6 +389,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('courseId').value = '';
                     const videosContainer = document.getElementById('videosContainer');
                     if (videosContainer) videosContainer.innerHTML = '';
+                    const activitiesContainer = document.getElementById('activitiesContainer');
+                    if (activitiesContainer) activitiesContainer.innerHTML = '';
+                    const examsContainer = document.getElementById('examsContainer');
+                    if (examsContainer) examsContainer.innerHTML = '';
                     const courseModal = bootstrap.Modal.getInstance(document.getElementById('courseModal'));
                     if (courseModal) courseModal.hide();
                 })
@@ -379,63 +400,108 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // إضافة فيديو جديد
     const addVideoButton = document.getElementById('addVideoButton');
     if (addVideoButton) {
         addVideoButton.addEventListener('click', function () {
             const videosContainer = document.getElementById('videosContainer');
             const videoInput = document.createElement('div');
-            videoInput.className = 'video-input mb-3';
+            videoInput.className = 'video-input';
             videoInput.innerHTML = `
-                <div class="d-flex align-items-center w-100">
-                    <div class="input-group flex-fill me-2">
-                        <input type="text" class="form-control video-title" placeholder="عنوان الفيديو">
-                    </div>
-                    <div class="input-group flex-fill me-2">
-                        <input type="url" class="form-control video-url" placeholder="رابط الفيديو">
-                    </div>
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                <div class="input-group">
+                    <input type="text" class="form-control video-title" placeholder="عنوان الفيديو">
                 </div>
+                <div class="input-group">
+                    <input type="url" class="form-control video-url" placeholder="رابط الفيديو">
+                </div>
+                <button type="button" class="btn btn-danger" onclick="deleteCourseVideo(this, '')"><i class="fas fa-trash"></i></button>
             `;
             videosContainer.appendChild(videoInput);
         });
     }
 
-    // Add delete button to activity inputs
+    window.deleteCourseVideo = function (btn, videoId) {
+        if (videoId && confirm('هل أنت متأكد من حذف الفيديو؟')) {
+            fetch(`/api/videos/${videoId}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    btn.parentElement.remove();
+                    loadCourses();
+                })
+                .catch(err => console.error(err));
+        } else if (confirm('هل أنت متأكد من حذف الفيديو؟')) {
+            btn.parentElement.remove();
+        }
+    };
+
     const addActivityButton = document.getElementById('addActivityButton');
     if (addActivityButton) {
         addActivityButton.addEventListener('click', function () {
             const activitiesContainer = document.getElementById('activitiesContainer');
             const activityInput = document.createElement('div');
-            activityInput.className = 'activity-input mb-3';
+            activityInput.className = 'activity-input';
             activityInput.innerHTML = `
-                <div class="d-flex align-items-center w-100">
-                    <div class="input-group flex-fill me-2">
-                        <input type="text" class="form-control activity-title" placeholder="عنوان المستند" required>
-                    </div>
-                    <div class="input-group flex-fill me-2">
-                        <input type="file" class="form-control activity-file" accept=".pdf,video/*" required>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                <div class="input-group">
+                    <input type="text" class="form-control activity-title" placeholder="عنوان المستند" required>
                 </div>
+                <div class="input-group">
+                    <input type="file" class="form-control activity-file" accept=".pdf,video/*" required>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="deleteCourseActivity(this, '')"><i class="fas fa-trash"></i></button>
             `;
             activitiesContainer.appendChild(activityInput);
         });
     }
 
+    window.deleteCourseActivity = function (btn, activityId) {
+        if (activityId && confirm('هل أنت متأكد من حذف المستند؟')) {
+            fetch(`/api/activities/${activityId}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    btn.parentElement.remove();
+                    loadCourses();
+                })
+                .catch(err => console.error(err));
+        } else if (confirm('هل أنت متأكد من حذف المستند؟')) {
+            btn.parentElement.remove();
+        }
+    };
 
+    const addExamButton = document.getElementById('addExamButton');
+    if (addExamButton) {
+        addExamButton.addEventListener('click', function () {
+            const examsContainer = document.getElementById('examsContainer');
+            const examInput = document.createElement('div');
+            examInput.className = 'exam-input';
+            examInput.innerHTML = `
+                <div class="input-group">
+                    <input type="text" class="form-control exam-title" placeholder="عنوان الاختبار" required>
+                </div>
+                <div class="input-group">
+                    <input type="url" class="form-control exam-url" placeholder="رابط استبيان جوجل" required>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="deleteCourseExam(this, '')"><i class="fas fa-trash"></i></button>
+            `;
+            examsContainer.appendChild(examInput);
+        });
+    }
 
-
-    // معالجة نموذج تعديل المستخدم (الطالب)
     const userForm = document.getElementById('userForm');
     if (userForm) {
         userForm.addEventListener('submit', function (e) {
             e.preventDefault();
             const id = document.getElementById('userId').value;
-            const username = document.getElementById('editUsername').value;
-            const email = document.getElementById('editEmail').value;
-            const password = document.getElementById('editPassword').value;
-            const grade = document.getElementById('editGrade').value;
+            const username = sanitizeInput(document.getElementById('editUsername').value);
+            const email = sanitizeInput(document.getElementById('editEmail').value);
+            const password = sanitizeInput(document.getElementById('editPassword').value);
+            const grade = sanitizeInput(document.getElementById('editGrade').value);
 
             const payload = { username, email, password, grade };
 
@@ -456,7 +522,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // دوال التعامل مع المستخدمين
     window.deleteUser = function (userId) {
         if (confirm('هل أنت متأكد من حذف المستخدم؟')) {
             fetch(`/api/users/${userId}`, {
@@ -473,13 +538,11 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     window.editUser = function (user) {
-        // تعبئة النموذج ببيانات المستخدم
         document.getElementById('userId').value = user.id;
-        document.getElementById('editUsername').value = user.username;
-        document.getElementById('editEmail').value = user.email;
-        document.getElementById('editPassword').value = user.password;
+        document.getElementById('editUsername').value = sanitizeInput(user.username);
+        document.getElementById('editEmail').value = sanitizeInput(user.email);
+        document.getElementById('editPassword').value = sanitizeInput(user.password);
 
-        // تحميل الصفوف الدراسية وتعبئة القائمة
         fetch('/api/grades', {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` }
@@ -490,8 +553,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 gradeSelect.innerHTML = '';
                 grades.forEach(grade => {
                     const option = document.createElement('option');
-                    option.value = grade.name;
-                    option.textContent = grade.name;
+                    option.value = sanitizeInput(grade.name);
+                    option.textContent = sanitizeInput(grade.name);
                     if (grade.name === user.grade) {
                         option.selected = true;
                     }
@@ -500,7 +563,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(err => console.error('Error loading grades:', err));
 
-        // فتح المودال
         const userModal = new bootstrap.Modal(document.getElementById('userModal'));
         userModal.show();
     };
@@ -535,7 +597,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // دوال التعامل مع الدورات
     window.deleteCourse = function (courseId) {
         if (confirm('هل أنت متأكد من حذف الكورس؟')) {
             fetch(`/api/courses/${courseId}`, {
@@ -552,28 +613,25 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     window.editCourse = function (course) {
-        // تعبئة بيانات الكورس
         document.getElementById('courseId').value = course.id;
-        document.getElementById('courseTitle').value = course.title;
-        document.getElementById('courseGrade').value = course.grade;
-        // تعيين عنوان الصورة الحالي في الحقل المخفي
-        document.getElementById('courseImageURL').value = course.imageURL;
+        document.getElementById('courseTitle').value = sanitizeInput(course.title);
+        document.getElementById('courseGrade').value = sanitizeInput(course.grade);
+        document.getElementById('courseImageURL').value = sanitizeInput(course.imageURL);
 
         const videosContainer = document.getElementById('videosContainer');
         videosContainer.innerHTML = '';
         (course.videos || []).forEach(video => {
             const videoInput = document.createElement('div');
-            videoInput.className = 'video-input mb-3'; // remove extra d-flex; included in innerHTML
+            videoInput.className = 'video-input';
             videoInput.innerHTML = `
-                <div class="d-flex align-items-center w-100">
-                    <div class="input-group flex-fill me-2">
-                        <input type="text" class="form-control video-title" placeholder="عنوان الفيديو" value="${video.title.replace(/&quot;/g, '')}">
-                    </div>
-                    <div class="input-group flex-fill me-2">
-                        <input type="url" class="form-control video-url" placeholder="رابط الفيديو" value="${video.url}">
-                    </div>
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                <input type="hidden" class="video-id" value="${sanitizeInput(video.id || '')}">
+                <div class="input-group">
+                    <input type="text" class="form-control video-title" placeholder="عنوان الفيديو" value="${sanitizeInput(video.title)}">
                 </div>
+                <div class="input-group">
+                    <input type="url" class="form-control video-url" placeholder="رابط الفيديو" value="${sanitizeInput(video.url)}">
+                </div>
+                <button type="button" class="btn btn-danger" onclick="deleteCourseVideo(this, '${sanitizeInput(video.id || '')}')"><i class="fas fa-trash"></i></button>
             `;
             videosContainer.appendChild(videoInput);
         });
@@ -582,29 +640,45 @@ document.addEventListener('DOMContentLoaded', function () {
         activitiesContainer.innerHTML = '';
         (course.activities || []).forEach(activity => {
             const activityInput = document.createElement('div');
-            activityInput.className = 'activity-input mb-3';
+            activityInput.className = 'activity-input';
             activityInput.innerHTML = `
-                <div class="d-flex align-items-center w-100">
-                    <div class="input-group flex-fill me-2">
-                        <input type="text" class="form-control activity-title" placeholder="عنوان المستند" value="${activity.title.replace(/&quot;/g, '')}" required>
-                    </div>
-                    <div class="input-group flex-fill me-2">
-                        <input type="file" class="form-control activity-file" accept=".pdf,video/*">
-                    </div>
-                    <input type="hidden" class="existing-file-path" value="${activity.filePath}">
-                    &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                <input type="hidden" class="activity-id" value="${sanitizeInput(activity.id || '')}">
+                <div class="input-group">
+                    <input type="text" class="form-control activity-title" placeholder="عنوان المستند" value="${sanitizeInput(activity.title)}" required>
                 </div>
+                <div class="input-group">
+                    <input type="file" class="form-control activity-file" accept=".pdf,video/*">
+                </div>
+                <input type="hidden" class="existing-file-path" value="${sanitizeInput(activity.filePath)}">
+                <button type="button" class="btn btn-danger" onclick="deleteCourseActivity(this, '${sanitizeInput(activity.id || '')}')"><i class="fas fa-trash"></i></button>
             `;
             activitiesContainer.appendChild(activityInput);
         });
 
-        // فتح المودال
+        const examsContainer = document.getElementById('examsContainer');
+        examsContainer.innerHTML = '';
+        (course.exams || []).forEach(exam => {
+            const examInput = document.createElement('div');
+            examInput.className = 'exam-input';
+            examInput.innerHTML = `
+                <input type="hidden" class="exam-id" value="${sanitizeInput(exam.id || '')}">
+                <div class="input-group">
+                    <input type="text" class="form-control exam-title" placeholder="عنوان الاختبار" value="${sanitizeInput(exam.title)}" required>
+                </div>
+                <div class="input-group">
+                    <input type="url" class="form-control exam-url" placeholder="رابط استبيان جوجل" value="${sanitizeInput(exam.googleFormUrl)}" required>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="deleteCourseExam(this, '${sanitizeInput(exam.id || '')}')"><i class="fas fa-trash"></i></button>
+            `;
+            examsContainer.appendChild(examInput);
+        });
+
         const courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
         courseModal.show();
     };
 
     window.makeAdmin = function (userId) {
-        if (confirm('هل أنت متأكد من ترقية هذا المستخدم إلى مسؤول؟')) {
+        if (confirm('هل أنت متأكد من ترقية هذا المستخدم إلى ادمن؟')) {
             fetch(`/api/users/${userId}/make-admin`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` }
@@ -726,151 +800,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('prevGradesPage').classList.add('btn', 'btn-outline-primary', 'me-2');
     document.getElementById('nextGradesPage').classList.add('btn', 'btn-outline-primary', 'ms-2');
 
-    // تحميل قائمة الصفوف الدراسية في نموذج إضافة اختبار جديد
-    fetch('/api/grades')
-        .then(response => response.json())
-        .then(grades => {
-            const gradeSelect = document.getElementById('examGrade');
-            gradeSelect.innerHTML = '';
-            grades.forEach(grade => {
-                const option = document.createElement('option');
-                option.value = grade.name;
-                option.textContent = grade.name;
-                gradeSelect.appendChild(option);
-            });
-        })
-        .catch(err => console.error('Error loading grades:', err));
-
-    // تحميل قائمة الدورات بناءً على الصف الدراسي المحدد
-    document.getElementById('examGrade').addEventListener('change', function () {
-        const grade = this.value;
-        fetch(`/api/courses?grade=${grade}`, {
-            method: 'GET',
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(response => response.json())
-            .then(courses => {
-                const courseSelect = document.getElementById('examCourse');
-                courseSelect.innerHTML = '';
-                courses.forEach(course => {
-                    const option = document.createElement('option');
-                    option.value = course.id;
-                    option.textContent = course.title;
-                    courseSelect.appendChild(option);
-                });
-            })
-            .catch(err => console.error('Error loading courses:', err));
-    });
-
-    // معالجة نموذج إضافة/تعديل اختبار جديد
-    const examForm = document.getElementById('examForm');
-    if (examForm) {
-        examForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const id = document.getElementById('examId').value;
-            const title = sanitizeInput(document.getElementById('examTitle').value);
-            const grade = document.getElementById('examGrade').value;
-            const courseId = document.getElementById('examCourse').value;
-            const googleFormUrl = document.getElementById('googleFormUrl').value;
-
-            const method = id ? 'PUT' : 'POST';
-            const url = id ? `/api/exams/${id}` : '/api/exams';
-
-            fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                body: JSON.stringify({ title, grade, courseId, googleFormUrl })
-            })
-                .then(response => response.json())
-                .then(res => {
-                    alert(res.message);
-                    loadExams(); // إعادة تحميل قائمة الامتحانات بعد الإضافة
-                    examForm.reset();
-                    document.getElementById('examId').value = '';
-                    const examModal = bootstrap.Modal.getInstance(document.getElementById('examModal'));
-                    if (examModal) examModal.hide();
-                })
-                .catch(err => console.error(err));
-        });
-    }
-
-    // دالة لحذف امتحان
-    window.deleteExam = function (examId) {
-        if (confirm('هل أنت متأكد من حذف الامتحان؟')) {
-            fetch(`/api/exams/${examId}`, {
-                method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` }
-            })
-                .then(response => response.json())
-                .then(res => {
-                    alert(res.message);
-                    loadExams();
-                })
-                .catch(err => console.error(err));
-        }
-    };
-
-    // دالة لتعديل امتحان
-    window.editExam = function (exam) {
-        document.getElementById('examId').value = exam.id;
-        document.getElementById('examTitle').value = exam.title;
-        document.getElementById('examGrade').value = exam.grade;
-        document.getElementById('examCourse').value = exam.courseId;
-        document.getElementById('googleFormUrl').value = exam.googleFormUrl;
-
-        const examModal = new bootstrap.Modal(document.getElementById('examModal'));
-        examModal.show();
-    };
-
-    document.getElementById('prevExamsPage').addEventListener('click', () => {
-        if (examsPage > 1) {
-            examsPage--;
-            document.getElementById('examsPageNumber').value = examsPage;
-            loadExams(examsPage);
-        }
-    });
-
-    document.getElementById('nextExamsPage').addEventListener('click', () => {
-        const totalPages = parseInt(document.getElementById('examsTotalPages').textContent);
-        if (examsPage < totalPages) {
-            examsPage++;
-            document.getElementById('examsPageNumber').value = examsPage;
-            loadExams(examsPage);
-        }
-    });
-
-    document.getElementById('examsPageNumber').addEventListener('change', (e) => {
-        const page = parseInt(e.target.value);
-        const totalPages = parseInt(document.getElementById('examsTotalPages').textContent);
-        if (page >= 1 && page <= totalPages) {
-            examsPage = page;
-            loadExams(examsPage);
-        } else {
-            e.target.value = examsPage;
-        }
-    });
-
-    document.getElementById('prevExamsPage').classList.add('btn', 'btn-outline-primary', 'me-2');
-    document.getElementById('nextExamsPage').classList.add('btn', 'btn-outline-primary', 'ms-2');
-
-    // إضافة وظيفة البحث للامتحانات
-    const examSearch = document.getElementById('examSearch');
-    examSearch.addEventListener('input', function () {
-        const searchTerm = examSearch.value.toLowerCase();
-        const rows = document.querySelectorAll('#examsTable tbody tr');
-        rows.forEach(row => {
-            const title = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-            const grade = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-            const courseTitle = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-            if (title.includes(searchTerm) || grade.includes(searchTerm) || courseTitle.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-
-    // معالجة نموذج إضافة طالب جديد
     const addStudentForm = document.getElementById('addStudentForm');
     if (addStudentForm) {
         addStudentForm.addEventListener('submit', function (e) {
@@ -878,10 +807,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const username = sanitizeInput(document.getElementById('newUsername').value);
             const email = sanitizeInput(document.getElementById('newEmail').value);
             const password = sanitizeInput(document.getElementById('newPassword').value);
-            const grade = document.getElementById('newGrade').value;
+            const grade = sanitizeInput(document.getElementById('newGrade').value);
 
-            // فحص إذا كان البريد موجود مسبقاً ضمن قائمة المستخدمين المحملة
             if (window.allUsers && window.allUsers.find(user => user.email === email)) {
+                alert('البريد الإلكتروني موجود مسبقًا');
                 return;
             }
 
@@ -894,7 +823,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(res => {
                     alert(res.body.message);
                     if (res.status === 200) {
-                        loadUsers(); // إعادة تحميل قائمة المستخدمين بعد الإضافة
+                        loadUsers();
                         addStudentForm.reset();
                         const addStudentModal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
                         if (addStudentModal) addStudentModal.hide();
@@ -904,7 +833,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // معالجة نموذج إضافة/تعديل إشعار
     const notificationForm = document.getElementById('notificationForm');
     if (notificationForm) {
         notificationForm.addEventListener('submit', function (e) {
@@ -915,9 +843,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const payload = { title, content };
 
             const method = id ? 'PUT' : 'POST';
-            const url = id ? `/api/notifications/${id}` : '/api/notifications';
+            const urlEndpoint = id ? `/api/notifications/${id}` : '/api/notifications';
 
-            fetch(url, {
+            fetch(urlEndpoint, {
                 method,
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify(payload)
@@ -935,7 +863,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // دالة لحذف إشعار
     window.deleteNotification = function (notificationId) {
         if (confirm('هل أنت متأكد من حذف الإشعار؟')) {
             fetch(`/api/notifications/${notificationId}`, {
@@ -951,11 +878,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // دالة لتعديل إشعار
     window.editNotification = function (notification) {
         document.getElementById('notificationId').value = notification.id;
-        document.getElementById('notificationTitle').value = notification.title;
-        document.getElementById('notificationContent').value = notification.content;
+        document.getElementById('notificationTitle').value = sanitizeInput(notification.title);
+        document.getElementById('notificationContent').value = sanitizeInput(notification.content);
 
         const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
         notificationModal.show();
@@ -989,14 +915,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Initial load (مرة أخرى لضمان تحميل البيانات)
-    loadUsers();
-    loadCourses();
-    loadAnalytics();
-    loadGrades();
-    loadExams();
-    loadNotifications();
-
     const sidebarToggle = document.getElementById("sidebarToggle");
     sidebarToggle.addEventListener("click", function () {
         const wrapper = document.getElementById("wrapper");
@@ -1014,4 +932,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    window.deleteCourseExam = function (btn, examId) {
+        if (examId && confirm('هل أنت متأكد من حذف الاختبار؟')) {
+            fetch(`/api/exams/${examId}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    btn.parentElement.remove();
+                    loadCourses();
+                })
+                .catch(err => console.error(err));
+        } else if (confirm('هل أنت متأكد من حذف الاختبار؟')) {
+            btn.parentElement.remove();
+        }
+    };
 });

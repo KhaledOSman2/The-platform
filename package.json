@@ -16,10 +16,10 @@
     "@vercel/analytics": "^1.4.1",
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "socket.io": "^4.8.1",
-    "xss-clean": "^0.1.4",
-    "express-validator": "^7.2.1"
+    "xss-clean": "^0.1.4"
   }
 }

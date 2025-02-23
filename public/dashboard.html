@@ -21,7 +21,7 @@
 
         /* Global Styles */
         body {
-            background-color: #f8fafc;
+            background-color: #ffffff;
             font-family: 'Cairo', sans-serif;
             color: var(--text-dark);
             line-height: 1.7;
@@ -170,7 +170,7 @@
             <!-- نقل شعار الموقع في عنصر منفصل -->
             <a class="navbar-brand" href="index.html">
                 <i class="fas fa-graduation-cap"></i>
-                <span>لوحة التحكم</span>
+                <span>N U M B E R 1</span>
             </a>
             <!-- إضافة زر الإشعارات في حاوية مستقلة -->
             &nbsp;
@@ -448,7 +448,14 @@
                         });
                         const result = await response.json();
                         alert(result.message);
-                        // Optionally clear password field after update.
+                        // إذا تم إرسال علم logout، نقوم بتسجيل الخروج وإعادة التوجيه
+                        if (result.logout) {
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('grade');
+                            window.location.href = 'login.html';
+                            alert('تم تحديث البيانات بنجاح. الرجاء تسجيل الدخول مرة أخرى.');
+                            return;
+                        }
                         document.getElementById('password').value = '';
                     } catch (error) {
                         console.error('Error updating profile:', error);
@@ -470,6 +477,7 @@
                         localStorage.removeItem('token');
                         localStorage.removeItem('grade');
                         window.location.href = 'login.html';
+                        alert('انتهت صلاحية الجلسة الرجاء تسجيل الدخول مرة أخرى.');
                         return;
                     }
 
@@ -514,8 +522,10 @@
                                     <p class="card-text text-muted small">${course.grade}</p>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">مشاهدة</button>
-    <span class="ms-2"><i class="fab fa-youtube"></i> عدد الفيديوهات: ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span>                                    <div class="rating text-warning">
-                                            <i class="fas fa-star"></i> ${course.rating || '5/5'}
+ <span class="badge fw-bold px-3 py-2" style="background:#e0e0e0;color:#000;">
+                                <span class="course-duration">عدد المحاضرات : ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span></span>
+                            </span>
+                            <span><i class="fas fa-star" style="color:#f7a619;"></i> <span style="color: #555">4.5<span/></span>
                                         </div>
                                     </div>
                                 </div>

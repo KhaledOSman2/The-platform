@@ -21,7 +21,6 @@
             --text-dark: #1e293b;
             --text-light: #64748b;
             --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            /* لون التقسيم الجديد */
             --divider-color: #f1f5f9;
         }
 
@@ -74,7 +73,6 @@
             background: var(--gradient-primary);
             color: white !important;
         }
-
 
         /* قسم الهيرو */
         .hero {
@@ -170,7 +168,7 @@
             }
         }
 
-        /* قسم صاحب المنصة - تصميم محسّن */
+        /* قسم صاحب المنصة */
         .owner-section {
             background: linear-gradient(135deg, #ffffff, var(--divider-color));
             padding: 4rem 0;
@@ -276,6 +274,80 @@
             color: var(--text-light);
         }
 
+        /* قسم "عن المنصة" - تصميم محسّن بدون تدرج لوني */
+        #aboutUs {
+            position: relative;
+            padding: 6rem 0;
+            background: #f8fafc;
+            /* لون موحد مع خلفية الصفحة */
+            overflow: hidden;
+        }
+
+        #aboutUs .about-content {
+            position: relative;
+            z-index: 1;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        #aboutUs .about-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.2);
+        }
+
+        #aboutUs .about-content h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        #aboutUs .about-content h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        #aboutUs .about-content:hover h1::after {
+            width: 100%;
+        }
+
+        #aboutUs .about-content p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            padding: 0 2rem;
+        }
+
+        #aboutUs .about-content .btn {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        #aboutUs .about-content .btn:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+
         /* تذييل الصفحة */
         .footer {
             background: var(--text-dark);
@@ -284,7 +356,6 @@
             margin-top: 4rem;
             text-align: center;
             position: relative;
-
         }
 
         .footer a {
@@ -362,18 +433,61 @@
             animation: fadeIn 1s ease-out;
         }
 
+        /* تحسين تصميم عناوين الأقسام */
+        .section-heading {
+            position: relative;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding-bottom: 1rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-heading::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            transform: translateY(5px);
+        }
+
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            width: 60px;
+            height: 2px;
+            background: var(--secondary-color);
+            border-radius: 1px;
+            transform: translateY(5px);
+        }
+
+        .section-heading i {
+            color: var(--secondary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .section-heading:hover i {
+            transform: rotate(360deg);
+        }
+
         section {
             margin-bottom: 5rem;
-            /* Add consistent margin to all sections */
         }
 
         @media (min-width: 992px) {
-
-            /* Override container inside coursesSection to use full width on computer screens */
             #coursesSection .container {
                 max-width: 90%;
                 padding: 0 30px;
-                /* Adjust the horizontal padding as needed */
             }
         }
     </style>
@@ -401,17 +515,15 @@
         </div>
     </nav>
 
-    <!-- قسم صاحب المنصة - تصميم محسّن -->
+    <!-- قسم صاحب المنصة -->
     <section class="owner-section py-5"
         style="background: linear-gradient(135deg, #ffffff, #ffffff); overflow: hidden;">
         <div class="container">
             <div class="row align-items-center">
-                <!-- العمود الأيسر: صورة صاحب المنصة مع تأثير انزلاق -->
                 <div class="col-md-5 text-center" data-aos="fade-right" data-aos-duration="1000">
                     <img src="https://i.ibb.co/MYhkh75/photo.jpg" alt="صاحب المنصة"
                         class="img-fluid rounded-circle shadow-lg border border-3 border-primary" style="width: 270px;">
                 </div>
-                <!-- العمود الأيمن: معلومات صاحب المنصة مع تأثير انزلاق -->
                 <div class="col-md-7" data-aos="fade-left" data-aos-duration="1000">
                     <div class="owner-info text-center text-md-start mt-4 mt-md-0">
                         <h1 class="fw-bold mb-3">منصة N U M B E R 1</h1>
@@ -461,15 +573,15 @@
         </div>
     </section>
 
-
-    <!-- قسم "عن المنصة" -->
-    <section id="aboutUs" class="py-6 bg-light mb-5" data-aos="fade-up" data-aos-duration="1000">
+    <!-- قسم "عن المنصة" - تصميم محسّن بلون موحد -->
+    <section id="aboutUs" data-aos="fade-up" data-aos-duration="1000">
         <div class="container">
-            <h2 class="section-heading mb-5">عن المنصة <i class="fas fa-book"></i></h2>
-            <div class="container hero-content">
+            <h2 class="section-heading mb-5">عن المنصة</h2>
+            <div class="about-content">
                 <h1 class="display-4 fw-bold mb-4">N U M B E R 1</h1>
-                <p class="lead mb-5">منصة تعليمية تقدم محتوى تعليمي مميز ومتنوع في مادة الدراسات الاجتماعية، تم تصميم
-                    المنصة لتوفير تجربة تعليمية فريدة وممتعة للطلاب.</p>
+                <p class="lead">منصة تعليمية تقدم محتوى تعليمي مميز ومتنوع في مادة الدراسات الاجتماعية، تم تصميم المنصة
+                    لتوفير تجربة تعليمية فريدة وممتعة للطلاب.</p>
+                <a href="#coursesSection" class="btn">تعرف على المزيد</a>
             </div>
         </div>
     </section>
@@ -477,8 +589,8 @@
     <!-- قسم "المميزات" -->
     <section id="services" class="py-6 mb-5 fade-in" data-aos="fade-up" data-aos-duration="1000"
         style="margin-top: 5rem;">
-        <div class=" container">
-            <h2 class="section-heading mb-5">مميزات منصتنا <i class="fas fa-cogs"></i></h2>
+        <div class="container">
+            <h2 class="section-heading mb-5">مميزات منصتنا</h2>
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm">
@@ -514,7 +626,7 @@
     <!-- قسم "أحدث الكورسات" -->
     <section id="coursesSection" data-aos="fade-up" data-aos-duration="1000">
         <div class="container">
-            <h2 class="section-heading mb-5">أحدث الكورسات <i class="fas fa-star"></i></h2>
+            <h2 class="section-heading mb-5">أحدث الكورسات</h2>
             <div class="row g-4" id="latestCoursesGrid">
                 <!-- سيتم تعبئة الكورسات ديناميكيًا بواسطة JavaScript -->
             </div>
@@ -524,20 +636,17 @@
         </div>
     </section>
 
-
-
     <!-- تذييل الصفحة -->
     <footer class="footer text-center">
         <div class="container">
-            <p class="mb-1">&copy; N U M B E R 1</p>
+            <p class="mb-1">© N U M B E R 1</p>
             <p>
                 <a href="#">سياسة الخصوصية</a> |
                 <a href="#">الشروط والأحكام</a>
             </p>
         </div>
         <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
-            <span class="font-w-bold space-x-1">
-            </span>
+            <span class="font-w-bold space-x-1"></span>
             <span>
                 <p>
                     <span class="text-redMelon-300">Developed By</span>
@@ -557,66 +666,56 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
-            duration: 1000 // مدة الحركة بالملي ثانية
+            duration: 1000
         });
 
         document.addEventListener('DOMContentLoaded', async function () {
             try {
-                // استدعاء API لجلب أحدث 3 كورسات من endpoint جميع الكورسات
                 const response = await fetch('/api/all-courses');
                 const courses = await response.json();
                 const latestCoursesGrid = document.getElementById('latestCoursesGrid');
 
-                // عرض أحدث 3 كورسات فقط (على افتراض أن هناك بيانات متاحة)
                 courses.slice(-3).reverse().forEach(course => {
                     const courseImage = course.imageURL || 'images/course-placeholder.jpg';
                     const courseCard = document.createElement('div');
                     courseCard.className = 'col-lg-4 col-md-6';
                     courseCard.innerHTML = `
-            <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
-             <div class="position-relative">
+                        <div class="course-card card border-0 rounded-4 overflow-hidden shadow">
+                            <div class="position-relative">
                                 <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
                                 <div class="position-absolute top-0 start-0 m-3">
-                 <span class="badge bg-danger fw-bold px-3 py-2">جديد</span>
-                                       </div>
-                                <div class="position-absolute top-0 start-0 m-3">
-                                <div class="position-absolute top-0 start-0 m-3">
-                  
-                </div>
-                                    </div>
+                                    <span class="badge bg-danger fw-bold px-3 py-2">جديد</span>
+                                </div>
                             </div>
                             <div class="card-body p-4 bg-white">
                                 <h5 class="card-title text-dark fw-bold">${course.title}</h5>
                                 <p class="card-text text-muted small">${course.grade}</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">عرض التفاصيل</button>
-                                      <span class="ms-2"><i class="fab fa-youtube"></i> عدد الفيديوهات: ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span>
-
-                                    <div class="rating text-warning">
-                                        <i class="fas fa-star"></i> ${course.rating || '5/5'}
-                                    </div>
+                                    <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">مشاهدة</button>
+                                    <span class="badge fw-bold px-3 py-2" style="background:#e0e0e0;color:#000;">
+                                        <span class="course-duration">عدد المحاضرات : ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span>
+                                    </span>
+                                    <span><i class="fas fa-star" style="color:#f7a619;"></i> <span style="color: #555">4.5</span></span>
                                 </div>
                             </div>
                         </div>
-          `;
+                    `;
                     latestCoursesGrid.appendChild(courseCard);
                 });
             } catch (error) {
                 console.error('حدث خطأ أثناء جلب الكورسات:', error);
             }
 
-            // تغيير الروابط بناءً على حالة تسجيل الدخول
             const isLoggedIn = !!localStorage.getItem('token');
             const navLinks = document.getElementById('navLinks');
 
             if (isLoggedIn) {
                 navLinks.innerHTML = `
-          <li class="nav-item"><a class="nav-link active" href="index.html">الرئيسية</a></li>
-          <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
-          <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-        `;
-
+                    <li class="nav-item"><a class="nav-link active" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+                `;
                 document.getElementById('logoutLink').addEventListener('click', function (e) {
                     e.preventDefault();
                     localStorage.removeItem('token');

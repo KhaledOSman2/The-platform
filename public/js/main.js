@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) {
                 localStorage.removeItem('token');
                 window.location.href = 'login.html';
+                alert('انتهت صلاحية الجلسة الرجاء تسجيل الدخول مرة أخرى.');
                 return;
             }
 
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             console.error('حدث خطأ أثناء التحقق من الهوية:', error);
             localStorage.removeItem('token');
             window.location.href = 'login.html';
+            alert('انتهت صلاحية الجلسة الرجاء تسجيل الدخول مرة أخرى.');
         }
     }
 

@@ -23,7 +23,6 @@
             background: #f8fafc;
             min-height: 100vh;
             overflow-x: hidden;
-
         }
 
         #sidebar-wrapper {
@@ -112,10 +111,7 @@
             font-size: 1.25rem;
             margin-bottom: 1rem;
             display: inline-block;
-
             height: 55px;
-
-
         }
 
         .data-table th,
@@ -213,6 +209,41 @@
                 margin: 2rem 0;
             }
         }
+
+        /* تنسيق حقول الإدخال */
+        .video-input,
+        .activity-input,
+        .exam-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .video-input .input-group,
+        .activity-input .input-group,
+        .exam-input .input-group {
+            flex: 1;
+            margin-left: 0.5rem;
+        }
+
+        .video-input input,
+        .activity-input input,
+        .exam-input input {
+            width: 100%;
+            height: 38px;
+            font-size: 1rem;
+        }
+
+        .video-input .btn-danger,
+        .activity-input .btn-danger,
+        .exam-input .btn-danger {
+            margin-right: 0.5rem;
+            height: 38px;
+            width: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 
@@ -224,13 +255,9 @@
             <div class="list-group list-group-flush">
                 <a class="list-group-item" href="#usersSection"><i class="fas fa-user-graduate me-2"></i> إدارة
                     الطلاب</a>
-                <a class="list-group-item" href="#coursesSection"><i class="fab fa-youtube me-2"></i> إدارة
-                    الكورسات</a>
-                <a class="list-group-item" href="#examsSection"><i class="fas fa-file-alt me-2"></i> إدارة
-                    الامتحانات</a>
-                <a class="list-group-item" href="#gradesSection"><i class="fas fa-chalkboard-teacher me-2"></i>
-                    إدارة الصفوف
-                    الدراسية</a>
+                <a class="list-group-item" href="#coursesSection"><i class="fab fa-youtube me-2"></i> إدارة الكورسات</a>
+                <a class="list-group-item" href="#gradesSection"><i class="fas fa-chalkboard-teacher me-2"></i> إدارة
+                    الصفوف الدراسية</a>
                 <a class="list-group-item" href="#notificationsSection"><i class="fas fa-bell me-2"></i> إدارة
                     الإشعارات</a>
                 <a class="list-group-item" href="/dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> لوحة
@@ -247,7 +274,7 @@
             <!-- شريط التنقل العلوي -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white">
                 <button class="btn btn-primary" id="sidebarToggle">☰</button>
-                &nbsp;&nbsp;&nbsp;<div class="ms-auto">مرحبا، أدمن</div>
+                   <div class="ms-auto">مرحبا، أدمن</div>
             </nav>
             <div class="section-divider"></div>
             <!-- محتوى الصفحة الرئيسية -->
@@ -263,10 +290,10 @@
                             <div class="stat-card">الكورسات: <span id="totalCourses">0</span></div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card">الفيديوهات: <span id="totalVideos">0</span></div>
+                            <div class="stat-card">المحاضرات: <span id="totalVideos">0</span></div>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="stat-card">الامتحانات: <span id="totalExams">0</span></div>
+                            <div class="stat-card">الاختبارات: <span id="totalExams">0</span></div>
                         </div>
                     </div>
                 </section>
@@ -301,12 +328,10 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2"
-                                id="prevUsersPage">Previous</button>&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-outline-primary me-2" id="prevUsersPage">Previous</button>   
                             <span>Page <input type="number" id="usersPageNumber" value="1" min="1" style="width: 50px;">
                                 of <span id="usersTotalPages">1</span></span>
-                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
-                                id="nextUsersPage">Next</button>
+                               <button class="btn btn-outline-primary ms-2" id="nextUsersPage">Next</button>
                         </div>
                     </div>
                 </section>
@@ -331,8 +356,9 @@
                                 <tr>
                                     <th>العنوان</th>
                                     <th>الصف الدراسي</th>
-                                    <th>الفيديوهات</th>
+                                    <th>المحاضرات</th>
                                     <th>المستندات</th>
+                                    <th>الاختبارات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -341,54 +367,10 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2"
-                                id="prevCoursesPage">Previous</button>&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-outline-primary me-2" id="prevCoursesPage">Previous</button>   
                             <span>Page <input type="number" id="coursesPageNumber" value="1" min="1"
-                                    style="width: 50px;"> of
-                                <span id="coursesTotalPages">1</span></span>
-                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
-                                id="nextCoursesPage">Next</button>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="section-divider"></div>
-
-
-                <!-- قسم إدارة الامتحانات -->
-                <section id="examsSection">
-                    <div class="grade-title">
-                        <h2 class="mb-4"><i class="fas fa-file-alt"></i> إدارة الامتحانات</h2>
-                    </div>
-                    <div class="mb-3">
-                        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#examModal">
-                            <i class="fas fa-plus"></i> إضافة امتحان جديد
-                        </button>
-                        <input type="text" id="examSearch" class="form-control" placeholder="ابحث عن امتحان... "
-                            style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
-
-                    </div>
-                    <div class="table-responsive mt-4">
-                        <table class="table table-hover data-table table-striped table-bordered" id="examsTable">
-                            <thead>
-                                <tr>
-                                    <th>عنوان الامتحان</th>
-                                    <th>الصف الدراسي</th>
-                                    <th>الكورس</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- سيتم تعبئتها ديناميكيًا -->
-                            </tbody>
-                        </table>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2"
-                                id="prevExamsPage">Previous</button>&nbsp;&nbsp;&nbsp;
-                            <span>Page <input type="number" id="examsPageNumber" value="1" min="1" style="width: 50px;">
-                                of <span id="examsTotalPages">1</span></span>
-                            &nbsp;&nbsp;&nbsp; <button class="btn btn-outline-primary ms-2"
-                                id="nextExamsPage">Next</button>
+                                    style="width: 50px;"> of <span id="coursesTotalPages">1</span></span>
+                               <button class="btn btn-outline-primary ms-2" id="nextCoursesPage">Next</button>
                         </div>
                     </div>
                 </section>
@@ -412,9 +394,9 @@
                                     <th>اسم الصف الدراسي</th>
                                     <th>الطلاب</th>
                                     <th>الكورسات</th>
-                                    <th>الامتحانات</th>
+                                    <th>المحاضرات</th>
                                     <th>المستندات</th>
-                                    <th>الفيديوهات</th>
+                                    <th>الاختبارات</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -423,13 +405,10 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2"
-                                id="prevGradesPage">Previous</button>&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-outline-primary me-2" id="prevGradesPage">Previous</button>   
                             <span>Page <input type="number" id="gradesPageNumber" value="1" min="1"
-                                    style="width: 50px;"> of
-                                <span id="gradesTotalPages">1</span></span>
-                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
-                                id="nextGradesPage">Next</button>
+                                    style="width: 50px;"> of <span id="gradesTotalPages">1</span></span>
+                               <button class="btn btn-outline-primary ms-2" id="nextGradesPage">Next</button>
                         </div>
                     </div>
                 </section>
@@ -461,23 +440,18 @@
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-outline-primary me-2"
-                                id="prevNotificationsPage">Previous</button>&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-outline-primary me-2" id="prevNotificationsPage">Previous</button>   
                             <span>Page <input type="number" id="notificationsPageNumber" value="1" min="1"
-                                    style="width: 50px;">
-                                of <span id="notificationsTotalPages">1</span></span>
-                            &nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary ms-2"
-                                id="nextNotificationsPage">Next</button>
+                                    style="width: 50px;"> of <span id="notificationsTotalPages">1</span></span>
+                               <button class="btn btn-outline-primary ms-2" id="nextNotificationsPage">Next</button>
                         </div>
                     </div>
                 </section>
 
-
-                <di class="section-divider">
+                <div class="section-divider"></div>
             </div>
         </div>
-    </div>
-    <!-- /#page-content-wrapper -->
+        <!-- /#page-content-wrapper -->
     </div>
     <!-- /#wrapper -->
 
@@ -499,8 +473,6 @@
                             <input type="text" class="form-control" id="courseTitle" name="title" required>
                         </div>
 
-
-
                         <div class="mb-3">
                             <label for="courseGrade" class="form-label">الصف الدراسي</label>
                             <select class="form-control" id="courseGrade" name="grade" required></select>
@@ -521,7 +493,7 @@
                                         data-bs-target="#collapseVideos" aria-expanded="false"
                                         aria-controls="collapseVideos">
                                         <i class="fas fa-video"></i>
-                                        <span style="margin-right: 12px;">فيديوهات الكورس</span>&nbsp;&nbsp;&nbsp;
+                                        <span style="margin-right: 12px;">المحاضرات</span>   
                                     </button>
                                 </h2>
                                 <div id="collapseVideos" class="accordion-collapse collapse"
@@ -529,7 +501,7 @@
                                     <div class="accordion-body">
                                         <div id="videosContainer"></div>
                                         <button type="button" class="btn btn-secondary mt-2" id="addVideoButton">
-                                            <i class="fas fa-plus"></i> إضافة فيديو آخر
+                                            <i class="fas fa-plus"></i> إضافة محاضرة جديدة
                                         </button>
                                     </div>
                                 </div>
@@ -540,8 +512,8 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseDocuments" aria-expanded="false"
                                         aria-controls="collapseDocuments">
-                                        <i class="fas fa-file-alt"></i>
-                                        <span style="margin-right: 12px;">المستندات</span>&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span style="margin-right: 12px;">المستندات</span>   
                                     </button>
                                 </h2>
                                 <div id="collapseDocuments" class="accordion-collapse collapse"
@@ -549,13 +521,32 @@
                                     <div class="accordion-body">
                                         <div id="activitiesContainer"></div>
                                         <button type="button" class="btn btn-secondary mt-2" id="addActivityButton">
-                                            <i class="fas fa-plus"></i> إضافة مستند PDF اخر
+                                            <i class="fas fa-plus"></i> إضافة مستند PDF جديد
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingExams">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseExams" aria-expanded="false"
+                                        aria-controls="collapseExams">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span style="margin-right: 12px;">الاختبارات</span>   
+                                    </button>
+                                </h2>
+                                <div id="collapseExams" class="accordion-collapse collapse"
+                                    aria-labelledby="headingExams" data-bs-parent="#courseAccordion">
+                                    <div class="accordion-body">
+                                        <div id="examsContainer"></div>
+                                        <button type="button" class="btn btn-secondary mt-2" id="addExamButton">
+                                            <i class="fas fa-plus"></i> إضافة امتحان جديد
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
@@ -664,43 +655,6 @@
         </div>
     </div>
 
-    <!-- Modal لإضافة/تعديل امتحان -->
-    <div class="modal fade" id="examModal" tabindex="-1" aria-labelledby="examModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="examForm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="examModalLabel">إضافة/تعديل امتحان</h5>
-                        <button type="button" class="fas fa-plus" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="examId" value="">
-                        <div class="mb-3">
-                            <label for="examTitle" class="form-label">عنوان الامتحان</label>
-                            <input type="text" class="form-control" id="examTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="examGrade" class="form-label">الصف الدراسي</label>
-                            <select class="form-control" id="examGrade" required></select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="examCourse" class="form-label">الكورس</label>
-                            <select class="form-control" id="examCourse" required></select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="googleFormUrl" class="form-label">رابط استبيان جوجل</label>
-                            <input type="url" class="form-control" id="googleFormUrl" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                        <button type="submit" class="btn btn-primary">حفظ الامتحان</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Modal لإضافة/تعديل إشعار -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
         aria-hidden="true">
@@ -749,17 +703,14 @@
 
             if (isLoggedIn) {
                 navLinks.innerHTML = `
-           <a class="list-group-item" href="#usersSection"><i class="fas fa-user-graduate me-2"></i> إدارة الطلاب</a>
-            <a class="list-group-item" href="#coursesSection"><i class="fab fa-youtube me-2"></i> إدارة الكورسات</a>
-            <a class="list-group-item" href="#examsSection"><i class="fas fa-file-alt me-2"></i> إدارة الامتحانات</a>
-            <a class="list-group-item" href="#gradesSection"><i class="fas fa-chalkboard-teacher me-2"></i> إدارة الصفوف
-                الدراسية</a>
-            <a class="list-group-item" href="#notificationsSection"><i class="fas fa-bell me-2"></i> إدارة الإشعارات</a>
-            <a class="list-group-item" href="/dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> لوحة التحكم</a>
-            <a class="list-group-item" href="index.html"><i class="fas fa-home me-2"></i> الرئيسية</a>
-            <a class="list-group-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> تسجيل
-                الخروج</a>
-            `;
+                    <a class="list-group-item" href="#usersSection"><i class="fas fa-user-graduate me-2"></i> إدارة الطلاب</a>
+                    <a class="list-group-item" href="#coursesSection"><i class="fab fa-youtube me-2"></i> إدارة الكورسات</a>
+                    <a class="list-group-item" href="#gradesSection"><i class="fas fa-chalkboard-teacher me-2"></i> إدارة الصفوف الدراسية</a>
+                    <a class="list-group-item" href="#notificationsSection"><i class="fas fa-bell me-2"></i> إدارة الإشعارات</a>
+                    <a class="list-group-item" href="/dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> لوحة التحكم</a>
+                    <a class="list-group-item" href="index.html"><i class="fas fa-home me-2"></i> الرئيسية</a>
+                    <a class="list-group-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> تسجيل الخروج</a>
+                `;
 
                 document.getElementById('logoutLink').addEventListener('click', function (e) {
                     e.preventDefault();
@@ -818,7 +769,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // ...existing code...
             const sidebarToggle = document.getElementById("sidebarToggle");
             sidebarToggle.addEventListener("click", function () {
                 const wrapper = document.getElementById("wrapper");
@@ -836,12 +786,10 @@
                     }
                 }
             });
-            // ...existing code...
         });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // ...existing code...
             const charLimit = 50; // maximum allowed characters
             document.querySelectorAll('.data-table td').forEach(cell => {
                 if (cell.innerText.length > charLimit) {
