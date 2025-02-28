@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     tr.classList.add('table-light');
 
                     const td1 = document.createElement('td');
-                    td1.innerHTML = `${sanitizeInput(user.username)} ${user.isAdmin ? '<span class="badge bg-success fw-bold py-2">ادمن</span> ' : ''}${user.isBanned ? '<span class="badge bg-danger fw-bold py-2">محظور</span> ' : ''}`;
+                    td1.innerHTML = `${sanitizeInput(user.username)} ${user.isAdmin ? '<span class="badge bg-success fw-bold py-2">Admin</span> ' : ''}${user.isBanned ? '<span class="badge bg-danger fw-bold py-2">Banned</span> ' : ''}`;
 
                     const td2 = document.createElement('td');
                     td2.textContent = sanitizeInput(user.email);
