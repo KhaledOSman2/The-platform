@@ -48,6 +48,5 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert('انتهت صلاحية الجلسة الرجاء تسجيل الدخول مرة أخرى.');
         }
     }
-
 });
 

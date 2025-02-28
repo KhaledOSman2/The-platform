@@ -4,7 +4,7 @@
       "id": 1738562296250,
       "username": "admin",
       "email": "admin@gmail.com",
-      "password": "1",
+      "password": "123",
       "isAdmin": true,
       "grade": "الصف الاول الاعدادي",
       "isBanned": false
@@ -98,6 +98,15 @@
       "grade": "الصف الاول الاعدادي",
       "isAdmin": false,
       "isBanned": false
+    },
+    {
+      "id": 1740769127390,
+      "username": "تتتت",
+      "email": "kf@gmail.com",
+      "password": "ااا",
+      "grade": "الصف الثاني الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
     }
   ],
   "courses": [
@@ -137,83 +146,7 @@
         }
       ],
       "grade": "الصف الاول الاعدادي",
-      "imageURL": "/uploads/1740319614698.jpeg"
-    },
-    {
-      "id": 1740300000000,
-      "title": "الثقافة والتقاليد في أوروبا",
-      "videoURL": "https://www.youtube.com/embed/samplevideo2",
-      "videos": [
-        {
-          "id": "video3",
-          "title": "الدرس الاول: مقدمة عن الثقافة الأوروبية",
-          "url": "https://www.youtube.com/embed/samplevideo2",
-          "addedDate": "2025-02-01T20:30:00.000Z"
-        },
-        {
-          "id": "video4",
-          "title": "الدرس الثاني: العادات والتقاليد في أوروبا",
-          "url": "https://www.youtube.com/embed/samplevideo3",
-          "addedDate": "2025-02-10T18:15:00.000Z"
-        }
-      ],
-      "activities": [
-        {
-          "id": "activity2",
-          "title": "ملخص الدرس حول الثقافة الأوروبية",
-          "filePath": "/uploads/1740301000000.pdf"
-        }
-      ],
-      "exams": [
-        {
-          "id": "exam2",
-          "title": "اختبار الثقافة الأوروبية",
-          "googleFormUrl": "https://docs.google.com/forms/d/e/sampleform2/viewform",
-          "courseId": "1740300000000",
-          "grade": "الصف الثاني الاعدادي",
-          "addedDate": "2025-02-15T19:00:00.000Z"
-        }
-      ],
-      "grade": "الصف الثاني الاعدادي",
-      "imageURL": "/uploads/1740319625753.jpeg"
-    },
-    {
-      "id": 1740350000000,
-      "title": "أسرار التكنولوجيا الحديثة",
-      "videoURL": "https://www.youtube.com/embed/samplevideo4",
-      "videos": [
-        {
-          "id": "video5",
-          "title": "الدرس الاول: مقدمة في التكنولوجيا",
-          "url": "https://www.youtube.com/embed/samplevideo4",
-          "addedDate": "2025-03-05T17:45:00.000Z"
-        },
-        {
-          "id": "video6",
-          "title": "الدرس الثاني: تقنيات الذكاء الاصطناعي",
-          "url": "https://www.youtube.com/embed/samplevideo5",
-          "addedDate": "2025-03-12T16:20:00.000Z"
-        }
-      ],
-      "activities": [
-        {
-          "id": "activity3",
-          "title": "ورقة عمل حول التكنولوجيا الحديثة",
-          "filePath": "/uploads/1740351000000.pdf"
-        }
-      ],
-      "exams": [
-        {
-          "id": "exam3",
-          "title": "امتحان التكنولوجيا الحديثة",
-          "googleFormUrl": "https://docs.google.com/forms/d/e/sampleform3/viewform",
-          "courseId": "1740350000000",
-          "grade": "الصف الثالث الاعدادي",
-          "addedDate": "2025-03-20T15:30:00.000Z"
-        }
-      ],
-      "grade": "الصف الثالث الاعدادي",
-      "imageURL": "/uploads/1740319636810.jpeg"
+      "imageURL": "/uploads/1740772522805.jpeg"
     }
   ],
   "grades": [

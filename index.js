@@ -422,7 +422,7 @@ app.post('/api/exams', authenticateToken, (req, res) => {
     }
     course.exams.push(newExam);
     writeData(data);
-    res.json({ message: 'تم إضافة الامتحان بنجاح' });
+    res.json({ message: 'تم إضافة الاختبار بنجاح' });
 });
 
 app.get('/api/exams', authenticateToken, (req, res) => {
@@ -479,7 +479,7 @@ app.put('/api/exams/:id', authenticateToken, (req, res) => {
     });
 
     if (!examFound) {
-        return res.status(404).json({ message: 'الامتحان غير موجود' });
+        return res.status(404).json({ message: 'الاختبار غير موجود' });
     }
 
     // تحديث بيانات الامتحان
@@ -494,7 +494,7 @@ app.put('/api/exams/:id', authenticateToken, (req, res) => {
     newCourse.exams.push(examData);
 
     writeData(data);
-    res.json({ message: 'تم تحديث الامتحان بنجاح' });
+    res.json({ message: 'تم تحديث الاختبار بنجاح' });
 });
 
 // API لحذف امتحان
@@ -512,10 +512,10 @@ app.delete('/api/exams/:id', authenticateToken, (req, res) => {
         }
     });
     if (!examFound) {
-        return res.status(404).json({ message: 'الامتحان غير موجود' });
+        return res.status(404).json({ message: 'الاختبار غير موجود' });
     }
     writeData(data);
-    res.json({ message: 'تم حذف الامتحان بنجاح' });
+    res.json({ message: 'تم حذف الاختبار بنجاح' });
 });
 
 // ----------------------

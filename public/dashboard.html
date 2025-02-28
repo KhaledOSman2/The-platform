@@ -208,17 +208,17 @@
     <div id="main-content" style="flex: 1;">
         <!-- محتوى الصفحة -->
         <div class="container mt-4">
-            
-            <!-- شريط البحث أو الفلاتر -->
+            <!-- شريط البحث -->
             <div class="row search-bar">
-                <div class="col-md-12">
-                    <input type="text" id="courseSearch" class="form-control" placeholder="ابحث عن كورس...">
+                <div class="col-md-12 position-relative">
+                    <input type="text" id="courseSearch" class="form-control ps-5" placeholder="ابحث عن كورس...">
+                    <i class="fas fa-search position-absolute"
+                        style="top: 50%; left: 2rem; transform: translateY(-50%); color: var(--text-light);"></i>
                 </div>
             </div>
 
             <h1 class="text-center mb-4 display-10  fw-bold" style=" margin-top: 15px; margin-bottom: 15px;">الكورسات
                 الخاصة بك</h1>
-            
             <!-- رسالة عدم وجود كورسات -->
             <div class="row" id="noCoursesMessage" style="display: none;">
                 <div class="col-md-12 text-center">

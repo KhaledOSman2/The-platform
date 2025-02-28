@@ -19,7 +19,7 @@
         }
 
         body {
-            background-color: #f8fafc;
+            background-color: #ffffff;
             font-family: 'Cairo', sans-serif;
             color: var(--text-dark);
             line-height: 1.7;
@@ -44,9 +44,9 @@
 
         .nav-link {
             color: var(--text-dark) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             font-weight: 600;
-            padding: 0.5rem 1rem !important;
+            padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
 
@@ -58,12 +58,12 @@
 
         .nav-link.active {
             background: var(--gradient-primary);
-            color: white !important;
+            color: #fff !important;
         }
 
         .footer {
             background: var(--text-dark);
-            color: white;
+            color: #fff;
             padding: 2rem 0 2rem;
             margin-top: 4rem;
             position: relative;
@@ -87,10 +87,77 @@
             height: 4px;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
+
+        /* تصميم نموذج تسجيل الدخول/إنشاء حساب الجديد */
+        .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            padding: 30px;
+        }
+
+        .login-card h2 {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-control {
+            border-radius: 25px;
+            padding: 10px 20px 10px 40px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: none;
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #2563eb, #1d4ed8);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(45deg, #1d4ed8, #2563eb);
+        }
+
+        .toggle-password {
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            top: 73%;
+            left: 15px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 
-<body class="bg-light" style="margin-top: 120px;">
+<body style="margin-top: 120px;">
     <!-- شريط تنقل محسّن -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
@@ -112,44 +179,40 @@
         </div>
     </nav>
 
+    <!-- نموذج إنشاء حساب جديد بتصميم جديد -->
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h3>إنشاء حساب جديد</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="registerForm">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">اسم المستخدم</label>
-                                <input type="text" class="form-control" id="username" placeholder="ادخل اسم المستخدم"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">البريد الإلكتروني</label>
-                                <input type="email" class="form-control" id="email" placeholder="example@example.com"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">كلمة المرور</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password" placeholder="********"
-                                        required>
-                                    <span class="input-group-text toggle-password" id="toggleRegisterPassword">
-                                        <i class="fa fa-eye"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="grade" class="form-label">الصف الدراسي</label>
-                                <select class="form-control" id="grade" required></select>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100">إنشاء حساب</button>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center">
-                        <small>هل لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></small>
+                <div class="login-card">
+                    <h2>إنشاء حساب جديد</h2>
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">اسم المستخدم</label>
+                            <input type="text" class="form-control" id="username" placeholder="ادخل اسم المستخدم"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="email" placeholder="example@example.com"
+                                required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">كلمة المرور</label>
+                            <input type="password" class="form-control" id="password" placeholder="********" required>
+                            <span class="toggle-password" id="toggleRegisterPassword">
+                                <i class="fa fa-eye-slash"></i>
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="grade" class="form-label">الصف الدراسي</label>
+                            <select class="form-control" id="grade" required></select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-custom">إنشاء حساب</button>
+                        </div>
+                    </form>
+                    <div class="login-footer">
+                        <p>هل لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
                     </div>
                 </div>
             </div>
@@ -159,15 +222,14 @@
     <!-- تذييل الصفحة -->
     <footer class="footer text-center">
         <div class="container">
-            <p class="mb-1">&copy; N U M B E R 1</p>
+            <p class="mb-1">© N U M B E R 1</p>
             <p>
                 <a href="#">سياسة الخصوصية</a> |
                 <a href="#">الشروط والأحكام</a>
             </p>
         </div>
         <div class="en text-center font-com space-x-2 opacity-80 px-5 flex flex-wrap flex-center-both">
-            <span class="font-w-bold space-x-1">
-            </span>
+            <span class="font-w-bold space-x-1"></span>
             <span>
                 <p>
                     <span class="text-redMelon-300">Developed By</span>
@@ -181,7 +243,6 @@
         </span>
     </footer>
 
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
@@ -189,24 +250,20 @@
         document.addEventListener('DOMContentLoaded', function () {
             const isLoggedIn = !!localStorage.getItem('token');
             const navLinks = document.getElementById('navLinks');
-
             if (isLoggedIn) {
                 navLinks.innerHTML = `
-                   <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-                      
-                    `;
-
+          <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+          <li class="nav-item"><a class="nav-link" href="courses.html">الكورسات</a></li>
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+        `;
                 document.getElementById('logoutLink').addEventListener('click', function (e) {
                     e.preventDefault();
                     localStorage.removeItem('token');
                     window.location.href = 'login.html';
                 });
             }
-
-            // Handle form submission for registration
+            // Handle registration form submission
             const registerForm = document.getElementById('registerForm');
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -214,18 +271,16 @@
                 const email = document.getElementById('email').value.trim().toLowerCase();
                 const password = document.getElementById('password').value;
                 const grade = document.getElementById('grade').value;
-
                 try {
                     const response = await fetch('/api/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, email, password, grade })
                     });
-
                     const data = await response.json();
                     if (response.ok) {
                         alert(data.message);
-                        // تسجيل الدخول تلقائيًا بعد إنشاء الحساب
+                        // Automatic login after registration
                         const loginResponse = await fetch('/api/login', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -246,7 +301,6 @@
                     alert('حدث خطأ أثناء إنشاء الحساب. حاول مرة أخرى.');
                 }
             });
-
             // Toggle password visibility for register page
             const toggleReg = document.getElementById('toggleRegisterPassword');
             if (toggleReg) {
