@@ -1,246 +1,136 @@
-let currentVideoIndex = 0;
-        let videos = [];
-
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            const day = date.getDate();
-            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-            const month = monthNames[date.getMonth()];
-            return `${day} ${month}`;
-        }
-
-        async function loadCourseData() {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            loadingOverlay.style.display = 'flex';
-
+ document.addEventListener('DOMContentLoaded', async function () {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                const urlParams = new URLSearchParams(window.location.search);
-                const courseId = urlParams.get('id');
-                if (!courseId) {
-                    alert('لم يتم العثور على معرف الكورس');
-                    return;
-                }
-                const courseResponse = await fetch(`/api/courses/${courseId}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                if (!courseResponse.ok) throw new Error('Network response was not ok');
-                const course = await courseResponse.json();
-                document.getElementById('courseTitle').textContent = course.title;
-                document.getElementById('courseGrade').textContent = course.grade;
-                document.getElementById('courseImage').src = course.imageURL;
-                document.getElementById('courseVideo').src = course.videoURL;
-                document.getElementById('videoTitle').textContent = course.videos[0]?.title || '';
+                // Fetch all grades from the API
+                const gradesResponse = await fetch('/api/grades');
+                const grades = await gradesResponse.json();
+                const gradeOrder = grades.map(grade => grade.name);
 
-                // New: Update lecture count dynamically
-                const lectureCount = course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0);
-                document.getElementById('lectureCount').textContent = lectureCount;
+                // Fetch all courses from the API
+                const coursesResponse = await fetch('/api/all-courses');
+                const courses = await coursesResponse.json();
 
-                videos = course.videos || [];
-                const videosList = document.getElementById('videosList');
-                videosList.innerHTML = '';
-                if (videos.length > 0) {
-                    document.getElementById('noVideoMessage').style.display = 'none';
-                    videos.forEach((video, index) => {
-                        const li = document.createElement('li');
-                        li.className = 'list-group-item d-flex justify-content-between align-items-start';
-                        li.innerHTML = `
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between align-items-center">
-                                   <div><i class="fa-solid fa-video"></i>  <strong>المحاضرة ${index + 1}:</strong></div>
-                                    <span class="badge text-bg" style="background:#e0e0e0;color:#000;">
-                                        ${formatDate(video.addedDate)}
-                                    </span>
-                                </div>
-                                <div class="mt-1 fw-bold text-primary" style="font-size: 0.95rem;">${video.title}</div>
-                            </div>`;
-                        li.dataset.index = index;
-                        li.addEventListener('click', () => {
-                            currentVideoIndex = index;
-                            updateVideo();
-                        });
-                        videosList.appendChild(li);
-                    });
-                    updateNavButtons();
-                    highlightCurrentVideo();
+                // Show noCoursesMessage if no courses are available
+                const noCoursesMessage = document.getElementById('noCoursesMessage');
+                if (courses.length === 0) {
+                    noCoursesMessage.style.display = 'block';
                 } else {
-                    document.getElementById('courseVideo').style.display = 'none';
-                    document.getElementById('noVideoMessage').style.display = 'block';
-                    videosList.innerHTML = '<li class="list-group-item">لا تتوفر محاضرات حاليا</li>';
+                    noCoursesMessage.style.display = 'none';
                 }
 
-                const activitiesList = document.getElementById('activitiesList');
-                activitiesList.innerHTML = '';
-                if (course.activities && course.activities.length > 0) {
-                    course.activities.forEach((activity, index) => {
-                        const li = document.createElement('li');
-                        li.className = 'list-group-item d-flex justify-content-between align-items-start';
-                       li.innerHTML = `
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between align-items-center">
-                                   <div><i class="fa-solid fa-file-pdf"></i>  <strong>المستند ${index + 1}:</strong></div>
-                                    <span class="badge text-bg" style="background:#e0e0e0;color:#000;">
-                                        ${formatDate(activity.addedDate)}
-                                    </span>
-                                </div>
-                                <div class="mt-1 fw-bold text-primary" style="font-size: 0.95rem;">${activity.title}</div>
-                            </div>
-                        `;
-                        li.style.cursor = 'pointer';
-                        li.addEventListener('click', () => {
-                            // Create an anchor element to trigger download
-                            const downloadLink = document.createElement('a');
-                            downloadLink.href = activity.filePath;
-                            downloadLink.download = activity.title || `document-${index + 1}`;
-                            downloadLink.style.display = 'none';
-                            document.body.appendChild(downloadLink);
-                            downloadLink.click();
-                            document.body.removeChild(downloadLink);
-                        });
-                        activitiesList.appendChild(li);
-                    });
-                } else {
-                    activitiesList.innerHTML = '<li class="list-group-item">لا تتوفر مستندات حاليا</li>';
-                }
-
-                const examsList = document.getElementById('examsList');
-                examsList.innerHTML = '';
-                try {
-                    const examsResponse = await fetch(`/api/exams?courseId=${courseId}&grade=${course.grade}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-                    if (!examsResponse.ok) throw new Error('Network response was not ok');
-                    const { exams } = await examsResponse.json();
-                    if (exams && exams.length > 0) {
-                        exams.forEach((exam, index) => {
-                            const li = document.createElement('li');
-                            li.className = 'list-group-item d-flex justify-content-between align-items-start';
-                            li.innerHTML = `
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between align-items-center">
-                                   <div><i class="fa-solid fa-file"></i>  <strong>الاختبار ${index + 1}:</strong></div>
-                                    <span class="badge text-bg" style="background:#e0e0e0;color:#000;">
-                                        ${formatDate(exam.addedDate)}
-                                    </span>
-                                </div>
-                                <div class="mt-1 fw-bold text-primary" style="font-size: 0.95rem;">${exam.title}</div>
-                            </div>
-                        `;
-                            li.style.cursor = 'pointer';
-                            li.addEventListener('click', () => {
-                                viewExam(exam.googleFormUrl, exam.title);
-                            });
-                            examsList.appendChild(li);
-                        });
-                    } else {
-                        examsList.innerHTML = '<li class="list-group-item">لا تتوفر اختبارات حاليا</li>';
+                const coursesByGrade = {};
+                // Categorize courses by grade
+                courses.forEach(course => {
+                    if (!coursesByGrade[course.grade]) {
+                        coursesByGrade[course.grade] = [];
                     }
-                } catch (examsError) {
-                    console.error('Error loading exams:', examsError);
-                    examsList.innerHTML = '<li class="list-group-item">لا تتوفر اختبارات حاليا</li>';
+                    coursesByGrade[course.grade].push(course);
+                });
+
+                const coursesByGradeContainer = document.getElementById('coursesByGrade');
+                const gradeFilterDropdown = document.getElementById('gradeFilter');
+
+                // Add options to the dropdown (besides "all" option)
+                gradeOrder.forEach(grade => {
+                    const option = document.createElement('option');
+                    option.value = grade;
+                    option.textContent = grade;
+                    gradeFilterDropdown.appendChild(option);
+                });
+
+                // Function to render courses based on selected grade
+                function renderCourses(filterGrade) {
+                    coursesByGradeContainer.innerHTML = ''; // Clear previous content
+
+                    if (filterGrade === 'all') {
+                        let hasCourses = false;
+                        gradeOrder.forEach(grade => {
+                            if (coursesByGrade[grade] && coursesByGrade[grade].length > 0) {
+                                createGradeSection(grade, coursesByGrade[grade]);
+                                hasCourses = true;
+                            }
+                        });
+                        // Show noCoursesMessage if no courses found in any grade
+                        noCoursesMessage.style.display = hasCourses ? 'none' : 'block';
+                    } else {
+                        if (coursesByGrade[filterGrade] && coursesByGrade[filterGrade].length > 0) {
+                            createGradeSection(filterGrade, coursesByGrade[filterGrade]);
+                            noCoursesMessage.style.display = 'none';
+                        } else {
+                            coursesByGradeContainer.innerHTML = '';
+                            noCoursesMessage.style.display = 'block';
+                        }
+                    }
+                }
+
+                // Modified function: sort courses descending and add a new badge to the newest course.
+                function createGradeSection(grade, coursesArray) {
+                    coursesArray = coursesArray.slice().reverse();
+                    const gradeSection = document.createElement('div');
+                    gradeSection.className = 'mb-5';
+                    gradeSection.innerHTML = `
+                            <div class="grade-title">${grade}</div>
+                            <div class="row g-4">
+                                ${coursesArray.map((course, index) => {
+                        const badge = (index === 0)
+                            ? `<div class="position-absolute top-0 start-0 m-3">
+                    <span class="badge bg-danger fw-bold px-3 py-2">جديد</span>
+                                        </div>`
+                            : '';
+                        return `
+                                        <div class="col-md-4">
+                                            <div class="course-card card border-0 rounded-4 overflow-hidden shadow position-relative">
+                                                <div class="position-relative">
+                                                    <img src="${course.imageURL || 'images/course-placeholder.jpg'}" class="card-img-top img-fluid" alt="${course.title}" style="height: 220px; object-fit: cover;">
+                                                    ${badge}
+                                                </div>
+                                                <div class="card-body p-4 bg-white">
+                                                    <h5 class="card-title text-dark fw-bold">${course.title}</h5>
+                                                    <p class="card-text text-muted small">${course.grade}</p>
+                                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                                        <button class="btn btn-primary" onclick="window.location.href='course.html?id=${course.id}'">مشاهدة</button>
+                                                <span class="badge fw-bold px-3 py-2" style="background:#e0e0e0;color:#000;">
+                                <span class="course-duration">عدد المحاضرات : ${course.videoCount !== undefined ? course.videoCount : (course.videos ? course.videos.length : 0)}</span></span></span>
+                                                <div class="rating text-warning">
+                                                            <span><i class="fas fa-star" style="color:#f7a619;"></i> <span style="color: #555">4.5<span/></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                    }).join('')}
+                            </div>
+                        `;
+                    document.getElementById('coursesByGrade').appendChild(gradeSection);
+                }
+
+                // Render all courses by default
+                renderCourses('all');
+
+                // Listen for changes in the dropdown to filter courses
+                gradeFilterDropdown.addEventListener('change', function () {
+                    renderCourses(this.value);
+                });
+            } catch (error) {
+                console.error('حدث خطأ أثناء جلب الكورسات:', error);
+            }
+
+            // Update nav links based on login status
+            const isLoggedIn = !!localStorage.getItem('token');
+            const navLinks = document.getElementById('navLinks');
+
+            if (isLoggedIn) {
+                navLinks.innerHTML = `
+                    <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="courses.html">الكورسات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
+                `;
+
+                document.getElementById('logoutLink').addEventListener('click', function (e) {
+                    e.preventDefault();
                     localStorage.removeItem('token');
                     window.location.href = 'login.html';
-                    alert('انتهت صلاحية الجلسة الرجاء تسجيل الدخول مرة أخرى.');
-                }
-            } catch (error) {
-                console.error('Error loading course data:', error);
-                alert('حدث خطأ أثناء جلب بيانات الكورس');
-            } finally {
-                loadingOverlay.style.opacity = '0';
-                setTimeout(() => loadingOverlay.style.display = 'none', 300);
+                });
             }
-        }
-
-        function updateVideo() {
-            const video = videos[currentVideoIndex];
-            document.getElementById('courseVideo').src = video.url;
-            document.getElementById('videoTitle').textContent = video.title;
-            updateNavButtons();
-            highlightCurrentVideo();
-        }
-
-        function updateNavButtons() {
-            const prevBtn = document.getElementById('prevVideoBtn');
-            const nextBtn = document.getElementById('nextVideoBtn');
-            prevBtn.disabled = currentVideoIndex === 0;
-            nextBtn.disabled = currentVideoIndex === videos.length - 1;
-        }
-
-        function highlightCurrentVideo() {
-            const items = document.querySelectorAll('#videosList .list-group-item');
-            items.forEach(item => item.classList.remove('current'));
-            items[currentVideoIndex].classList.add('current');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCourseData();
-            const navLinks = document.getElementById('navLinks');
-            navLinks.innerHTML = `
-                <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link active" href="courses.html">الكورسات</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard.html">لوحة التحكم</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">تسجيل خروج</a></li>
-            `;
-            document.getElementById('logoutLink').addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('token');
-                window.location.href = 'login.html';
-            });
-            document.querySelectorAll('.card-header').forEach(header => {
-                header.addEventListener('click', function () {
-                    const cardBody = this.nextElementSibling;
-                    cardBody.classList.toggle('show');
-                    const expanded = this.getAttribute('aria-expanded') === 'true';
-                    this.setAttribute('aria-expanded', !expanded);
-                    this.classList.toggle('collapsed');
-                });
-            });
-
-            const revealElements = document.querySelectorAll('.reveal');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            revealElements.forEach(el => observer.observe(el));
-
-            document.getElementById('prevVideoBtn').addEventListener('click', () => {
-                if (currentVideoIndex > 0) {
-                    currentVideoIndex--;
-                    updateVideo();
-                }
-            });
-            document.getElementById('nextVideoBtn').addEventListener('click', () => {
-                if (currentVideoIndex < videos.length - 1) {
-                    currentVideoIndex++;
-                    updateVideo();
-                }
-            });
-
         });
-
-
-        function viewExam(googleFormUrl, examTitle) {
-            const examModal = new bootstrap.Modal(document.getElementById('examModal'));
-            document.getElementById('examIframe').src = googleFormUrl;
-            document.getElementById('examModalLabel').textContent = examTitle;
-            examModal.show();
-        }
-
-
-        window.onscroll = function () {
-            const backToTopBtn = document.getElementById("backToTopBtn");
-            backToTopBtn.style.display = (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) ? "block" : "none";
-        };
-
-        function topFunction() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
