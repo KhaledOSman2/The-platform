@@ -4,7 +4,7 @@
       "id": 1738562296250,
       "username": "admin",
       "email": "admin@gmail.com",
-      "password": "123",
+      "password": "$2b$10$V92M/ti8Jd0/Z6bJfrGYLun06zF63WXjFMWa5TrMAb4.Xi42INCje",
       "isAdmin": true,
       "grade": "الصف الاول الاعدادي",
       "isBanned": false
@@ -15,16 +15,7 @@
       "email": "khaled@gmail.com",
       "password": "123",
       "grade": "الصف الاول الاعدادي",
-      "isAdmin": false,
-      "isBanned": false
-    },
-    {
-      "id": 1739032723658,
-      "username": "test",
-      "email": "test@gmail.com",
-      "password": "123",
-      "grade": "الصف الاول الاعدادي",
-      "isAdmin": false,
+      "isAdmin": true,
       "isBanned": false
     },
     {
@@ -107,6 +98,24 @@
       "grade": "الصف الثاني الاعدادي",
       "isAdmin": false,
       "isBanned": false
+    },
+    {
+      "id": 1743176400014,
+      "username": "Khaled Osman",
+      "email": "khaled5355@gmail.com",
+      "password": "$2b$10$V92M/ti8Jd0/Z6bJfrGYLun06zF63WXjFMWa5TrMAb4.Xi42INCje",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
+    },
+    {
+      "id": 1743180703696,
+      "username": "alimohamed1",
+      "email": "alimohamed@gmail.com",
+      "password": "$2b$10$DPLfHK8tk3sI5GJTwZH8Eu0EPVCUltz0RUdQzt0krTpOoWKwRC9qm",
+      "grade": "الصف الاول الاعدادي",
+      "isAdmin": false,
+      "isBanned": false
     }
   ],
   "courses": [
@@ -126,16 +135,195 @@
           "title": "الدرس الثاني خصائص سكان قارة إفريقيا",
           "url": "https://www.youtube.com/embed/voB5vhdbnmI?si=ODH9qvEytq323g3j",
           "addedDate": "2025-03-15T00:05:34.878Z"
+        },
+        {
+          "id": "video1",
+          "title": "الدرس الاول نمو وتوزيع سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/ERnGgCy5mzg?si=gRcZIGgL_Ym4H2Qs",
+          "addedDate": "2025-01-22T23:47:19.298Z"
+        },
+        {
+          "id": "video2",
+          "title": "الدرس الثاني خصائص سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/voB5vhdbnmI?si=ODH9qvEytq323g3j",
+          "addedDate": "2025-03-15T00:05:34.878Z"
+        },
+        {
+          "id": "video1",
+          "title": "الدرس الاول نمو وتوزيع سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/ERnGgCy5mzg?si=gRcZIGgL_Ym4H2Qs",
+          "addedDate": "2025-01-22T23:47:19.298Z"
+        },
+        {
+          "id": "video2",
+          "title": "الدرس الثاني خصائص سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/voB5vhdbnmI?si=ODH9qvEytq323g3j",
+          "addedDate": "2025-03-15T00:05:34.878Z"
+        },
+        {
+          "id": "video1",
+          "title": "الدرس الاول نمو وتوزيع سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/ERnGgCy5mzg?si=gRcZIGgL_Ym4H2Qs",
+          "addedDate": "2025-01-22T23:47:19.298Z"
+        },
+        {
+          "id": "video2",
+          "title": "الدرس الثاني خصائص سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/voB5vhdbnmI?si=ODH9qvEytq323g3j",
+          "addedDate": "2025-03-15T00:05:34.878Z"
+        },
+        {
+          "id": "video1",
+          "title": "الدرس الاول نمو وتوزيع سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/ERnGgCy5mzg?si=gRcZIGgL_Ym4H2Qs",
+          "addedDate": "2025-01-22T23:47:19.298Z"
+        },
+        {
+          "id": "video2",
+          "title": "الدرس الثاني خصائص سكان قارة إفريقيا",
+          "url": "https://www.youtube.com/embed/voB5vhdbnmI?si=ODH9qvEytq323g3j",
+          "addedDate": "2025-03-15T00:05:34.878Z"
         }
       ],
       "activities": [
         {
           "id": "activity1",
           "title": "ملخص شرح الدرس الاول",
-          "filePath": "/uploads/1740268440115.pdf"
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
+        },
+        {
+          "id": "activity1",
+          "title": "ملخص شرح الدرس الاول",
+          "filePath": "/uploads/1743143472826.pdf",
+          "addedDate": "2025-03-28T06:31:12.896Z"
         }
       ],
       "exams": [
+        {
+          "id": "exam1",
+          "title": "امتحان شامل.",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
+        {
+          "id": "exam1",
+          "title": "امتحان شامل",
+          "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdNpnMMzw2vYECVBIsGvFHMOusncC_7U0YAU4MjGpJkuCTCxA/viewform",
+          "courseId": "1740267448733",
+          "grade": "الصف الاول الاعدادي",
+          "addedDate": "2025-02-22T23:58:18.258Z"
+        },
         {
           "id": "exam1",
           "title": "امتحان شامل",

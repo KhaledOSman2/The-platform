@@ -1,0 +1,541 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #f59e0b;
+    --accent-color: #10b981;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --divider-color: #f1f5f9;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: 'Cairo', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-top: 80px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+/* شريط التنقل */
+.navbar {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--primary-color) !important;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: var(--text-dark) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+    background: rgba(37, 99, 235, 0.05);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    background: var(--gradient-primary);
+    color: white !important;
+}
+
+/* تذييل الصفحة */
+.footer {
+    background: var(--text-dark);
+    color: white;
+    padding: 2rem 0 2rem;
+    margin-top: 4rem;
+    text-align: center;
+    position: relative;
+}
+
+.footer a {
+    color: var(--secondary-color);
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--accent-color);
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+/* تأثيرات حركة CSS مخصصة */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+/* تحسين تصميم عناوين الأقسام */
+.section-heading {
+    position: relative;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    padding-bottom: 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.section-heading::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    transform: translateY(5px);
+}
+
+.section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    width: 60px;
+    height: 2px;
+    background: var(--secondary-color);
+    border-radius: 1px;
+    transform: translateY(5px);
+}
+
+.section-heading i {
+    color: var(--secondary-color);
+    transition: transform 0.3s ease;
+}
+
+.section-heading:hover i {
+    transform: rotate(360deg);
+}
+
+section {
+    margin-bottom: 5rem;
+}
+
+/* تقسيم جديد باستخدام SVG بنمط زاوي */
+.custom-divider {
+    position: relative;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-divider svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+}
+
+.custom-divider .shape-fill {
+    fill: var(--divider-color);
+}
+
+/* قسم الكورسات */
+
+.course-card {
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
+}
+
+.course-card img {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.course-card .card-body {
+    padding: 1.5rem;
+}
+
+.course-card .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.course-card .card-text {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.course-card .btn {
+    background-color: var(--primary-color);
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.course-card .btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.course-card .rating {
+    font-size: 0.875rem;
+    color: var(--accent-color);
+}
+
+/* قسم صاحب المنصة */
+.owner-section {
+    background: linear-gradient(135deg, #ffffff, var(--divider-color));
+    padding: 4rem 0;
+}
+
+.owner-card {
+    background: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.owner-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.owner-image {
+    flex: 1 1 300px;
+    min-width: 250px;
+    max-width: 350px;
+    position: relative;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.owner-image img {
+    width: 100%;
+    border-radius: 50%;
+    border: 5px solid var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.owner-image img:hover {
+    transform: scale(1.05);
+}
+
+.owner-info {
+    flex: 2 1 400px;
+    padding: 1.5rem;
+}
+
+.owner-info h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.owner-info h3 {
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.owner-info p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.owner-info .social-links a {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.owner-info .social-links a:hover {
+    color: var(--accent-color);
+}
+
+.owner-achievements {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.achievement-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.achievement-item:hover {
+    background: rgba(37, 99, 235, 0.1);
+    transform: translateY(-3px);
+}
+
+.achievement-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.achievement-text {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* قسم "عن المنصة" */
+#aboutUs {
+    position: relative;
+    padding: 6rem 0;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+#aboutUs .about-content {
+    position: relative;
+    z-index: 1;
+    background: white;
+    border-radius: 1.5rem;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+#aboutUs .about-content:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(37, 99, 235, 0.2);
+}
+
+#aboutUs .about-content h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+#aboutUs .about-content h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+#aboutUs .about-content:hover h1::after {
+    width: 100%;
+}
+
+#aboutUs .about-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+}
+
+#aboutUs .about-content .btn {
+    background: var(--secondary-color);
+    color: white;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+#aboutUs .about-content .btn:hover {
+    background: var(--primary-color);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+
+/* قسم "المميزات" */
+#services .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#services .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Media Queries */
+@media (max-width: 576px) {
+    .hero {
+        padding: 3rem 0;
+    }
+
+    .hero .hero-content {
+        padding: 1rem 1.5rem;
+    }
+
+    .display-4 {
+        font-size: 1.5rem;
+    }
+
+    .lead {
+        font-size: 1rem;
+    }
+
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 992px) {
+    #coursesSection .container {
+        max-width: 90%;
+        padding: 0 30px;
+    }
+}
+
+.grade-title {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* تصميم نموذج تسجيل الدخول الجديد */
+        .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            padding: 30px;
+        }
+
+        .login-card h2 {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-control {
+            border-radius: 25px;
+            padding: 10px 40px 10px 20px;
+            /* مساحة إضافية على اليمين */
+            border: 1px solid #ccc;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: none;
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #2563eb, #1d4ed8);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(45deg, #1d4ed8, #2563eb);
+        }
+
+        .toggle-password {
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            top: 73%;
+            left: 15px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }

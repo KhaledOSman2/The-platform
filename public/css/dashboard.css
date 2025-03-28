@@ -1,0 +1,151 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #f59e0b;
+    --accent-color: #10b981;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --transition-speed: 0.3s;
+}
+
+/* Global Styles */
+body {
+    background-color: #ffffff;
+    font-family: 'Cairo', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-top: 80px;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    transition: background var(--transition-speed);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--primary-color) !important;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link {
+    color: var(--text-dark) !important;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+    background: rgba(37, 99, 235, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link.active {
+    background: var(--gradient-primary);
+    color: white !important;
+}
+
+/* Search Bar */
+.search-bar input {
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--primary-color);
+    transition: all var(--transition-speed);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.search-bar input:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+/* Course Cards */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.course-card {
+    margin-bottom: 2rem;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.course-card:hover {
+    transform: translateY(-10px) scale(1.02);
+}
+
+.course-card img {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+/* Modal Enhancements */
+.modal-content {
+    border-radius: 1rem;
+    overflow: hidden;
+    animation: fadeIn 0.4s ease-in-out;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+}
+
+.modal-body {
+    padding: 2rem;
+    background: #f8f9fa;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    background: #e9ecef;
+}
+
+/* Footer */
+.footer {
+    background: var(--text-dark);
+    color: white;
+    padding: 2rem 0 2rem;
+    margin-top: 4rem;
+    text-align: center;
+    position: relative;
+
+}
+
+.footer a {
+    color: var(--secondary-color);
+    transition: color var(--transition-speed) ease;
+}
+
+.footer a:hover {
+    color: var(--accent-color);
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
